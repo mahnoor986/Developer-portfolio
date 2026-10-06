@@ -1,0 +1,53 @@
+# See http://rogerdudler.github.io/git-guide/.gitignore
+#--------------------------------------------------------
+# WordPress
+#--------------------------------------------------------
+wp-content/ulimit
+wp-content/uploads
+
+#--------------------------------------------------------
+# Server-related
+#--------------------------------------------------------
+# Local/Environment specific
+.env*
+
+#--------------------------------------------------------
+# IDE / Editor
+#--------------------------------------------------------
+# Visual Studio Code
+.vscode/*
+!.vscode/extensions.json
+# .vscode/settings.json
+
+# JetBrains IDE
+.idea/
+
+#--------------------------------------------------------
+# OS files
+#--------------------------------------------------------
+# Windows
+Thumbs.db
+Thumbs.db:..
+ehthumbs.db
+ehthumbs.db:--
+*.dbx
+*.log
+# *.DS_Store (macOS)
+# Desktop.ini
+
+# macOS
+.DS_Store
+
+#--------------------------------------------------------
+# Project specific
+#--------------------------------------------------------
+# Build artifacts (if you add build steps later)
+/dist
+/build
+/docs
+
+# Dependencies (if you add Node.js later)
+/node_modules
+
+# Cache
+/.cache
