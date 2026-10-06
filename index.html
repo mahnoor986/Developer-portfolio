@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mahnoor Siddiqui — Developer</title>
+<meta name="description" content="Mahnoor Siddiqui is a full-stack developer from Karachi building web apps with React, Next.js, Node.js and Django, and games in C.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@500;700;800&family=Instrument+Sans:wght@400;500;600&family=Unbounded:wght@600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script>try{var v=localStorage.getItem("mahnoor-vibe");if(v)document.documentElement.setAttribute("data-vibe",v)}catch(e){}</script>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<canvas id="bg" aria-hidden="true"></canvas>
+<div class="grain" aria-hidden="true"></div>
+<div id="hero3d" aria-hidden="true"></div>
+<div class="warp" id="warp" aria-hidden="true"><i style="--x:8%;--d:0.00s;--l:120px"></i><i style="--x:17%;--d:0.30s;--l:80px"></i><i style="--x:26%;--d:0.12s;--l:160px"></i><i style="--x:34%;--d:0.45s;--l:90px"></i><i style="--x:43%;--d:0.20s;--l:140px"></i><i style="--x:57%;--d:0.38s;--l:110px"></i><i style="--x:64%;--d:0.05s;--l:170px"></i><i style="--x:72%;--d:0.27s;--l:90px"></i><i style="--x:81%;--d:0.50s;--l:130px"></i><i style="--x:90%;--d:0.15s;--l:100px"></i><i style="--x:95%;--d:0.33s;--l:150px"></i><i style="--x:50%;--d:0.60s;--l:70px"></i></div>
+<div class="flyer" id="flyer" aria-hidden="true">
+  <span class="flame"></span>
+  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2c3 2.5 4.5 6 4.5 10l-2 4h-5l-2-4C7.5 8 9 4.5 12 2z" fill="var(--orchid)" stroke="var(--ink)"/><circle cx="12" cy="9.5" r="1.8" fill="var(--void)" stroke="var(--ink)"/><path d="M7.5 12 5 15l2.5 1M16.5 12l2.5 3-2.5 1" stroke="var(--ink)"/></svg>
+</div>
+
+<div id="loader" aria-hidden="true">
+  <div class="ld-mark"><span class="wm ld-wm ld-back"><i class="lt l1"></i><i class="lt l2"></i><i class="lt l3"></i><i class="lt l4"></i><i class="lt l5"></i><i class="lt l6"></i><i class="lt l7"></i></span><span class="wm ld-wm ld-fill"><i class="lt l1"></i><i class="lt l2"></i><i class="lt l3"></i><i class="lt l4"></i><i class="lt l5"></i><i class="lt l6"></i><i class="lt l7"></i></span></div>
+  <div class="ld-foot"><span class="ld-label">Loading the vibe</span><span class="ld-count"><span id="countNum">0</span><small>%</small></span></div>
+  <div class="ld-bar"><i></i></div>
+</div>
+
+<div class="cursor-dot" aria-hidden="true"></div>
+<div class="cursor-ring" aria-hidden="true"><span id="cursorText"></span></div>
+<div id="preview" aria-hidden="true"><span></span></div>
+
+<header class="top" id="top">
+  <nav class="navpill" aria-label="Main">
+    <a href="#home" class="logo" aria-label="Mahnoor, back to top"><span class="wm" id="wm" aria-hidden="true"><i class="lt l1"></i><i class="lt l2"></i><i class="lt l3"></i><i class="lt l4"></i><i class="lt l5"></i><i class="lt l6"></i><i class="lt l7"></i></span></a>
+    <div class="nav-right">
+      <div class="vibes" role="radiogroup" aria-label="Colour theme">
+        <span class="vibes-label">Pick a vibe</span>
+        <button class="vibe" type="button" role="radio" aria-checked="true" data-vibe="violet" data-name="Ultraviolet" style="--sw:#B38CFF;--sw2:#7B3CFF"><i></i><span class="tip">Ultraviolet</span></button>
+        <button class="vibe" type="button" role="radio" aria-checked="false" data-vibe="aqua" data-name="Aqua" style="--sw:#78E0E0;--sw2:#2FB5B8"><i></i><span class="tip">Aqua</span></button>
+        <button class="vibe" type="button" role="radio" aria-checked="false" data-vibe="blush" data-name="Blush" style="--sw:#F6B0BB;--sw2:#E2728A"><i></i><span class="tip">Blush</span></button>
+      </div>
+      <a href="#collab" class="nav-cta" data-magnetic>Let's collab
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg>
+      </a>
+      <button class="burger" id="burger" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mmenu"><span></span><span></span></button>
+    </div>
+  </nav>
+</header>
+<div class="mmenu" id="mmenu" aria-hidden="true">
+  <div class="mm-inner wrap">
+    <nav class="mm-links" aria-label="Menu">
+      <a href="#about"><span class="mm-t"><span>About</span><span aria-hidden="true">About</span></span></a>
+      <a href="#work"><span class="mm-t"><span>Work</span><span aria-hidden="true">Work</span></span></a>
+      <a href="#skills"><span class="mm-t"><span>Toolkit</span><span aria-hidden="true">Toolkit</span></span></a>
+      <a href="#process"><span class="mm-t"><span>How I Build</span><span aria-hidden="true">How I Build</span></span></a>
+      <a href="#experience"><span class="mm-t"><span>Experience</span><span aria-hidden="true">Experience</span></span></a>
+      <a href="#collab" class="o"><span class="mm-t"><span>Let's Collab</span><span aria-hidden="true">Let's Collab</span></span></a>
+    </nav>
+    <div class="mm-side">
+      <div><h3>Say Hi</h3><a href="mailto:mahnoorsiddiqui986@gmail.com">mahnoorsiddiqui986@gmail.com</a></div>
+      <div><h3>Socials</h3><a href="https://github.com/mahnoor986" target="_blank" rel="noopener">GitHub</a><a href="https://www.linkedin.com/in/mahnoorsiddiqui-tech" target="_blank" rel="noopener">LinkedIn</a></div>
+      <div class="status"><b></b>Available for new projects</div>
+    </div>
+  </div>
+</div>
+
+<main id="home">
+  <section class="hero wrap" id="hero">
+    <div class="hero-top">
+      <div>
+        <div class="status gb"><b></b>Available for new projects</div>
+        <p class="hero-intro"><span class="gw">Software</span> <span class="gw">developer</span> <span class="gw">building</span> <span class="gw">fast,</span> <span class="gw">thoughtful</span> <span class="gw">products</span> <span class="gw">for</span> <span class="gw">the</span> <span class="gw">web.</span> <span class="gw mu">Clean</span> <span class="gw mu">code</span> <span class="gw mu">under</span> <span class="gw mu">the</span> <span class="gw mu">hood,</span> <span class="gw mu">careful</span> <span class="gw mu">details</span> <span class="gw mu">on</span> <span class="gw mu">the</span> <span class="gw mu">surface.</span></p>
+      </div>
+      <div class="grav">
+        <button class="pill ghost" id="gravBtn" type="button" data-magnetic aria-pressed="false">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 4v14"/><path d="m6 12 6 6 6-6"/></svg>
+          <span id="gravLabel">Turn on gravity</span>
+        </button>
+        <small id="gravHint">Then grab the letters and throw them</small>
+      </div>
+    </div>
+
+    <h1 class="name" id="name" aria-label="Mahnoor">
+      <span class="ch" aria-hidden="true">M</span><span class="ch" aria-hidden="true">a</span><span class="ch" aria-hidden="true">h</span><span class="ch" aria-hidden="true">n</span><span class="ch" aria-hidden="true">o</span><span class="ch" aria-hidden="true">o</span><span class="ch" aria-hidden="true">r</span>
+    </h1>
+
+    <div class="hero-bottom">
+      <div class="hero-line">
+        <b class="gb">Mahnoor, developer</b><i class="gb"></i><span class="hl-mid gb">[ full-stack &amp; games ]</span><i class="hl-mid gb"></i><span class="gb">2026</span>
+      </div>
+      <a href="#about" class="badge" aria-label="Scroll to explore">
+        <svg class="ring" viewBox="0 0 100 100" aria-hidden="true"><defs><path id="badgeCirc" d="M50,50 m-38,0 a38,38 0 1,1 76,0 a38,38 0 1,1 -76,0"/></defs><text><textPath href="#badgeCirc" textLength="236" lengthAdjust="spacing">SCROLL TO EXPLORE • SCROLL TO EXPLORE • </textPath></text></svg>
+        <span class="core"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 5v14"/><path d="m6 13 6 6 6-6"/></svg></span>
+      </a>
+    </div>
+  </section>
+
+  <div class="marquee" aria-hidden="true">
+    <div class="track" id="track">
+      <span>Web apps</span><span class="o">Clean code</span><span>Interfaces</span><span class="o">APIs</span><span>Performance</span><span class="o">Ideas to launch</span>
+      <span>Web apps</span><span class="o">Clean code</span><span>Interfaces</span><span class="o">APIs</span><span>Performance</span><span class="o">Ideas to launch</span>
+    </div>
+  </div>
+
+  <section class="section wrap" id="about">
+    <p class="kicker">About me</p>
+    <p class="manifesto" id="manifesto">I turn ideas into software that feels as good as it works, and I care about every detail between the first sketch and the final release.</p>
+
+    <div class="about-grid">
+      <div class="photo">
+        <div class="ph-card" data-tilt>
+          <span class="ph-layer l-a" aria-hidden="true"></span>
+          <span class="ph-layer l-b" aria-hidden="true"></span>
+          <div class="ph-frame">
+            <img class="avatar" src="assets/images/main-character/avatar.png" alt="Illustrated avatar of Mahnoor Siddiqui in a black hijab and pink glasses, arms crossed">
+          </div>
+          <span class="ph-tag">Mahnoor <i>developer</i></span>
+          <span class="ph-orb" aria-hidden="true"></span>
+        </div>
+      </div>
+      <div class="about-copy">
+        <p>I’m <strong>Mahnoor Siddiqui</strong>, a software developer passionate about building modern, scalable digital products. Currently an Intern Developer at KhairFlow, I specialize in responsive web development using React, Next.js, and TypeScript, with experience in Node.js, Django, PostgreSQL, and MySQL. I focus on clean code, modern development workflows, user-focused experiences, and exploring AI-driven solutions.</p>
+        <div class="facts">
+          <div><b>2+</b><span>Years coding</span></div>
+          <div><b>15+</b><span>Projects on GitHub</span></div>
+          <div><b>2</b><span>Certifications</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap" id="work" style="padding-top:0">
+    <div class="work-head">
+      <h2 class="h2">Selected<br><em class="ac">work</em></h2>
+      <p>A few projects I'm proud of, from web apps to games written in C. Open any of them to see what I built and the tools I used.</p>
+    </div>
+    <div class="projects" id="projects">
+      <div class="proj" data-art="1">
+        <button class="proj-btn" type="button" aria-expanded="false" aria-controls="p1">
+          <span class="proj-title">The Ashen Monastery</span>
+          <span class="proj-meta">3D game<br>2026</span>
+          <span class="proj-plus" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+        </button>
+        <div class="proj-panel" id="p1"><div><div class="panel-inner">
+          <div class="panel-art art-1"></div>
+          <div class="panel-text">
+            <p>A third-person, PS1-style gothic horror game I wrote from scratch in C99 with raylib, built as a college project. Five wings of a castle, relics to destroy and two boss fights, with low-poly architecture, custom GLSL shaders, fog and candlelight.</p>
+            <div class="tags"><span>C99</span><span>raylib</span><span>GLSL</span></div>
+            <div class="panel-links"><a class="pill solid" href="https://github.com/mahnoor986/The-Ashen-Monastery/releases/latest" target="_blank" rel="noopener">Download game</a><a class="pill ghost" href="https://github.com/mahnoor986/The-Ashen-Monastery" target="_blank" rel="noopener">Source code</a></div>
+          </div>
+        </div></div></div>
+      </div>
+      <div class="proj" data-art="2">
+        <button class="proj-btn" type="button" aria-expanded="false" aria-controls="p2">
+          <span class="proj-title">VOLTRA E-Bikes</span>
+          <span class="proj-meta">Website<br>2026</span>
+          <span class="proj-plus" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+        </button>
+        <div class="proj-panel" id="p2"><div><div class="panel-inner">
+          <div class="panel-art art-2"></div>
+          <div class="panel-text">
+            <p>A multi-page electric bike website with Home, Bikes, Technology, About and Contact pages. Bike cards and a slider are generated from JavaScript data, and the contact form posts to an Express endpoint. Includes a custom 404 page.</p>
+            <div class="tags"><span>Tailwind CSS</span><span>JavaScript</span><span>Node.js</span><span>Express</span></div>
+            <div class="panel-links"><a class="pill solid" href="https://voltra-electric-bikes.vercel.app" target="_blank" rel="noopener">View live</a><a class="pill ghost" href="https://github.com/mahnoor986/voltra-electric-bikes" target="_blank" rel="noopener">Source code</a></div>
+          </div>
+        </div></div></div>
+      </div>
+      <div class="proj" data-art="3">
+        <button class="proj-btn" type="button" aria-expanded="false" aria-controls="p3">
+          <span class="proj-title">Raycast Maze</span>
+          <span class="proj-meta">Game<br>2026</span>
+          <span class="proj-plus" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+        </button>
+        <div class="proj-panel" id="p3"><div><div class="panel-inner">
+          <div class="panel-art art-3"></div>
+          <div class="panel-text">
+            <p>A first-person 3D maze with no 3D engine: the view is computed from a 2D grid using DDA raycasting, the technique behind Wolfenstein 3D. Every run generates a new maze with a recursive backtracker, and BFS places the exit at the farthest cell.</p>
+            <div class="tags"><span>C</span><span>raylib</span><span>Algorithms</span></div>
+            <div class="panel-links"><a class="pill solid" href="https://github.com/mahnoor986/The-Raycasting-3D-Maze-Game" target="_blank" rel="noopener">Source code</a></div>
+          </div>
+        </div></div></div>
+      </div>
+      <div class="proj" data-art="4">
+        <button class="proj-btn" type="button" aria-expanded="false" aria-controls="p4">
+          <span class="proj-title">Rado Builders</span>
+          <span class="proj-meta">Client website<br>2026</span>
+          <span class="proj-plus" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 5v14M5 12h14"/></svg></span>
+        </button>
+        <div class="proj-panel" id="p4"><div><div class="panel-inner">
+          <div class="panel-art art-4"></div>
+          <div class="panel-text">
+            <p>A dual-brand real-estate website for Rado Builders and its sister company Sarec, built at Alkhair Innovative Tech Solutions. I designed and built the frontend: a split-screen brand gate, project listings and detail pages, an interactive 3D globe and maps, and smooth GSAP and Lenis animations throughout.</p>
+            <div class="tags"><span>Next.js</span><span>TypeScript</span><span>Tailwind CSS</span><span>GSAP</span></div>
+          </div>
+        </div></div></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap" id="skills" style="padding-top:0">
+    <div class="process-head" style="margin-bottom:clamp(24px,4vw,48px)">
+      <h2 class="h2">My<br><em class="ac">toolkit</em></h2>
+    </div>
+    <div class="skills-grid">
+      <div class="orbit-wrap" id="orbit" aria-label="Interactive sphere of my skills. Drag to spin it.">
+        <canvas class="orbit-lines" id="orbitLines" aria-hidden="true"></canvas>
+        <div class="orbit-ring"></div>
+        <div class="orbit-core"></div>
+        <span class="orbit-hint">Drag to spin</span>
+      </div>
+      <div class="tk">
+        <div class="tk-tabs" role="tablist" aria-label="Skill categories">
+          <button class="tk-tab" role="tab" id="tab-all" aria-selected="true" aria-controls="tp-all" data-cat="all">Overview</button>
+          <button class="tk-tab" role="tab" id="tab-fe" aria-selected="false" aria-controls="tp-fe" data-cat="fe" tabindex="-1">Frontend <small>10</small></button>
+          <button class="tk-tab" role="tab" id="tab-be" aria-selected="false" aria-controls="tp-be" data-cat="be" tabindex="-1">Backend <small>8</small></button>
+          <button class="tk-tab" role="tab" id="tab-tl" aria-selected="false" aria-controls="tp-tl" data-cat="tl" tabindex="-1">Tools <small>8</small></button>
+        </div>
+        <div class="tk-panel" role="tabpanel" id="tp-all" aria-labelledby="tab-all">
+          <h3>Full-stack, with an eye for the interface.</h3>
+          <p>I work across the whole product: polished interfaces on the front, reliable APIs and data on the back, and a workflow that keeps it all shipping.</p>
+          <div class="tk-cards">
+            <button class="tk-card" type="button" data-go="fe" style="--d:0"><span class="tk-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m16 18 6-6-6-6"/><path d="m8 6-6 6 6 6"/></svg></span><span><b>Frontend</b><span>Interfaces that feel fast and look sharp</span></span><em>10 skills</em></button>
+            <button class="tk-card" type="button" data-go="be" style="--d:1"><span class="tk-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="7" rx="2"/><rect x="3" y="13" width="18" height="7" rx="2"/><path d="M7 7.5h.01M7 16.5h.01"/></svg></span><span><b>Backend</b><span>APIs and databases that hold up</span></span><em>8 skills</em></button>
+            <button class="tk-card" type="button" data-go="tl" style="--d:2"><span class="tk-ico"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a4 4 0 0 0 5 5l-8.4 8.4a2.1 2.1 0 0 1-3-3z"/><path d="M14.7 6.3 17 4l3 3-2.3 2.3"/></svg></span><span><b>Tools</b><span>The workflow behind clean releases</span></span><em>8 tools</em></button>
+          </div>
+        </div>
+        <div class="tk-panel" role="tabpanel" id="tp-fe" aria-labelledby="tab-fe" hidden>
+          <h3>Frontend</h3>
+          <p>Responsive, accessible interfaces with smooth motion and solid component architecture.</p>
+          <ul class="tk-grid"><li style="--d:0"><b>HTML5</b><span>Semantic, accessible markup</span></li><li style="--d:1"><b>CSS3</b><span>Layouts, grids and motion</span></li><li style="--d:2"><b>JavaScript</b><span>ES6+, the DOM, async</span></li><li style="--d:3"><b>TypeScript</b><span>Safer, scalable code</span></li><li style="--d:4"><b>React</b><span>Components, hooks, state</span></li><li style="--d:5"><b>Next.js</b><span>Routing, SSR, performance</span></li><li style="--d:6"><b>Tailwind CSS</b><span>Fast, consistent styling</span></li><li style="--d:7"><b>Bootstrap</b><span>Responsive layouts, quickly</span></li><li style="--d:8"><b>Vite</b><span>Fast builds and dev server</span></li><li style="--d:9"><b>Responsive UI</b><span>Every screen size</span></li></ul>
+        </div>
+        <div class="tk-panel" role="tabpanel" id="tp-be" aria-labelledby="tab-be" hidden>
+          <h3>Backend</h3>
+          <p>Server logic, data modelling and APIs in Node.js and Django, plus lower-level work in C and C++.</p>
+          <ul class="tk-grid"><li style="--d:0"><b>Node.js</b><span>Server-side JavaScript</span></li><li style="--d:1"><b>Express</b><span>APIs and middleware</span></li><li style="--d:2"><b>Django</b><span>Python web backends</span></li><li style="--d:3"><b>REST APIs</b><span>Clean, documented endpoints</span></li><li style="--d:4"><b>PostgreSQL</b><span>Relational data and SQL</span></li><li style="--d:5"><b>MySQL</b><span>Relational databases</span></li><li style="--d:6"><b>MongoDB</b><span>Flexible document data</span></li><li style="--d:7"><b>C / C++</b><span>Algorithms and game engines</span></li></ul>
+        </div>
+        <div class="tk-panel" role="tabpanel" id="tp-tl" aria-labelledby="tab-tl" hidden>
+          <h3>Tools &amp; workflow</h3>
+          <p>The tools that keep my work versioned, tested and deployed without drama.</p>
+          <ul class="tk-grid"><li style="--d:0"><b>Git</b><span>Version control, branching</span></li><li style="--d:1"><b>GitHub</b><span>Repos, releases, Pages</span></li><li style="--d:2"><b>Docker</b><span>Containerised workflows</span></li><li style="--d:3"><b>Figma</b><span>Designing and building UIs</span></li><li style="--d:4"><b>Stitch</b><span>AI-assisted UI design</span></li><li style="--d:5"><b>VS Code</b><span>My daily editor</span></li><li style="--d:6"><b>Vercel</b><span>Fast deploys and previews</span></li><li style="--d:7"><b>raylib</b><span>Games and graphics in C</span></li></ul>
+        </div>
+        <div class="tk-explore"><p><b></b>Currently exploring</p><span>AI integration</span><span>Docker</span><span>3D graphics</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="process" id="process" aria-labelledby="processTitle">
+    <div class="process-inner">
+      <div class="wrap process-head">
+        <div>
+          <p class="kicker">How I build</p>
+          <h2 class="h2" id="processTitle">From idea<br>to <em class="ac">launch</em></h2>
+          <p class="ph-desc">A clear, collaborative process, so you always know what's happening and what comes next.</p>
+        </div>
+      </div>
+      <div class="process-stage">
+        <div class="ptrack" id="ptrack">
+          <article class="pcard">
+            <span class="pnum" aria-hidden="true">01</span>
+            <div class="pcube" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <span class="pstep">Step 1 of 5</span>
+            <h3>Understand</h3>
+            <p>I start by listening: your goals, your users and your constraints. Then we agree on what success looks like.</p>
+            <div class="tags"><span>Discovery call</span><span>Requirements</span><span>User flows</span></div>
+          </article>
+          <article class="pcard">
+            <span class="pnum" aria-hidden="true">02</span>
+            <div class="pcube" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <span class="pstep">Step 2 of 5</span>
+            <h3>Plan &amp; design</h3>
+            <p>Wireframes, data models and architecture come before production code, so the build is fast and the surprises are few.</p>
+            <div class="tags"><span>Wireframes</span><span>System design</span><span>Tech stack</span></div>
+          </article>
+          <article class="pcard">
+            <span class="pnum" aria-hidden="true">03</span>
+            <div class="pcube" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <span class="pstep">Step 3 of 5</span>
+            <h3>Build</h3>
+            <p>Clean, component-based code shipped in small iterations, with progress you can see and test every week.</p>
+            <div class="tags"><span>Frontend</span><span>Backend</span><span>APIs</span></div>
+          </article>
+          <article class="pcard">
+            <span class="pnum" aria-hidden="true">04</span>
+            <div class="pcube" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <span class="pstep">Step 4 of 5</span>
+            <h3>Test &amp; polish</h3>
+            <p>Cross-device testing, performance tuning and the small details that make a product feel finished.</p>
+            <div class="tags"><span>QA</span><span>Performance</span><span>Accessibility</span></div>
+          </article>
+          <article class="pcard">
+            <span class="pnum" aria-hidden="true">05</span>
+            <div class="pcube" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i><i></i></div>
+            <span class="pstep">Step 5 of 5</span>
+            <h3>Launch &amp; grow</h3>
+            <p>Deployment, monitoring and steady improvement after launch, so the product keeps growing with you.</p>
+            <div class="tags"><span>Deployment</span><span>Monitoring</span><span>Support</span></div>
+          </article>
+        </div>
+      </div>
+      <div class="pbar" aria-hidden="true"><i id="pbar"></i></div>
+    </div>
+  </section>
+
+  <section class="section wrap" id="experience">
+    <div class="exp">
+      <div class="exp-head">
+        <h2 class="h2">My<br><em class="ac">experience</em></h2>
+        <p>Where I've worked, studied and what I've built along the way.</p>
+      </div>
+      <div class="timeline" id="timeline">
+        <div class="tl-line"></div><div class="tl-fill" id="tlFill"></div>
+        <article class="job">
+          <time>Aug 2026 to now</time>
+          <h3>Intern Developer</h3>
+          <h4>KhairFlow, Karachi</h4>
+          <p>Working with the engineering team on real web products, following an AI-native development workflow with code reviews and a clear definition of done.</p>
+        </article>
+        <article class="job">
+          <time>2025 to 2026</time>
+          <h3>Software Developer Intern</h3>
+          <h4>Al-Khair Institute of Technology (AIT)</h4>
+          <p>Built full-stack projects with React, Next.js, TypeScript, Node.js and Django, including the VOLTRA e-bike website. Earned the Web Development (Level 1) certification, alongside a Web Development certification from Farooq-e-Azam Institute.</p>
+        </article>
+        <article class="job">
+          <time>2025 to 2027</time>
+          <h3>Intermediate, Computer Science</h3>
+          <h4>G.D.C F/W Block M</h4>
+          <p>Studying computer science while building games in C, like The Ashen Monastery and Raycast Maze, as college projects.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section collab" id="collab">
+    <div class="curl" aria-hidden="true"><svg viewBox="0 0 1440 120" preserveAspectRatio="none"><path id="curlPath" d="M0 120 L1440 120 Z"/><path class="glint" id="curlGlint" d=""/></svg></div>
+    <div class="wrap">
+      <div class="collab-head">
+        <div>
+          <p class="kicker">Start a project</p>
+          <h2 class="big-cta">Got an idea?<br>Let's make it <em class="ac">real.</em></h2>
+        </div>
+        <p class="collab-sub">Tell me a little about what you're building. I'll get back to you with next steps, questions, and how I can help.</p>
+      </div>
+
+      <div class="collab-grid">
+        <form class="collab-form" id="collabForm" novalidate>
+          <fieldset class="opts">
+            <legend>What do you need?</legend>
+            <label class="opt"><input type="radio" name="type" value="Website" checked><span>Website</span></label>
+            <label class="opt"><input type="radio" name="type" value="Web app"><span>Web app</span></label>
+            <label class="opt"><input type="radio" name="type" value="Mobile app"><span>Mobile app</span></label>
+            <label class="opt"><input type="radio" name="type" value="Full-time role"><span>Full-time role</span></label>
+            <label class="opt"><input type="radio" name="type" value="Something else"><span>Something else</span></label>
+          </fieldset>
+          <div class="row2">
+            <div class="field">
+              <input id="fName" name="name" type="text" placeholder=" " autocomplete="name" required>
+              <label for="fName">Your name</label>
+            </div>
+            <div class="field">
+              <input id="fEmail" name="email" type="email" placeholder=" " autocomplete="email" required>
+              <label for="fEmail">Your email</label>
+            </div>
+          </div>
+          <div class="field">
+            <textarea id="fMsg" name="message" rows="5" placeholder=" " required></textarea>
+            <label for="fMsg">Tell me about your project</label>
+          </div>
+          <div class="form-foot">
+            <p class="form-note" id="formNote" role="status" aria-live="polite">Sending opens your email app with your message ready to go.</p>
+            <button class="send" type="submit" data-magnetic>
+              <span>Send message</span>
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 2 11 13"/><path d="M22 2 15 22l-4-9-9-4 20-7z"/></svg>
+            </button>
+          </div>
+        </form>
+
+        <aside class="collab-side">
+          <div class="card avail">
+            <div class="status"><b></b>Available for new projects</div>
+            <p>Based in Karachi, Pakistan. Open to internships, freelance and remote work.</p>
+          </div>
+          <div class="card" data-tilt>
+            <h3>Email</h3>
+            <a class="addr" href="mailto:mahnoorsiddiqui986@gmail.com" id="emailLink">mahnoorsiddiqui986@gmail.com</a>
+            <button class="pill ghost small" type="button" id="copyBtn">Copy email</button>
+          </div>
+          <div class="card" data-tilt>
+            <h3>Find me online</h3>
+            <ul class="socials">
+              <li><a href="https://github.com/mahnoor986" target="_blank" rel="noopener"><span>GitHub</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a></li>
+              <li><a href="https://www.linkedin.com/in/mahnoor-siddiqui-tech/" target="_blank" rel="noopener"><span>LinkedIn</span><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a></li>
+            </ul>
+          </div>
+
+        </aside>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-bar">
+    <span>© 2026 Mahnoor Siddiqui. Designed and built with care.</span>
+    <a href="#home" class="totop" id="toTop" aria-label="Back to top">
+      <svg class="ring" viewBox="0 0 120 120" aria-hidden="true"><defs><path id="topCirc" d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0"/></defs><text><textPath href="#topCirc" textLength="286" lengthAdjust="spacing">BACK TO TOP • BEAM ME UP • BACK TO TOP • BEAM ME UP • </textPath></text></svg>
+      <span class="trail" aria-hidden="true"></span>
+      <span class="core"><svg class="rocket" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2c3 2.5 4.5 6 4.5 10l-2 4h-5l-2-4C7.5 8 9 4.5 12 2z"/><circle cx="12" cy="9.5" r="1.6"/><path d="M7.5 12 5 15l2.5 1M16.5 12l2.5 3-2.5 1M10.5 19.5 12 22l1.5-2.5"/></svg></span>
+    </a>
+  </div>
+  <div class="wrap foot-mark" aria-hidden="true">
+    <span class="wm big" id="footMark"><i class="lt l1"></i><i class="lt l2"></i><i class="lt l3"></i><i class="lt l4"></i><i class="lt l5"></i><i class="lt l6"></i><i class="lt l7"></i></span>
+  </div>
+</footer>
+<div class="vibe-toast" id="vibeToast" role="status" aria-live="polite"></div>
+
+<script src="vendor/gsap.min.js"></script>
+<script src="vendor/ScrollTrigger.min.js"></script>
+<script src="vendor/matter.min.js"></script>
+<script src="vendor/three.min.js"></script>
+<script src="vendor/lenis.min.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>
