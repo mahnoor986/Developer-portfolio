@@ -1,25 +1,10 @@
-import { Instrument_Sans, Space_Grotesk, Syne, Unbounded } from 'next/font/google'
 import React from 'react'
 
 import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { getSiteSettings, isDraftMode } from '@/lib/content'
+import { fontVariables } from '@/lib/fonts'
 
 import './style.css'
-
-const syne = Syne({ subsets: ['latin'], weight: ['500', '700', '800'], variable: '--font-syne', display: 'swap' })
-const instrument = Instrument_Sans({
-  subsets: ['latin'],
-  weight: ['400', '500', '600'],
-  variable: '--font-instrument',
-  display: 'swap',
-})
-const unbounded = Unbounded({ subsets: ['latin'], weight: ['600', '700', '800'], variable: '--font-unbounded', display: 'swap' })
-const grotesk = Space_Grotesk({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  variable: '--font-grotesk',
-  display: 'swap',
-})
 
 const VIBES = ['violet', 'aqua', 'blush']
 
@@ -34,7 +19,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
     <html
       lang="en"
       data-vibe={defaultVibe}
-      className={`${syne.variable} ${instrument.variable} ${unbounded.variable} ${grotesk.variable}`}
+      className={fontVariables}
       suppressHydrationWarning
     >
       <head>

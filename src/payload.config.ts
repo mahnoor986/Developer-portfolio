@@ -30,6 +30,13 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
     livePreview,
+    // "Night Studio" design: see design/ADMIN_DESIGN.md and src/app/(payload)/custom.scss
+    theme: 'dark',
+    meta: {
+      titleSuffix: '· Mahnoor',
+      icons: [{ rel: 'icon', type: 'image/png', url: '/admin-icon.png' }],
+    },
+    toast: { position: 'bottom-center', duration: 5000 },
   },
   collections: [
     Projects,

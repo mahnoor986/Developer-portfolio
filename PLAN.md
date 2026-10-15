@@ -91,7 +91,7 @@ _(Code done and tested without a key and with an invalid key. Final check waits 
 ## Phase 9 — Admin design ("Night Studio", see `design/ADMIN_DESIGN.md` + `design/admin-prototype.dc.html`)
 Build in this order, commit after each. Check each against the prototype's CSS/markup in all three vibes,
 at desktop and 390px wide, with real Payload data; keep access rules, hooks and Live Preview working.
-- [ ] Tokens / `custom.scss` (vibes on `html[data-vibe]`, fonts, Payload variables, buttons/inputs/tabs/tables, no scrollbars), `admin.theme: 'dark'`, `admin.meta`
+- [x] Tokens / `custom.scss` (vibes on `html[data-vibe]`, fonts, Payload variables, buttons/inputs/tabs/tables, no scrollbars), `admin.theme: 'dark'`, `admin.meta`
 - [ ] Sticky Nav + logo (mask "mahnoor" letters, ADMIN chip, groups with counts, active pill, user card + logout)
 - [ ] Top bar (global search, vibe switcher saved as `mahnoor-admin-vibe`, View site)
 - [ ] Dashboard (greeting, Available toggle, 4 stat cards, latest messages, quick actions, site at a glance)
