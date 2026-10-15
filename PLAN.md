@@ -77,7 +77,7 @@ _(Code done and tested without a key and with an invalid key. Final check waits 
 **Done when:** editing a hero text or project in the admin updates the preview pane.
 
 ## Phase 7 — CV download
-- [ ] "Download CV" button (hero, mobile menu, contact card) linking to the uploaded PDF; hidden when there's no CV
+- [x] "Download CV" button (hero, mobile menu, contact card) linking to the uploaded PDF; hidden when there's no CV
 
 **Done when:** uploading a new PDF changes the download.
 

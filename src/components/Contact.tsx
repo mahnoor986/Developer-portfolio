@@ -1,6 +1,7 @@
 import type { HomeContent, Settings } from '@/lib/content'
 
 import { ContactForm } from './ContactForm'
+import { CvButton, getCv } from './Cv'
 import { SplitHeading } from './SplitHeading'
 
 const Arrow = () => (
@@ -11,6 +12,7 @@ const Arrow = () => (
 )
 
 export function Contact({ s, options }: { s: Settings; options: HomeContent['contactOptions'] }) {
+  const cv = getCv(s)
   const socials = [
     { label: 'GitHub', url: s.githubUrl },
     { label: 'LinkedIn', url: s.linkedinUrl },
@@ -71,6 +73,12 @@ export function Contact({ s, options }: { s: Settings; options: HomeContent['con
                 {s.copyEmailLabel}
               </button>
             </div>
+            {cv && (
+              <div className="card" data-tilt="">
+                <h3>{cv.title}</h3>
+                <CvButton cv={cv} />
+              </div>
+            )}
             {socials.length > 0 && (
               <div className="card" data-tilt="">
                 <h3>{s.socialsTitle}</h3>

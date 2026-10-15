@@ -820,6 +820,7 @@ export interface SiteSetting {
    */
   cv?: (number | null) | Media;
   cvLabel?: string | null;
+  cvTitle?: string | null;
   menuAbout?: string | null;
   menuWork?: string | null;
   menuToolkit?: string | null;
@@ -1004,6 +1005,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   footerText?: T;
   cv?: T;
   cvLabel?: T;
+  cvTitle?: T;
   menuAbout?: T;
   menuWork?: T;
   menuToolkit?: T;

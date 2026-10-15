@@ -2,9 +2,12 @@ import { Fragment } from 'react'
 
 import type { Settings } from '@/lib/content'
 
+import { CvButton, getCv } from './Cv'
+
 const words = (text?: string | null) => (text ?? '').trim().split(/\s+/).filter(Boolean)
 
 export function Hero({ s }: { s: Settings }) {
+  const cv = getCv(s)
   const intro = [
     ...words(s.intro).map((w) => ({ w, muted: false })),
     ...words(s.introMuted).map((w) => ({ w, muted: true })),
@@ -28,6 +31,7 @@ export function Hero({ s }: { s: Settings }) {
               </Fragment>
             ))}
           </p>
+          {cv && <CvButton cv={cv} className="hero-cv" />}
         </div>
         <div className="grav">
           <button className="pill ghost" id="gravBtn" type="button" data-magnetic="" aria-pressed="false">

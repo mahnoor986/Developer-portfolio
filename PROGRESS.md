@@ -14,6 +14,28 @@
 
 ## Log
 
+### 2026-10-15 — Phase 7 (CV download) ✅
+**Done**
+- `src/components/Cv.tsx`: `getCv()` returns the uploaded PDF (or null → every CV button hides) and `CvButton`.
+- Buttons in three places, reusing legacy styles: hero (under the intro, `pill ghost small` + download icon),
+  menu (a "CV" block like "Say Hi"/"Socials"), contact sidebar (a `card` with the same pill).
+- New Site settings field `cvTitle` ("CV", the heading in the menu and contact card) next to the button label.
+- Only addition to the copied CSS: `.hero-cv{margin-top:22px}`, in a marked "additions" block at the end.
+
+**Decisions**
+- Link gets `?v=<media updatedAt>` so replacing the file always serves the new one (no stale browser cache), plus
+  `download="Mahnoor-Siddiqui-CV.pdf"` and `target="_blank"` (Blob URLs are cross-origin, where browsers open the
+  PDF in a new tab instead of downloading).
+- New DB columns are created by the dev server (schema push) in development. Production will use migrations
+  (Phase 10). If a build fails with "Failed query", open the dev server once so it can add the new columns.
+
+**Verified** (production build; temp admin, test PDFs and media deleted afterwards)
+- No CV → no CV button anywhere; page unchanged.
+- Uploaded a test PDF and selected it in Site settings → 3 links (hero, menu, contact card) → download returns
+  200 `application/pdf` with the right content. Screenshots: hero and menu look like native parts of the design.
+- Replaced the file on the same media item → page link changed automatically → download returns the new PDF.
+- build ✓, lint ✓, types ✓.
+
 ### 2026-10-15 — Phase 6 (Live Preview) ✅
 **Done**
 - `admin.livePreview` (`src/lib/preview.ts`) for Site settings, Projects and Posts, with Mobile (390×844),
@@ -221,5 +243,5 @@
 - `npm run dev`: `/` 200, `/admin` 200 ("Dashboard - Payload"), Payload created its tables in Postgres.
 
 ## Next
-- Phase 7: "Download CV" button (hero, mobile menu, contact card), hidden until a CV PDF is uploaded.
+- Phase 8: blog (/blog list, /blog/[slug] with Lexical, menu link + latest posts strip when posts exist).
 - When the Resend key arrives: send a real test message and confirm the alert (finishes Phase 5).

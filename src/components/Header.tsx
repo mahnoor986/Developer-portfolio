@@ -1,5 +1,6 @@
 import type { Settings } from '@/lib/content'
 
+import { getCv } from './Cv'
 import { Wordmark } from './Wordmark'
 
 const vibeButtons = [
@@ -66,6 +67,7 @@ const MenuLink = ({ href, label, className }: { href: string; label?: string | n
   ) : null
 
 export function MobileMenu({ s }: { s: Settings }) {
+  const cv = getCv(s)
   return (
     <div className="mmenu" id="mmenu" aria-hidden="true">
       <div className="mm-inner wrap">
@@ -95,6 +97,14 @@ export function MobileMenu({ s }: { s: Settings }) {
                   LinkedIn
                 </a>
               )}
+            </div>
+          )}
+          {cv && (
+            <div>
+              <h3>{cv.title}</h3>
+              <a href={cv.href} download={cv.fileName} target="_blank" rel="noopener">
+                {cv.label}
+              </a>
             </div>
           )}
           {s.available && (

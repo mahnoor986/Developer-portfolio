@@ -296,7 +296,13 @@ export const SiteSettings: GlobalConfig = {
               filterOptions: { mimeType: { equals: 'application/pdf' } },
               admin: { description: 'Upload a new PDF here to replace the download. Leave empty to hide the button.' },
             },
-            text('cvLabel', 'Button label', 'Download CV'),
+            {
+              type: 'row',
+              fields: [
+                text('cvLabel', 'Button label', 'Download CV'),
+                text('cvTitle', 'Title in the menu and contact card', 'CV'),
+              ],
+            },
           ],
         },
         {

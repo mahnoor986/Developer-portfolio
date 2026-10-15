@@ -661,3 +661,7 @@ html.lenis,html.lenis body{height:auto}
   .burger span:first-child{top:16px}.burger span:last-child{top:24px}
   .burger[aria-expanded="true"] span:first-child,.burger[aria-expanded="true"] span:last-child{top:20px}
 }
+
+/* ===== additions for the Next.js version (not in legacy) ===== */
+/* CV download button under the hero intro; hidden entirely when no CV is uploaded */
+.hero-cv{margin-top:22px}
