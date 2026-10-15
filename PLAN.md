@@ -11,11 +11,11 @@ Log details in `PROGRESS.md`. Branch: `payload-migration`.
 - [ ] Vercel project + Vercel Blob token (Phase 10)
 
 ## Phase 0 — Project setup
-- [ ] Create branch `payload-migration`
-- [ ] Move the current static site into `legacy/` (index.html, css/, js/, assets/, vendor/)
-- [ ] Scaffold Next.js + Payload 3.x with `create-payload-app` (blank template, PostgreSQL) in the repo root
-- [ ] `.env.example` with `DATABASE_URI`, `PAYLOAD_SECRET`, `NEXT_PUBLIC_SERVER_URL`, `RESEND_API_KEY`, `BLOB_READ_WRITE_TOKEN`, `PREVIEW_SECRET`
-- [ ] Update `.gitignore` for Next.js (`.next/`, `node_modules/`, `.env`, but keep `.env.example`)
+- [x] Create branch `payload-migration`
+- [x] Move the current static site into `legacy/` (index.html, css/, js/, assets/, vendor/)
+- [x] Scaffold Next.js + Payload 3.x with `create-payload-app` (blank template, PostgreSQL) in the repo root
+- [x] `.env.example` with `DATABASE_URI`, `PAYLOAD_SECRET`, `NEXT_PUBLIC_SERVER_URL`, `RESEND_API_KEY`, `BLOB_READ_WRITE_TOKEN`, `PREVIEW_SECRET`
+- [x] Update `.gitignore` for Next.js (`.next/`, `node_modules/`, `.env`, but keep `.env.example`)
 
 **Done when:** `npm run dev` starts and `/admin` opens and connects to the database.
 

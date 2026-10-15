@@ -10,6 +10,7 @@ wp-content/uploads
 #--------------------------------------------------------
 # Local/Environment specific
 .env*
+!.env.example
 
 #--------------------------------------------------------
 # IDE / Editor
@@ -51,3 +52,22 @@ ehthumbs.db:--
 
 # Cache
 /.cache
+
+#--------------------------------------------------------
+# Next.js / Payload
+#--------------------------------------------------------
+node_modules/
+/.next/
+/out/
+next-env.d.ts
+*.tsbuildinfo
+.vercel
+/media
+/coverage
+npm-debug.log*
+
+# Playwright
+/test-results/
+/playwright-report/
+/blob-report/
+/playwright/.cache/

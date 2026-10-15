@@ -1,0 +1,19 @@
+# Local Postgres for development: `docker compose up -d`
+# Matches DATABASE_URI in .env.example (port 5433 to avoid clashing with other local Postgres instances)
+services:
+  postgres:
+    image: postgres:16
+    container_name: portfolio-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: portfolio
+      POSTGRES_PASSWORD: portfolio
+      POSTGRES_DB: portfolio
+    ports:
+      - '5433:5432'
+    volumes:
+      - portfolio-pgdata:/var/lib/postgresql/data
+
+volumes:
+  portfolio-pgdata:
+    external: true
