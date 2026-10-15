@@ -1,0 +1,1161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Portfolio admin</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&amp;family=Unbounded:wght@600;700&amp;family=Instrument+Sans:wght@400;500;600;700&amp;family=Space+Grotesk:wght@500;600&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0;background:#07040C}
+html,body,.app,.app *{scrollbar-width:none;-ms-overflow-style:none}
+html::-webkit-scrollbar,body::-webkit-scrollbar,.app::-webkit-scrollbar,.app *::-webkit-scrollbar{display:none;width:0;height:0}
+a{color:inherit}
+a:hover{color:inherit}
+.app *{box-sizing:border-box}
+.app{min-height:100vh;display:flex;flex-wrap:wrap;background:var(--void);color:var(--ink);font:15px/1.55 'Instrument Sans',sans-serif}
+.app button{font-family:inherit}
+.side{flex:1 1 100%;background:var(--night);border-right:1px solid var(--line);padding:22px 14px;display:flex;flex-direction:column;gap:22px}
+@media (min-width:900px){.side{flex:0 0 264px;position:sticky;top:0;height:100vh;overflow-y:auto;align-self:flex-start}}
+.main{flex:999 1 560px;min-width:0;display:flex;flex-direction:column}
+.topbar{position:sticky;top:0;z-index:20;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between;padding:14px clamp(18px,3.4vw,48px);background:var(--void);border-bottom:1px solid var(--line)}
+.content{padding:28px clamp(18px,3.4vw,48px) 72px;display:flex;flex-direction:column;gap:24px}
+.logo{display:flex;align-items:center;gap:10px;padding:6px 12px;border:0;background:transparent;cursor:pointer;border-radius:999px;min-height:44px}
+.wm{display:flex;align-items:flex-start;height:24px}
+.lt{display:block;height:100%;flex:none;background:linear-gradient(110deg,var(--orchid) 0 38%,var(--ink) 50%,var(--orchid) 62% 100%);background-size:320% 100%;background-position:100% 0;-webkit-mask:var(--m) center / 100% 100% no-repeat;mask:var(--m) center / 100% 100% no-repeat;transition:background-position .9s ease}
+.logo:hover .lt{background-position:0 0}
+.l1{--m:url("/_blob/4ed7568014b2840b7235abf2f3c9ba91");aspect-ratio:244 / 308}
+.l2{--m:url("/_blob/5ceabc68dc3158c7b71f3162195f69a2");aspect-ratio:188 / 308}
+.l3{--m:url("/_blob/4e6586a0734d1dde3511f26547456859");aspect-ratio:181 / 308}
+.l4{--m:url("/_blob/508daa46d88507fd407285eced3e359f");aspect-ratio:175 / 308}
+.l5{--m:url("/_blob/982a8d73360bf45684b0c4bfa63b9cf5");aspect-ratio:185 / 308}
+.l6{--m:url("/_blob/635e963b9777ad889545b12cfa9d6f88");aspect-ratio:186 / 308}
+.l7{--m:url("/_blob/d623a89ca90e5ad1f0ba29c97311dfb8");aspect-ratio:111 / 308}
+.tagadmin{font-family:'Space Grotesk',sans-serif;font-size:10.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:3px 8px}
+.navgrp{display:flex;flex-direction:column;gap:3px}
+.navlbl{padding:0 14px 6px;font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.nb{display:flex;align-items:center;gap:12px;width:100%;min-height:42px;padding:0 14px;border-radius:999px;border:0;background:transparent;color:var(--muted);font-size:14.5px;font-weight:500;text-align:left;cursor:pointer;transition:background .2s,color .2s}
+.nb:hover{background:var(--haze);color:var(--ink)}
+.nb.on{background:var(--orchid);color:var(--void);font-weight:600}
+.nb .cnt{margin-left:auto;min-width:24px;height:22px;padding:0 8px;border-radius:999px;background:var(--haze);color:var(--muted);font-size:12px;font-weight:700;display:inline-flex;align-items:center;justify-content:center}
+.nb .cnt.hot{background:var(--orchid);color:var(--void)}
+.nb.on .cnt{background:var(--void);color:var(--orchid)}
+.search{position:relative;flex:1 1 280px;max-width:480px}
+.search svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);color:var(--muted);pointer-events:none}
+.search input{width:100%;min-height:44px;padding:0 16px 0 44px;border-radius:999px;border:1px solid var(--line);background:var(--night);color:var(--ink);font:400 14.5px 'Instrument Sans',sans-serif}
+.search input:focus{outline:2px solid var(--orchid);outline-offset:2px;border-color:transparent}
+.results{position:absolute;top:calc(100% + 8px);left:0;right:0;z-index:40;background:var(--night);border:1px solid var(--line);border-radius:18px;padding:8px;max-height:420px;overflow:auto;box-shadow:0 24px 60px -20px rgba(0,0,0,.7)}
+.res{display:flex;align-items:center;gap:12px;width:100%;padding:10px 12px;border:0;border-radius:12px;background:transparent;color:var(--ink);text-align:left;cursor:pointer}
+.res:hover,.res:focus-visible{background:var(--haze)}
+.kind{font-family:'Space Grotesk',sans-serif;font-size:11px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:3px 8px;border-radius:999px;border:1px solid var(--line);color:var(--muted);flex:none}
+.h1{margin:0;font-family:'Syne',sans-serif;font-weight:800;font-size:clamp(28px,3vw,40px);line-height:1.05}
+.h2{margin:0;font-family:'Syne',sans-serif;font-weight:700;font-size:21px;line-height:1.2}
+.crumb{font-family:'Space Grotesk',sans-serif;font-size:12.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.lbl{font-family:'Space Grotesk',sans-serif;font-size:11.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.sub{margin:0;color:var(--muted)}
+.card{background:var(--night);border:1px solid var(--line);border-radius:22px;padding:22px 24px}
+.pill{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:44px;padding:0 18px;border-radius:999px;border:1px solid var(--line);background:transparent;color:var(--ink);font:500 14px/1 'Instrument Sans',sans-serif;text-decoration:none;cursor:pointer;white-space:nowrap;transition:border-color .2s,background .2s}
+.pill:hover{border-color:var(--orchid);background:var(--haze);color:var(--ink)}
+.pill.solid,.pill.on{background:var(--orchid);border-color:var(--orchid);color:var(--void);font-weight:600}
+.pill.solid:hover,.pill.on:hover{background:var(--soft);border-color:var(--soft);color:var(--void)}
+.pill.sm{min-height:36px;padding:0 14px;font-size:13px}
+.pill.danger{color:#FF9DAF;border-color:#5A2533}
+.pill.danger:hover{background:#2A1018;border-color:#FF9DAF;color:#FF9DAF}
+.pill .n{font-size:12px;font-weight:700;padding:1px 8px;border-radius:999px;background:var(--haze);color:var(--muted)}
+.pill.on .n{background:var(--void);color:var(--orchid)}
+.ib{width:36px;height:36px;border-radius:50%;border:1px solid var(--line);background:transparent;color:var(--ink);display:inline-flex;align-items:center;justify-content:center;cursor:pointer;flex:none}
+.ib:hover{border-color:var(--orchid);background:var(--haze)}
+.ib:disabled{opacity:.35;cursor:default;background:transparent;border-color:var(--line)}
+.chip{display:inline-flex;align-items:center;gap:6px;font-family:'Space Grotesk',sans-serif;font-size:12px;font-weight:600;padding:3px 11px;border-radius:999px;white-space:nowrap;border:1px solid var(--line);color:var(--muted)}
+.chip.new,.chip.hot{background:var(--orchid);border-color:var(--orchid);color:var(--void)}
+.chip.replied,.chip.published,.chip.active,.chip.visible{border-color:#2E6B4D;color:#7CE0A8}
+.chip.type{background:var(--haze);border-color:var(--haze);color:var(--ink)}
+.dot{width:8px;height:8px;border-radius:50%;background:#7CE0A8;box-shadow:0 0 12px #7CE0A8;flex:none}
+.dot.off{background:var(--muted);box-shadow:none}
+.fld{display:flex;flex-direction:column;gap:8px;min-width:0}
+.inp{width:100%;min-height:46px;padding:11px 15px;border-radius:14px;border:1px solid var(--line);background:var(--void);color:var(--ink);font:400 15px/1.5 'Instrument Sans',sans-serif;transition:border-color .2s}
+.inp:hover{border-color:var(--muted)}
+.inp:focus{outline:2px solid var(--orchid);outline-offset:2px;border-color:transparent}
+textarea.inp{min-height:120px;resize:vertical}
+textarea.inp.tall{min-height:260px}
+select.inp{appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);background-position:calc(100% - 20px) 50%,calc(100% - 15px) 50%;background-size:5px 5px;background-repeat:no-repeat;padding-right:40px}
+.hint{margin:0;font-size:13px;color:var(--muted)}
+.g2{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
+.g3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.row{display:flex;flex-wrap:wrap;align-items:center;gap:14px;padding:14px 16px;border-radius:16px;border:1px solid var(--line);background:var(--night)}
+.row.ed{border-color:var(--orchid)}
+.grow{flex:1 1 220px;min-width:0}
+.acts{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.list{display:flex;flex-direction:column;gap:10px}
+.stat{display:flex;flex-direction:column;gap:12px;padding:20px 22px;border-radius:20px;background:var(--night);border:1px solid var(--line);color:var(--ink);text-align:left;cursor:pointer;font:inherit;transition:border-color .2s}
+.stat:hover{border-color:var(--orchid)}
+.stat.hot{border-color:var(--orchid)}
+.big{font-family:'Syne',sans-serif;font-weight:800;font-size:48px;line-height:.9}
+.mrow{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,2.6fr) auto;gap:14px;align-items:center;width:100%;padding:13px 14px;border-radius:14px;border:0;background:transparent;color:var(--ink);text-align:left;cursor:pointer}
+.mrow:hover{background:var(--haze)}
+.msg{display:flex;flex-direction:column;gap:6px;width:100%;text-align:left;padding:14px 16px;border-radius:16px;border:1px solid transparent;background:transparent;cursor:pointer;color:var(--ink)}
+.msg:hover{background:var(--haze)}
+.msg.on{background:var(--haze);border-color:var(--orchid)}
+.clamp2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.ell{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.b{font-weight:700}
+.tabs{display:flex;flex-wrap:wrap;gap:8px}
+.sw{position:relative;width:46px;height:28px;border-radius:999px;border:0;padding:3px;background:var(--haze);cursor:pointer;display:inline-flex;flex:none;transition:background .2s}
+.sw span{width:22px;height:22px;border-radius:50%;background:var(--muted);transition:transform .2s,background .2s}
+.sw.on{background:#2E6B4D}
+.sw.on span{transform:translateX(18px);background:#7CE0A8}
+.swrow{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 16px;border-radius:16px;border:1px solid var(--line);background:var(--void)}
+.thumb{width:120px;height:76px;border-radius:12px;object-fit:cover;flex:none;background:var(--haze)}
+.mcard{display:flex;flex-direction:column;border-radius:18px;border:1px solid var(--line);background:var(--night);overflow:hidden}
+.mprev{aspect-ratio:16 / 10;background:var(--haze);display:flex;align-items:center;justify-content:center;color:var(--muted)}
+.mprev img{width:100%;height:100%;object-fit:cover}
+.upl{position:relative;overflow:hidden}
+.upl input{position:absolute;inset:0;opacity:0;cursor:pointer}
+.empty{display:flex;flex-direction:column;align-items:center;gap:14px;padding:48px 20px;text-align:center;border:1px dashed var(--line);border-radius:22px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);z-index:60;display:flex;align-items:center;gap:14px;padding:10px 10px 10px 20px;border-radius:999px;background:var(--orchid);color:var(--void);font-weight:600;box-shadow:0 16px 40px -12px rgba(0,0,0,.6)}
+.toast button{min-height:34px;padding:0 14px;border-radius:999px;border:0;background:var(--void);color:var(--orchid);font-weight:700;cursor:pointer}
+.vibe{width:32px;height:32px;border-radius:50%;border:0;padding:0;background:transparent;cursor:pointer;display:flex;align-items:center;justify-content:center}
+.prose p{margin:0 0 14px}
+.app :focus-visible{outline:2px solid var(--orchid);outline-offset:3px}
+@media (prefers-reduced-motion: reduce){.app *{transition:none!important}}
+</style>
+</helmet>
+<div class="app" style="--void:{{t.void}};--night:{{t.night}};--haze:{{t.haze}};--line:{{t.line}};--ink:{{t.ink}};--muted:{{t.muted}};--orchid:{{t.orchid}};--violet:{{t.violet}};--soft:{{t.soft}}">
+
+  <!-- ============ SIDEBAR ============ -->
+  <aside class="side">
+    <div style="display: flex; align-items: center; justify-content: space-between; gap: 10px">
+      <button class="logo" type="button" onClick="{{nav.dashboard}}" aria-label="mahnoor admin, go to dashboard">
+        <span class="wm" aria-hidden="true"><i class="lt l1"></i><i class="lt l2"></i><i class="lt l3"></i><i class="lt l4"></i><i class="lt l5"></i><i class="lt l6"></i><i class="lt l7"></i></span>
+      </button>
+      <span class="tagadmin">admin</span>
+    </div>
+    <nav aria-label="Admin sections" style="display: flex; flex-direction: column; gap: 20px">
+      <div class="navgrp">
+        <button class="{{nc.dashboard}}" type="button" onClick="{{nav.dashboard}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7" height="9" rx="2"/><rect x="14" y="3" width="7" height="5" rx="2"/><rect x="14" y="12" width="7" height="9" rx="2"/><rect x="3" y="16" width="7" height="5" rx="2"/></svg>Dashboard</button>
+        <button class="{{nc.inbox}}" type="button" onClick="{{nav.inbox}}"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 12h-6l-2 3h-4l-2-3H2"/><path d="M5.5 5h13L22 12v6a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-6z"/></svg>Inbox<span class="{{newCntCls}}">{{counts.newMsgs}}</span></button>
+      </div>
+      <div class="navgrp">
+        <span class="navlbl">Website</span>
+        <button class="{{nc.settings}}" type="button" onClick="{{nav.settings}}">Site settings</button>
+        <button class="{{nc.projects}}" type="button" onClick="{{nav.projects}}">Projects<span class="cnt">{{counts.projects}}</span></button>
+        <button class="{{nc.skills}}" type="button" onClick="{{nav.skills}}">Skills<span class="cnt">{{counts.skills}}</span></button>
+        <button class="{{nc.steps}}" type="button" onClick="{{nav.steps}}">Process steps</button>
+        <button class="{{nc.jobs}}" type="button" onClick="{{nav.jobs}}">Experience</button>
+        <button class="{{nc.options}}" type="button" onClick="{{nav.options}}">Contact options</button>
+      </div>
+      <div class="navgrp">
+        <span class="navlbl">Content</span>
+        <button class="{{nc.posts}}" type="button" onClick="{{nav.posts}}">Blog posts<span class="cnt">{{counts.posts}}</span></button>
+        <button class="{{nc.media}}" type="button" onClick="{{nav.media}}">Media<span class="cnt">{{counts.media}}</span></button>
+      </div>
+      <div class="navgrp">
+        <span class="navlbl">Settings</span>
+        <button class="{{nc.email}}" type="button" onClick="{{nav.email}}">Email settings</button>
+        <button class="{{nc.users}}" type="button" onClick="{{nav.users}}">Users</button>
+      </div>
+    </nav>
+    <div style="margin-top: auto; display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 18px; background: var(--void); border: 1px solid var(--line)">
+      <img src="/_blob/b3e66371914139747134c7197a8a7dfd" alt="" style="width: 40px; height: 40px; border-radius: 50%; object-fit: cover; background: var(--haze)">
+      <span style="display: flex; flex-direction: column; min-width: 0"><span class="ell" style="font-weight: 600; font-size: 14px">Mahnoor Siddiqui</span><span style="font-size: 12.5px; color: var(--muted)">Admin</span></span>
+    </div>
+  </aside>
+
+  <!-- ============ MAIN ============ -->
+  <div class="main">
+    <header class="topbar">
+      <div class="search" role="search">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="search" aria-label="Search messages, projects, posts, skills and media" placeholder="Search messages, projects, posts, skills…" value="{{q}}" onChange="{{setQ}}">
+        <sc-if value="{{showResults}}" hint-placeholder-val="{{false}}">
+          <div class="results">
+            <sc-if value="{{noResults}}" hint-placeholder-val="{{false}}"><p class="hint" style="padding: 14px">Nothing matches “{{q}}”.</p></sc-if>
+            <sc-for list="{{results}}" as="r" hint-placeholder-count="4">
+              <button class="res" type="button" onClick="{{r.open}}"><span class="kind">{{r.kind}}</span><span style="display: flex; flex-direction: column; min-width: 0"><span class="ell" style="font-weight: 600">{{r.label}}</span><span class="ell" style="font-size: 13px; color: var(--muted)">{{r.sub}}</span></span></button>
+            </sc-for>
+          </div>
+        </sc-if>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; align-items: center; gap: 10px">
+        <div role="group" aria-label="Admin colour vibe" style="display: flex; align-items: center; gap: 2px; padding: 4px 6px 4px 14px; border: 1px solid var(--line); border-radius: 999px; background: var(--night)">
+          <span style="font-size: 13px; font-weight: 600; color: var(--muted); margin-right: 4px">Vibe</span>
+          <sc-for list="{{vibes}}" as="vb" hint-placeholder-count="3">
+            <button class="vibe" type="button" aria-label="{{vb.label}}" aria-pressed="{{vb.pressed}}" onClick="{{vb.pick}}"><i style="{{vb.swatch}}"></i></button>
+          </sc-for>
+        </div>
+        <a class="pill" href="https://msdev-jet.vercel.app/" target="_blank" rel="noopener">View site<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M7 17 17 7"/><path d="M8 7h9v9"/></svg></a>
+      </div>
+    </header>
+
+    <main class="content">
+
+      <!-- ============ DASHBOARD ============ -->
+      <sc-if value="{{v.dashboard}}" hint-placeholder-val="{{true}}">
+        <section style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px">
+          <div style="display: flex; flex-direction: column; gap: 8px">
+            <span class="crumb">Dashboard</span>
+            <h1 style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: clamp(28px, 3.2vw, 44px); line-height: 1.08; letter-spacing: -0.02em">{{greeting}}, <span style="color: var(--orchid)">Mahnoor</span></h1>
+            <p class="sub" style="font-size: 16px">{{greetLine}}</p>
+          </div>
+          <button type="button" onClick="{{toggleAvail}}" aria-pressed="{{availPressed}}" style="display: inline-flex; align-items: center; gap: 12px; min-height: 50px; padding: 0 8px 0 18px; border-radius: 999px; border: 1px solid var(--line); background: var(--night); color: var(--ink); font: 500 14.5px 'Instrument Sans', sans-serif; cursor: pointer">
+            <span class="{{availDot}}"></span><span>{{availText}}</span><span class="{{availSw}}" aria-hidden="true"><span></span></span>
+          </button>
+        </section>
+
+        <section aria-label="At a glance" class="g3" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr))">
+          <button class="{{newStatCls}}" type="button" onClick="{{nav.inbox}}"><span class="lbl" style="color: var(--orchid)">New messages</span><span class="big">{{counts.newMsgs}}</span><span class="sub ell" style="font-size: 14px">{{latestLine}}</span></button>
+          <button class="stat" type="button" onClick="{{nav.projects}}"><span class="lbl">Projects</span><span class="big">{{counts.projects}}</span><span class="sub" style="font-size: 14px">{{counts.pubProjects}} published · {{counts.draftProjects}} drafts</span></button>
+          <button class="stat" type="button" onClick="{{nav.posts}}"><span class="lbl">Blog posts</span><span class="big">{{counts.posts}}</span><span class="sub" style="font-size: 14px">{{postsLine}}</span></button>
+          <button class="stat" type="button" onClick="{{nav.skills}}"><span class="lbl">Skills</span><span class="big">{{counts.skills}}</span><span class="sub" style="font-size: 14px">Frontend, Backend and Tools</span></button>
+        </section>
+
+        <section style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+          <div class="card" style="flex: 999 1 520px; min-width: 0; padding: 20px 12px 12px">
+            <div style="display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 0 10px 10px">
+              <h2 class="h2">Latest messages</h2>
+              <button class="pill sm" type="button" onClick="{{nav.inbox}}">Open inbox</button>
+            </div>
+            <div style="overflow-x: auto">
+              <div style="min-width: 540px; display: flex; flex-direction: column; gap: 2px">
+                <sc-if value="{{noLatest}}" hint-placeholder-val="{{false}}"><p class="hint" style="padding: 20px 12px">No messages yet.</p></sc-if>
+                <sc-for list="{{latest}}" as="m" hint-placeholder-count="5">
+                  <button class="mrow" type="button" onClick="{{m.open}}">
+                    <span style="display: flex; flex-direction: column; min-width: 0"><span class="{{m.nameCls}}">{{m.name}}</span><span style="font-size: 13px; color: var(--muted)">{{m.when}}</span></span>
+                    <span style="display: flex; flex-direction: column; gap: 4px; min-width: 0; align-items: flex-start"><span class="chip type">{{m.type}}</span><span class="ell" style="font-size: 14px; color: var(--muted); max-width: 100%">{{m.preview}}</span></span>
+                    <span class="{{m.chipCls}}">{{m.statusLabel}}</span>
+                  </button>
+                </sc-for>
+              </div>
+            </div>
+          </div>
+          <div style="flex: 1 1 300px; min-width: 0; display: flex; flex-direction: column; gap: 24px">
+            <div class="card" style="display: flex; flex-direction: column; gap: 14px">
+              <h2 class="h2">Quick actions</h2>
+              <div style="display: flex; flex-wrap: wrap; gap: 10px">
+                <button class="pill solid" type="button" onClick="{{nav.settings}}">Edit homepage</button>
+                <button class="pill" type="button" onClick="{{newProject}}">Add project</button>
+                <button class="pill" type="button" onClick="{{newPost}}">New post</button>
+                <button class="pill" type="button" onClick="{{goCv}}">Upload CV</button>
+              </div>
+            </div>
+            <div class="card" style="display: flex; flex-direction: column">
+              <h2 class="h2" style="margin-bottom: 8px">Site at a glance</h2>
+              <div style="display: flex; justify-content: space-between; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--line)"><span class="sub">Default vibe</span><span>{{defaultVibeName}}</span></div>
+              <div style="display: flex; justify-content: space-between; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--line)"><span class="sub">Contact options</span><span>{{counts.visibleOptions}} visible</span></div>
+              <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--line)"><span class="sub">Client auto-reply</span><span style="display: inline-flex; align-items: center; gap: 8px"><span class="{{autoDot}}"></span>{{autoText}}</span></div>
+              <div style="display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 6px 0 0"><span class="sub">CV</span><button class="pill sm" type="button" onClick="{{goCv}}">{{cvText}}</button></div>
+            </div>
+          </div>
+        </section>
+      </sc-if>
+
+      <!-- ============ INBOX ============ -->
+      <sc-if value="{{v.inbox}}" hint-placeholder-val="{{false}}">
+        <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+          <div style="display: flex; flex-direction: column; gap: 6px"><span class="crumb">Inbox</span><h1 class="h1">Messages</h1></div>
+          <div class="search" style="max-width: 340px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input type="search" aria-label="Search the inbox" placeholder="Search name, email or text" value="{{msgQ}}" onChange="{{setMsgQ}}"></div>
+        </div>
+        <div class="tabs" role="group" aria-label="Filter messages by status">
+          <sc-for list="{{msgFilters}}" as="f" hint-placeholder-count="6">
+            <button class="{{f.cls}}" type="button" aria-pressed="{{f.pressed}}" onClick="{{f.pick}}">{{f.label}}<span class="n">{{f.count}}</span></button>
+          </sc-for>
+        </div>
+        <section style="display: flex; flex-wrap: wrap; gap: 22px; align-items: flex-start">
+          <div class="card" style="flex: 1 1 330px; min-width: 0; padding: 8px; display: flex; flex-direction: column; gap: 4px">
+            <sc-if value="{{msgEmpty}}" hint-placeholder-val="{{false}}"><p class="hint" style="padding: 36px 16px; text-align: center">No messages here.</p></sc-if>
+            <sc-for list="{{msgList}}" as="m" hint-placeholder-count="5">
+              <button class="{{m.cls}}" type="button" onClick="{{m.pick}}" aria-current="{{m.current}}">
+                <span style="display: flex; align-items: center; justify-content: space-between; gap: 10px; width: 100%"><span class="{{m.nameCls}}">{{m.name}}</span><span style="font-size: 12.5px; color: var(--muted); white-space: nowrap">{{m.when}}</span></span>
+                <span style="display: flex; flex-wrap: wrap; gap: 6px"><span class="chip type">{{m.type}}</span><span class="{{m.chipCls}}">{{m.statusLabel}}</span></span>
+                <span class="clamp2" style="font-size: 14px; color: var(--muted)">{{m.message}}</span>
+              </button>
+            </sc-for>
+          </div>
+          <sc-if value="{{hasSel}}" hint-placeholder-val="{{true}}">
+            <article class="card" style="flex: 999 1 480px; min-width: 0; padding: 26px 28px; display: flex; flex-direction: column; gap: 20px">
+              <div style="display: flex; flex-wrap: wrap; align-items: flex-start; justify-content: space-between; gap: 14px">
+                <div style="display: flex; flex-direction: column; gap: 4px; min-width: 0"><h2 class="h2" style="font-size: 27px">{{sel.name}}</h2><a href="{{sel.mailto}}" style="color: var(--orchid); font-weight: 500; text-decoration: none; overflow-wrap: anywhere">{{sel.email}}</a></div>
+                <div class="acts">
+                  <a class="pill solid" href="{{sel.mailto}}" onClick="{{sel.markReplied}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 14 4 9l5-5"/><path d="M4 9h10.5a5.5 5.5 0 0 1 0 11H11"/></svg>Reply by email</a>
+                  <button class="pill danger" type="button" onClick="{{sel.remove}}">Delete</button>
+                </div>
+              </div>
+              <div class="g2" style="grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px">
+                <div style="padding: 11px 14px; border-radius: 14px; background: var(--haze)"><span class="lbl" style="display: block">Needs</span>{{sel.type}}</div>
+                <div style="padding: 11px 14px; border-radius: 14px; background: var(--haze)"><span class="lbl" style="display: block">Received</span>{{sel.received}}</div>
+                <div style="padding: 11px 14px; border-radius: 14px; background: var(--haze)"><span class="lbl" style="display: block">From</span>Contact form</div>
+              </div>
+              <p style="margin: 0; font-size: 16.5px; line-height: 1.7; white-space: pre-line">{{sel.message}}</p>
+              <div style="display: flex; flex-direction: column; gap: 10px; padding-top: 18px; border-top: 1px solid var(--line)">
+                <span class="lbl" id="stLbl">Status</span>
+                <div class="tabs" role="group" aria-labelledby="stLbl">
+                  <sc-for list="{{statusBtns}}" as="s" hint-placeholder-count="5"><button class="{{s.cls}}" type="button" aria-pressed="{{s.pressed}}" onClick="{{s.pick}}">{{s.label}}</button></sc-for>
+                </div>
+              </div>
+              <div class="fld"><label class="lbl" for="msgNotes">Private notes · only you see these</label><textarea class="inp" id="msgNotes" placeholder="e.g. Sent a quote on Friday, follow up next week" value="{{sel.notes}}" onChange="{{sel.setNotes}}"></textarea></div>
+            </article>
+          </sc-if>
+        </section>
+      </sc-if>
+
+      <!-- ============ SITE SETTINGS ============ -->
+      <sc-if value="{{v.settings}}" hint-placeholder-val="{{false}}">
+        <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+          <div style="display: flex; flex-direction: column; gap: 6px"><span class="crumb">Website</span><h1 class="h1">Site settings</h1></div>
+          <div class="acts"><span class="hint">{{settingsState}}</span><button class="pill solid" type="button" onClick="{{saveSettings}}">Save changes</button></div>
+        </div>
+        <div class="tabs" role="group" aria-label="Settings sections">
+          <sc-for list="{{setTabs}}" as="tb" hint-placeholder-count="6"><button class="{{tb.cls}}" type="button" aria-pressed="{{tb.pressed}}" onClick="{{tb.pick}}">{{tb.label}}</button></sc-for>
+        </div>
+        <div class="card" style="display: flex; flex-direction: column; gap: 18px">
+          <sc-if value="{{st.general}}" hint-placeholder-val="{{true}}">
+            <div class="fld"><label class="lbl" for="sTitle">Site title</label><input class="inp" id="sTitle" value="{{s.seoTitle}}" onChange="{{ss.seoTitle}}"></div>
+            <div class="fld"><label class="lbl" for="sDesc">Google description</label><textarea class="inp" id="sDesc" value="{{s.seoDesc}}" onChange="{{ss.seoDesc}}"></textarea><p class="hint">{{seoCount}} characters · aim for 120–160</p></div>
+            <div class="g2">
+              <div class="fld"><label class="lbl" for="sVibe">Default vibe for new visitors</label><select class="inp" id="sVibe" value="{{s.defaultVibe}}" onChange="{{ss.defaultVibe}}"><option value="violet">Ultraviolet</option><option value="aqua">Aqua</option><option value="blush">Blush</option></select></div>
+              <div class="fld"><label class="lbl" for="sAvailTxt">Availability text</label><input class="inp" id="sAvailTxt" value="{{s.availText}}" onChange="{{ss.availText}}"></div>
+            </div>
+            <div class="swrow"><span style="display: flex; flex-direction: column"><span style="font-weight: 600">Show “available” status</span><span class="hint">The green pulsing dot on your site</span></span><button class="{{availSw}}" type="button" aria-label="Show available status" aria-pressed="{{availPressed}}" onClick="{{toggleAvail}}"><span></span></button></div>
+          </sc-if>
+          <sc-if value="{{st.hero}}" hint-placeholder-val="{{false}}">
+            <div class="fld"><label class="lbl" for="hIntro">Intro (bright)</label><textarea class="inp" id="hIntro" value="{{s.heroIntro}}" onChange="{{ss.heroIntro}}"></textarea></div>
+            <div class="fld"><label class="lbl" for="hMuted">Intro (dimmed)</label><textarea class="inp" id="hMuted" value="{{s.heroMuted}}" onChange="{{ss.heroMuted}}"></textarea></div>
+            <div class="g2">
+              <div class="fld"><label class="lbl" for="hTag">Tagline</label><input class="inp" id="hTag" value="{{s.tagline}}" onChange="{{ss.tagline}}"></div>
+              <div class="fld"><label class="lbl" for="hYear">Year</label><input class="inp" id="hYear" value="{{s.year}}" onChange="{{ss.year}}"></div>
+            </div>
+            <div class="fld"><label class="lbl" for="hMarq">Scrolling banner words · comma separated</label><input class="inp" id="hMarq" value="{{s.marquee}}" onChange="{{ss.marquee}}"></div>
+            <div style="display: flex; flex-wrap: wrap; gap: 8px"><sc-for list="{{marqueeWords}}" as="w" hint-placeholder-count="6"><span class="chip">{{w}}</span></sc-for></div>
+          </sc-if>
+          <sc-if value="{{st.about}}" hint-placeholder-val="{{false}}">
+            <div class="fld"><label class="lbl" for="aMan">Manifesto (lights up word by word)</label><textarea class="inp" id="aMan" value="{{s.manifesto}}" onChange="{{ss.manifesto}}"></textarea></div>
+            <div class="fld"><label class="lbl" for="aTxt">About text</label><textarea class="inp tall" id="aTxt" value="{{s.about}}" onChange="{{ss.about}}"></textarea><p class="hint">Wrap words in **double asterisks** to make them bold.</p></div>
+            <div style="display: flex; align-items: center; gap: 16px; flex-wrap: wrap"><img src="/_blob/b3e66371914139747134c7197a8a7dfd" alt="Current about photo" style="width: 88px; height: 88px; border-radius: 18px; object-fit: cover; background: var(--haze)"><span class="grow"><span style="display: block; font-weight: 600">avatar.webp</span><span class="hint">Your photo in the About section</span></span><button class="pill" type="button" onClick="{{nav.media}}">Change photo</button></div>
+            <span class="lbl">Facts</span>
+            <div class="g3">
+              <sc-for list="{{facts}}" as="fa" hint-placeholder-count="3">
+                <div style="display: grid; grid-template-columns: 90px minmax(0, 1fr); gap: 8px"><input class="inp" aria-label="Fact number" value="{{fa.value}}" onChange="{{fa.setValue}}"><input class="inp" aria-label="Fact label" value="{{fa.label}}" onChange="{{fa.setLabel}}"></div>
+              </sc-for>
+            </div>
+          </sc-if>
+          <sc-if value="{{st.contact}}" hint-placeholder-val="{{false}}">
+            <div class="g2">
+              <div class="fld"><label class="lbl" for="cH1">Heading</label><input class="inp" id="cH1" value="{{s.cHead}}" onChange="{{ss.cHead}}"></div>
+              <div class="fld"><label class="lbl" for="cH2">Heading, second line</label><input class="inp" id="cH2" value="{{s.cLead}}" onChange="{{ss.cLead}}"></div>
+              <div class="fld"><label class="lbl" for="cH3">Coloured last word</label><input class="inp" id="cH3" value="{{s.cAccent}}" onChange="{{ss.cAccent}}"></div>
+            </div>
+            <div style="padding: 20px 22px; border-radius: 18px; background: var(--void); border: 1px solid var(--line)"><span class="lbl">Preview</span><p style="margin: 8px 0 0; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 26px; line-height: 1.15">{{s.cHead}}<br>{{s.cLead}} <span style="color: var(--orchid)">{{s.cAccent}}</span></p></div>
+            <div class="fld"><label class="lbl" for="cSub">Text under the heading</label><textarea class="inp" id="cSub" value="{{s.cSub}}" onChange="{{ss.cSub}}"></textarea></div>
+            <div class="g2">
+              <div class="fld"><label class="lbl" for="cNote">Note next to the Send button</label><textarea class="inp" id="cNote" value="{{s.cNote}}" onChange="{{ss.cNote}}"></textarea></div>
+              <div class="fld"><label class="lbl" for="cOk">Message after sending</label><textarea class="inp" id="cOk" value="{{s.cSuccess}}" onChange="{{ss.cSuccess}}"></textarea></div>
+            </div>
+            <div class="fld"><label class="lbl" for="cLoc">Location text</label><input class="inp" id="cLoc" value="{{s.location}}" onChange="{{ss.location}}"></div>
+            <div class="swrow"><span style="display: flex; flex-direction: column"><span style="font-weight: 600">Project-type buttons</span><span class="hint">{{counts.visibleOptions}} of {{counts.options}} options are visible</span></span><button class="pill sm" type="button" onClick="{{nav.options}}">Manage options</button></div>
+          </sc-if>
+          <sc-if value="{{st.links}}" hint-placeholder-val="{{false}}">
+            <div class="fld"><label class="lbl" for="lMail">Public email</label><input class="inp" id="lMail" type="email" value="{{s.email}}" onChange="{{ss.email}}"><p class="hint">Shown in the menu, the contact card and the footer.</p></div>
+            <div class="g2">
+              <div class="fld"><label class="lbl" for="lGh">GitHub</label><input class="inp" id="lGh" type="url" value="{{s.github}}" onChange="{{ss.github}}"></div>
+              <div class="fld"><label class="lbl" for="lLi">LinkedIn</label><input class="inp" id="lLi" type="url" value="{{s.linkedin}}" onChange="{{ss.linkedin}}"></div>
+            </div>
+            <p class="hint">One field per link: every place on the site uses the same value, so the menu and contact section can't disagree again.</p>
+            <div class="fld"><label class="lbl" for="lFoot">Footer text</label><input class="inp" id="lFoot" value="{{s.footer}}" onChange="{{ss.footer}}"></div>
+          </sc-if>
+          <sc-if value="{{st.cv}}" hint-placeholder-val="{{false}}">
+            <sc-if value="{{noCv}}" hint-placeholder-val="{{true}}">
+              <div class="empty"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--orchid)"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6"/><path d="M12 18v-6"/><path d="m9 15 3-3 3 3"/></svg><span class="h2">No CV uploaded</span><p class="sub">The “Download CV” button stays hidden on your site until you upload a PDF.</p><label class="pill solid upl">Choose PDF<input type="file" accept="application/pdf" onChange="{{uploadCv}}"></label></div>
+            </sc-if>
+            <sc-if value="{{hasCv}}" hint-placeholder-val="{{false}}">
+              <div class="swrow"><span style="display: flex; align-items: center; gap: 14px; min-width: 0"><span style="width: 44px; height: 54px; border-radius: 8px; background: var(--haze); color: var(--orchid); display: flex; align-items: center; justify-content: center; font: 700 11px 'Space Grotesk', sans-serif">PDF</span><span style="display: flex; flex-direction: column; min-width: 0"><span class="ell" style="font-weight: 600">{{s.cvName}}</span><span class="hint">{{s.cvSize}} · live on your site</span></span></span><span class="acts"><label class="pill sm upl">Replace<input type="file" accept="application/pdf" onChange="{{uploadCv}}"></label><button class="pill sm danger" type="button" onClick="{{removeCv}}">Remove</button></span></div>
+            </sc-if>
+            <div class="fld"><label class="lbl" for="cvLbl">Button label</label><input class="inp" id="cvLbl" value="{{s.cvLabel}}" onChange="{{ss.cvLabel}}"></div>
+          </sc-if>
+        </div>
+      </sc-if>
+
+      <!-- ============ PROJECTS ============ -->
+      <sc-if value="{{v.projects}}" hint-placeholder-val="{{false}}">
+        <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+          <div style="display: flex; flex-direction: column; gap: 6px"><span class="crumb">Website</span><h1 class="h1">Projects</h1></div>
+          <button class="pill solid" type="button" onClick="{{newProject}}">+ Add project</button>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between">
+          <div class="tabs" role="group" aria-label="Filter projects"><sc-for list="{{projFilters}}" as="f" hint-placeholder-count="3"><button class="{{f.cls}}" type="button" aria-pressed="{{f.pressed}}" onClick="{{f.pick}}">{{f.label}}<span class="n">{{f.count}}</span></button></sc-for></div>
+          <div class="search" style="max-width: 320px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input type="search" aria-label="Search projects" placeholder="Search projects" value="{{projQ}}" onChange="{{setProjQ}}"></div>
+        </div>
+        <p class="hint">Use the arrows to change the order on your site.</p>
+        <div class="list">
+          <sc-if value="{{projEmpty}}" hint-placeholder-val="{{false}}"><p class="hint" style="padding: 30px; text-align: center">No projects match.</p></sc-if>
+          <sc-for list="{{projList}}" as="p" hint-placeholder-count="4">
+            <div class="row">
+              <img class="thumb" src="{{p.img}}" alt="">
+              <div class="grow" style="display: flex; flex-direction: column; gap: 4px"><span class="h2 ell" style="font-size: 19px">{{p.title}}</span><span class="sub" style="font-size: 14px">{{p.category}} · {{p.year}}</span><span><span class="{{p.chipCls}}">{{p.statusLabel}}</span></span></div>
+              <div class="acts">
+                <button class="ib" type="button" aria-label="Move up" disabled="{{p.first}}" onClick="{{p.up}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 15-6-6-6 6"/></svg></button>
+                <button class="ib" type="button" aria-label="Move down" disabled="{{p.last}}" onClick="{{p.down}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+                <button class="pill sm" type="button" onClick="{{p.toggle}}">{{p.toggleLabel}}</button>
+                <button class="pill sm solid" type="button" onClick="{{p.edit}}">Edit</button>
+                <button class="pill sm danger" type="button" onClick="{{p.remove}}">Delete</button>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <!-- ============ PROJECT EDIT + LIVE PREVIEW ============ -->
+      <sc-if value="{{v.projectEdit}}" hint-placeholder-val="{{false}}">
+        <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+          <div style="display: flex; flex-direction: column; gap: 6px; min-width: 0"><span class="crumb"><button type="button" onClick="{{nav.projects}}" style="border: 0; background: none; padding: 0; color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; cursor: pointer; text-decoration: underline">Projects</button> / {{pd.mode}}</span><h1 class="h1" style="overflow-wrap: anywhere">{{pd.titleShown}}</h1></div>
+          <div class="acts">
+            <select class="inp" aria-label="Project status" value="{{pd.status}}" onChange="{{ps.status}}" style="width: auto; min-height: 44px; border-radius: 999px"><option value="published">Published</option><option value="draft">Draft (hidden)</option></select>
+            <button class="pill" type="button" onClick="{{nav.projects}}">Cancel</button>
+            <button class="pill solid" type="button" onClick="{{saveProject}}">Save</button>
+          </div>
+        </div>
+        <section style="display: flex; flex-wrap: wrap; gap: 22px; align-items: flex-start">
+          <form class="card" onSubmit="{{noSubmit}}" style="flex: 1 1 360px; min-width: 0; display: flex; flex-direction: column; gap: 18px">
+            <div class="fld"><label class="lbl" for="pT">Title</label><input class="inp" id="pT" value="{{pd.title}}" onChange="{{ps.title}}"></div>
+            <div class="g2" style="grid-template-columns: repeat(2, minmax(0, 1fr))">
+              <div class="fld"><label class="lbl" for="pC">Category</label><input class="inp" id="pC" value="{{pd.category}}" onChange="{{ps.category}}"></div>
+              <div class="fld"><label class="lbl" for="pY">Year</label><input class="inp" id="pY" value="{{pd.year}}" onChange="{{ps.year}}"></div>
+            </div>
+            <div class="fld"><label class="lbl" for="pD">Description</label><textarea class="inp" id="pD" value="{{pd.desc}}" onChange="{{ps.desc}}" style="min-height: 150px"></textarea></div>
+            <div class="fld"><label class="lbl" for="pTg">Tags · comma separated</label><input class="inp" id="pTg" value="{{pd.tags}}" onChange="{{ps.tags}}"></div>
+            <div class="fld"><label class="lbl" for="pImg">Image (from Media)</label><select class="inp" id="pImg" value="{{pd.mediaId}}" onChange="{{ps.mediaId}}"><sc-for list="{{imageOptions}}" as="o" hint-placeholder-count="5"><option value="{{o.id}}">{{o.name}}</option></sc-for></select></div>
+            <div class="fld"><label class="lbl" for="pPos">Keep this part when cropped</label><select class="inp" id="pPos" value="{{pd.pos}}" onChange="{{ps.pos}}"><option value="center">Center</option><option value="center top">Top</option><option value="center bottom">Bottom</option></select></div>
+            <div class="g2" style="grid-template-columns: repeat(2, minmax(0, 1fr))">
+              <div class="fld"><label class="lbl" for="pL1">Main button label</label><input class="inp" id="pL1" value="{{pd.l1}}" onChange="{{ps.l1}}"></div>
+              <div class="fld"><label class="lbl" for="pU1">Main button link</label><input class="inp" id="pU1" type="url" value="{{pd.u1}}" onChange="{{ps.u1}}"></div>
+              <div class="fld"><label class="lbl" for="pL2">Second button label</label><input class="inp" id="pL2" value="{{pd.l2}}" onChange="{{ps.l2}}"></div>
+              <div class="fld"><label class="lbl" for="pU2">Second button link</label><input class="inp" id="pU2" type="url" value="{{pd.u2}}" onChange="{{ps.u2}}"></div>
+            </div>
+            <p class="hint">A button with no link is hidden on the site.</p>
+          </form>
+          <div class="card" style="flex: 999 1 480px; min-width: 0; padding: 0; overflow: hidden; display: flex; flex-direction: column">
+            <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px; padding: 14px 16px; border-bottom: 1px solid var(--line)">
+              <span class="lbl" style="display: inline-flex; align-items: center; gap: 10px"><span style="width: 8px; height: 8px; border-radius: 50%; background: var(--orchid); box-shadow: 0 0 10px var(--orchid)"></span>Live preview</span>
+              <div class="tabs" role="group" aria-label="Preview size"><sc-for list="{{devices}}" as="d" hint-placeholder-count="3"><button class="{{d.cls}}" type="button" aria-pressed="{{d.pressed}}" onClick="{{d.pick}}">{{d.label}}</button></sc-for></div>
+            </div>
+            <div style="padding: 22px; background: var(--void); display: flex; justify-content: center; overflow-x: auto">
+              <div style="{{frameStyle}}">
+                <div style="padding: 30px 24px 34px; display: flex; flex-direction: column; gap: 20px; background: var(--void)">
+                  <h2 style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 28px; line-height: 1.05; letter-spacing: -0.02em">Selected <span style="color: var(--orchid); font-style: italic">work</span></h2>
+                  <div style="border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 18px 0; display: flex; flex-direction: column; gap: 16px">
+                    <div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px"><span style="font-family: 'Syne', sans-serif; font-weight: 800; font-size: 24px; line-height: 1.05; color: var(--orchid); overflow-wrap: anywhere">{{pd.titleShown}}</span><span style="display: inline-flex; align-items: center; gap: 12px"><span style="font-family: 'Space Grotesk', sans-serif; font-size: 12px; line-height: 1.4; color: var(--muted); text-align: right">{{pd.category}}<br>{{pd.year}}</span><span aria-hidden="true" style="width: 34px; height: 34px; border-radius: 50%; background: var(--orchid); color: var(--void); display: inline-flex; align-items: center; justify-content: center; font-size: 20px">−</span></span></div>
+                    <div style="display: flex; flex-wrap: wrap; gap: 16px">
+                      <img src="{{pd.img}}" alt="Project preview image" style="{{pd.imgStyle}}">
+                      <div style="flex: 1 1 220px; min-width: 0; display: flex; flex-direction: column; gap: 12px">
+                        <p style="margin: 0; font-size: 14px; line-height: 1.6">{{pd.desc}}</p>
+                        <div style="display: flex; flex-wrap: wrap; gap: 6px"><sc-for list="{{pd.tagList}}" as="tg" hint-placeholder-count="3"><span class="chip">{{tg}}</span></sc-for></div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 8px">
+                          <sc-if value="{{pd.hasL1}}" hint-placeholder-val="{{true}}"><span class="pill sm solid">{{pd.l1}}</span></sc-if>
+                          <sc-if value="{{pd.hasL2}}" hint-placeholder-val="{{true}}"><span class="pill sm">{{pd.l2}}</span></sc-if>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p class="hint" style="padding: 12px 16px; border-top: 1px solid var(--line)">The preview updates as you type, before you save.</p>
+          </div>
+        </section>
+      </sc-if>
+
+      <!-- ============ SKILLS ============ -->
+      <sc-if value="{{v.skills}}" hint-placeholder-val="{{false}}">
+        <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+          <div style="display: flex; flex-direction: column; gap: 6px"><span class="crumb">Website</span><h1 class="h1">Skills</h1><p class="sub">Shown in the Toolkit cards and the 3D skill sphere.</p></div>
+          <button class="pill solid" type="button" onClick="{{addSkill}}">+ Add skill</button>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between">
+          <div class="tabs" role="group" aria-label="Filter skills"><sc-for list="{{skillFilters}}" as="f" hint-placeholder-count="4"><button class="{{f.cls}}" type="button" aria-pressed="{{f.pressed}}" onClick="{{f.pick}}">{{f.label}}<span class="n">{{f.count}}</span></button></sc-for></div>
+          <div class="search" style="max-width: 300px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input type="search" aria-label="Search skills" placeholder="Search skills" value="{{skillQ}}" onChange="{{setSkillQ}}"></div>
+        </div>
+        <div class="g3" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px">
+          <sc-for list="{{skillList}}" as="k" hint-placeholder-count="9">
+            <div class="{{k.rowCls}}" style="align-items: flex-start">
+              <sc-if value="{{k.view}}" hint-placeholder-val="{{true}}">
+                <div class="grow" style="display: flex; flex-direction: column; gap: 4px"><span style="display: flex; align-items: center; gap: 8px; flex-wrap: wrap"><span class="b">{{k.name}}</span><span class="chip">{{k.catLabel}}</span></span><span class="sub" style="font-size: 14px">{{k.blurb}}</span></div>
+                <div class="acts"><button class="pill sm" type="button" onClick="{{k.edit}}">Edit</button><button class="ib" type="button" aria-label="Delete skill" onClick="{{k.remove}}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+              </sc-if>
+              <sc-if value="{{k.editing}}" hint-placeholder-val="{{false}}">
+                <div style="display: flex; flex-direction: column; gap: 10px; width: 100%">
+                  <input class="inp" aria-label="Skill name" value="{{draft.name}}" onChange="{{ds.name}}">
+                  <input class="inp" aria-label="Short line" value="{{draft.blurb}}" onChange="{{ds.blurb}}">
+                  <select class="inp" aria-label="Category" value="{{draft.cat}}" onChange="{{ds.cat}}"><option value="fe">Frontend</option><option value="be">Backend</option><option value="tl">Tools</option></select>
+                  <div class="acts"><button class="pill sm solid" type="button" onClick="{{saveEdit}}">Save</button><button class="pill sm" type="button" onClick="{{cancelEdit}}">Cancel</button></div>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <!-- ============ PROCESS STEPS ============ -->
+      <sc-if value="{{v.steps}}" hint-placeholder-val="{{false}}">
+        <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+          <div style="display: flex; flex-direction: column; gap: 6px"><span class="crumb">Website</span><h1 class="h1">Process steps</h1><p class="sub">The “How I build” cards, in order.</p></div>
+          <button class="pill solid" type="button" onClick="{{addStep}}">+ Add step</button>
+        </div>
+        <div class="list">
+          <sc-for list="{{stepList}}" as="k" hint-placeholder-count="5">
+            <div class="{{k.rowCls}}" style="align-items: flex-start">
+              <span style="font-family: 'Syne', sans-serif; font-weight: 800; font-size: 30px; line-height: 1; color: var(--orchid); min-width: 46px">{{k.num}}</span>
+              <sc-if value="{{k.view}}" hint-placeholder-val="{{true}}">
+                <div class="grow" style="display: flex; flex-direction: column; gap: 6px"><span class="h2" style="font-size: 19px">{{k.title}}</span><span class="sub" style="font-size: 14.5px">{{k.desc}}</span><span style="display: flex; flex-wrap: wrap; gap: 6px"><sc-for list="{{k.tagList}}" as="tg" hint-placeholder-count="3"><span class="chip">{{tg}}</span></sc-for></span></div>
+                <div class="acts">
+                  <button class="ib" type="button" aria-label="Move up" disabled="{{k.first}}" onClick="{{k.up}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 15-6-6-6 6"/></svg></button>
+                  <button class="ib" type="button" aria-label="Move down" disabled="{{k.last}}" onClick="{{k.down}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+                  <button class="pill sm" type="button" onClick="{{k.edit}}">Edit</button>
+                  <button class="pill sm danger" type="button" onClick="{{k.remove}}">Delete</button>
+                </div>
+              </sc-if>
+              <sc-if value="{{k.editing}}" hint-placeholder-val="{{false}}">
+                <div class="grow" style="display: flex; flex-direction: column; gap: 10px">
+                  <input class="inp" aria-label="Step title" value="{{draft.title}}" onChange="{{ds.title}}">
+                  <textarea class="inp" aria-label="Step description" value="{{draft.desc}}" onChange="{{ds.desc}}"></textarea>
+                  <input class="inp" aria-label="Tags, comma separated" value="{{draft.tags}}" onChange="{{ds.tags}}">
+                  <div class="acts"><button class="pill sm solid" type="button" onClick="{{saveEdit}}">Save</button><button class="pill sm" type="button" onClick="{{cancelEdit}}">Cancel</button></div>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <!-- ============ EXPERIENCE ============ -->
+      <sc-if value="{{v.jobs}}" hint-placeholder-val="{{false}}">
+        <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+          <div style="display: flex; flex-direction: column; gap: 6px"><span class="crumb">Website</span><h1 class="h1">Experience</h1><p class="sub">Your timeline, newest first.</p></div>
+          <button class="pill solid" type="button" onClick="{{addJob}}">+ Add entry</button>
+        </div>
+        <div class="list">
+          <sc-for list="{{jobList}}" as="k" hint-placeholder-count="2">
+            <div class="{{k.rowCls}}" style="align-items: flex-start">
+              <sc-if value="{{k.view}}" hint-placeholder-val="{{true}}">
+                <div class="grow" style="display: flex; flex-direction: column; gap: 4px"><span class="lbl" style="color: var(--orchid)">{{k.period}}</span><span class="h2" style="font-size: 19px">{{k.title}}</span><span style="font-weight: 500">{{k.org}}</span><span class="sub" style="font-size: 14.5px">{{k.desc}}</span></div>
+                <div class="acts">
+                  <button class="ib" type="button" aria-label="Move up" disabled="{{k.first}}" onClick="{{k.up}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 15-6-6-6 6"/></svg></button>
+                  <button class="ib" type="button" aria-label="Move down" disabled="{{k.last}}" onClick="{{k.down}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+                  <button class="pill sm" type="button" onClick="{{k.edit}}">Edit</button>
+                  <button class="pill sm danger" type="button" onClick="{{k.remove}}">Delete</button>
+                </div>
+              </sc-if>
+              <sc-if value="{{k.editing}}" hint-placeholder-val="{{false}}">
+                <div class="grow" style="display: flex; flex-direction: column; gap: 10px">
+                  <div class="g2"><input class="inp" aria-label="Period" placeholder="Aug 2026 to now" value="{{draft.period}}" onChange="{{ds.period}}"><input class="inp" aria-label="Role or title" value="{{draft.title}}" onChange="{{ds.title}}"></div>
+                  <input class="inp" aria-label="Organization" value="{{draft.org}}" onChange="{{ds.org}}">
+                  <textarea class="inp" aria-label="Description" value="{{draft.desc}}" onChange="{{ds.desc}}"></textarea>
+                  <div class="acts"><button class="pill sm solid" type="button" onClick="{{saveEdit}}">Save</button><button class="pill sm" type="button" onClick="{{cancelEdit}}">Cancel</button></div>
+                </div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <!-- ============ CONTACT OPTIONS ============ -->
+      <sc-if value="{{v.options}}" hint-placeholder-val="{{false}}">
+        <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+          <div style="display: flex; flex-direction: column; gap: 6px"><span class="crumb">Website</span><h1 class="h1">Contact options</h1><p class="sub">The “What do you need?” buttons on your contact form.</p></div>
+          <button class="pill solid" type="button" onClick="{{addOption}}">+ Add option</button>
+        </div>
+        <div class="card" style="display: flex; flex-direction: column; gap: 12px"><span class="lbl">How it looks on your site</span><div style="display: flex; flex-wrap: wrap; gap: 10px"><sc-for list="{{visibleOptions}}" as="o" hint-placeholder-count="5"><span class="{{o.cls}}">{{o.label}}</span></sc-for></div></div>
+        <div class="list">
+          <sc-for list="{{optList}}" as="k" hint-placeholder-count="5">
+            <div class="{{k.rowCls}}">
+              <sc-if value="{{k.view}}" hint-placeholder-val="{{true}}">
+                <span class="grow b">{{k.label}}</span>
+                <div class="acts">
+                  <span class="hint">{{k.visText}}</span><button class="{{k.swCls}}" type="button" aria-label="Show on site" aria-pressed="{{k.visPressed}}" onClick="{{k.toggle}}"><span></span></button>
+                  <button class="ib" type="button" aria-label="Move up" disabled="{{k.first}}" onClick="{{k.up}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m18 15-6-6-6 6"/></svg></button>
+                  <button class="ib" type="button" aria-label="Move down" disabled="{{k.last}}" onClick="{{k.down}}"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button>
+                  <button class="pill sm" type="button" onClick="{{k.edit}}">Rename</button>
+                  <button class="pill sm danger" type="button" onClick="{{k.remove}}">Delete</button>
+                </div>
+              </sc-if>
+              <sc-if value="{{k.editing}}" hint-placeholder-val="{{false}}">
+                <input class="inp grow" aria-label="Option label" value="{{draft.label}}" onChange="{{ds.label}}">
+                <div class="acts"><button class="pill sm solid" type="button" onClick="{{saveEdit}}">Save</button><button class="pill sm" type="button" onClick="{{cancelEdit}}">Cancel</button></div>
+              </sc-if>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <!-- ============ BLOG POSTS ============ -->
+      <sc-if value="{{v.posts}}" hint-placeholder-val="{{false}}">
+        <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+          <div style="display: flex; flex-direction: column; gap: 6px"><span class="crumb">Content</span><h1 class="h1">Blog posts</h1></div>
+          <button class="pill solid" type="button" onClick="{{newPost}}">+ New post</button>
+        </div>
+        <sc-if value="{{noPostsAtAll}}" hint-placeholder-val="{{true}}">
+          <div class="empty"><svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" style="color: var(--orchid)"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4z"/></svg><span class="h2">No posts yet</span><p class="sub">The Blog link stays hidden on your site until you publish your first post.</p><button class="pill solid" type="button" onClick="{{newPost}}">Write your first post</button></div>
+        </sc-if>
+        <sc-if value="{{hasPosts}}" hint-placeholder-val="{{false}}">
+          <div class="tabs" role="group" aria-label="Filter posts"><sc-for list="{{postFilters}}" as="f" hint-placeholder-count="3"><button class="{{f.cls}}" type="button" aria-pressed="{{f.pressed}}" onClick="{{f.pick}}">{{f.label}}<span class="n">{{f.count}}</span></button></sc-for></div>
+          <div class="list">
+            <sc-for list="{{postList}}" as="p" hint-placeholder-count="3">
+              <div class="row">
+                <img class="thumb" src="{{p.img}}" alt="">
+                <div class="grow" style="display: flex; flex-direction: column; gap: 4px"><span class="h2 ell" style="font-size: 19px">{{p.titleShown}}</span><span class="sub ell" style="font-size: 14px">{{p.excerpt}}</span><span style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap"><span class="{{p.chipCls}}">{{p.statusLabel}}</span><span class="hint">{{p.date}} · {{p.read}}</span></span></div>
+                <div class="acts"><button class="pill sm solid" type="button" onClick="{{p.edit}}">Edit</button><button class="pill sm danger" type="button" onClick="{{p.remove}}">Delete</button></div>
+              </div>
+            </sc-for>
+          </div>
+        </sc-if>
+      </sc-if>
+
+      <!-- ============ POST EDITOR ============ -->
+      <sc-if value="{{v.postEdit}}" hint-placeholder-val="{{false}}">
+        <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+          <div style="display: flex; flex-direction: column; gap: 6px; min-width: 0"><span class="crumb"><button type="button" onClick="{{nav.posts}}" style="border: 0; background: none; padding: 0; color: inherit; font: inherit; letter-spacing: inherit; text-transform: inherit; cursor: pointer; text-decoration: underline">Blog posts</button> / {{pe.mode}}</span><h1 class="h1" style="overflow-wrap: anywhere">{{pe.titleShown}}</h1></div>
+          <div class="acts">
+            <span class="hint">{{pe.read}}</span>
+            <button class="pill" type="button" onClick="{{savePostDraft}}">Save draft</button>
+            <button class="pill solid" type="button" onClick="{{publishPost}}">{{pe.publishLabel}}</button>
+          </div>
+        </div>
+        <section style="display: flex; flex-wrap: wrap; gap: 22px; align-items: flex-start">
+          <form class="card" onSubmit="{{noSubmit}}" style="flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 18px">
+            <div class="fld"><label class="lbl" for="bT">Title</label><input class="inp" id="bT" placeholder="e.g. How I built a raycasting maze in C" value="{{pe.title}}" onChange="{{pes.title}}"></div>
+            <div class="fld"><label class="lbl" for="bS">Link (slug)</label><input class="inp" id="bS" value="{{pe.slugShown}}" onChange="{{pes.slug}}"><p class="hint">msdev-jet.vercel.app/blog/{{pe.slugShown}}</p></div>
+            <div class="fld"><label class="lbl" for="bE">Short summary</label><textarea class="inp" id="bE" value="{{pe.excerpt}}" onChange="{{pes.excerpt}}" style="min-height: 90px"></textarea></div>
+            <div class="fld"><label class="lbl" for="bC">Cover image</label><select class="inp" id="bC" value="{{pe.coverId}}" onChange="{{pes.coverId}}"><sc-for list="{{imageOptions}}" as="o" hint-placeholder-count="5"><option value="{{o.id}}">{{o.name}}</option></sc-for></select></div>
+            <div class="fld"><label class="lbl" for="bB">Article</label><textarea class="inp tall" id="bB" placeholder="Write your post. Leave an empty line between paragraphs." value="{{pe.content}}" onChange="{{pes.content}}"></textarea></div>
+            <div class="fld"><label class="lbl" for="bG">Tags · comma separated</label><input class="inp" id="bG" value="{{pe.tags}}" onChange="{{pes.tags}}"></div>
+            <sc-if value="{{pe.isExisting}}" hint-placeholder-val="{{false}}"><button class="pill danger" type="button" onClick="{{deletePost}}" style="align-self: flex-start">Delete post</button></sc-if>
+          </form>
+          <article class="card" style="flex: 999 1 460px; min-width: 0; padding: 0; overflow: hidden">
+            <div style="padding: 14px 16px; border-bottom: 1px solid var(--line)"><span class="lbl" style="display: inline-flex; align-items: center; gap: 10px"><span style="width: 8px; height: 8px; border-radius: 50%; background: var(--orchid); box-shadow: 0 0 10px var(--orchid)"></span>Live preview</span></div>
+            <div style="padding: 28px; background: var(--void); display: flex; flex-direction: column; gap: 18px">
+              <img src="{{pe.img}}" alt="Cover image" style="width: 100%; aspect-ratio: 16 / 8; object-fit: cover; border-radius: 16px">
+              <span class="lbl">{{pe.dateShown}} · {{pe.read}}</span>
+              <h2 style="margin: 0; font-family: 'Unbounded', sans-serif; font-weight: 700; font-size: 28px; line-height: 1.15; letter-spacing: -0.01em">{{pe.titleShown}}</h2>
+              <p style="margin: 0; font-size: 17px; color: var(--muted)">{{pe.excerpt}}</p>
+              <div class="prose" style="font-size: 15.5px; line-height: 1.75"><sc-for list="{{pe.paras}}" as="para" hint-placeholder-count="2"><p>{{para}}</p></sc-for></div>
+              <div style="display: flex; flex-wrap: wrap; gap: 6px"><sc-for list="{{pe.tagList}}" as="tg" hint-placeholder-count="2"><span class="chip">{{tg}}</span></sc-for></div>
+            </div>
+          </article>
+        </section>
+      </sc-if>
+
+      <!-- ============ MEDIA ============ -->
+      <sc-if value="{{v.media}}" hint-placeholder-val="{{false}}">
+        <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+          <div style="display: flex; flex-direction: column; gap: 6px"><span class="crumb">Content</span><h1 class="h1">Media</h1><p class="sub">Images and PDFs used on your site.</p></div>
+          <label class="pill solid upl">+ Upload files<input type="file" accept="image/*,application/pdf" multiple onChange="{{uploadMedia}}"></label>
+        </div>
+        <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between">
+          <div class="tabs" role="group" aria-label="Filter media"><sc-for list="{{mediaFilters}}" as="f" hint-placeholder-count="3"><button class="{{f.cls}}" type="button" aria-pressed="{{f.pressed}}" onClick="{{f.pick}}">{{f.label}}<span class="n">{{f.count}}</span></button></sc-for></div>
+          <div class="search" style="max-width: 300px"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg><input type="search" aria-label="Search media" placeholder="Search files" value="{{mediaQ}}" onChange="{{setMediaQ}}"></div>
+        </div>
+        <sc-if value="{{mediaEmpty}}" hint-placeholder-val="{{false}}"><p class="hint" style="padding: 30px; text-align: center">No files match.</p></sc-if>
+        <div class="g3" style="grid-template-columns: repeat(auto-fill, minmax(220px, 1fr))">
+          <sc-for list="{{mediaList}}" as="m" hint-placeholder-count="5">
+            <div class="mcard">
+              <div class="mprev">
+                <sc-if value="{{m.isImage}}" hint-placeholder-val="{{true}}"><img src="{{m.url}}" alt="{{m.name}}"></sc-if>
+                <sc-if value="{{m.isDoc}}" hint-placeholder-val="{{false}}"><span style="font: 700 16px 'Space Grotesk', sans-serif; color: var(--orchid)">PDF</span></sc-if>
+              </div>
+              <div style="padding: 12px 14px; display: flex; align-items: center; gap: 10px">
+                <span style="flex: 1; min-width: 0; display: flex; flex-direction: column"><span class="ell" style="font-weight: 600; font-size: 14px">{{m.name}}</span><span class="hint">{{m.meta}}</span></span>
+                <button class="ib" type="button" aria-label="Delete file" onClick="{{m.remove}}"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6h18"/><path d="M8 6V4h8v2"/><path d="M19 6l-1 14H6L5 6"/></svg></button>
+              </div>
+            </div>
+          </sc-for>
+        </div>
+      </sc-if>
+
+      <!-- ============ EMAIL SETTINGS ============ -->
+      <sc-if value="{{v.email}}" hint-placeholder-val="{{false}}">
+        <div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+          <div style="display: flex; flex-direction: column; gap: 6px"><span class="crumb">Settings</span><h1 class="h1">Email settings</h1><p class="sub">Private. Never shown on your website.</p></div>
+          <div class="acts"><span class="hint">{{emailState}}</span><button class="pill solid" type="button" onClick="{{saveEmail}}">Save changes</button></div>
+        </div>
+        <section style="display: flex; flex-wrap: wrap; gap: 22px; align-items: flex-start">
+          <div class="card" style="flex: 1 1 380px; min-width: 0; display: flex; flex-direction: column; gap: 18px">
+            <div class="fld"><label class="lbl" for="eN">Send new-message alerts to</label><input class="inp" id="eN" type="email" value="{{em.notify}}" onChange="{{es.notify}}"></div>
+            <div class="swrow"><span style="display: flex; flex-direction: column"><span style="font-weight: 600">Automatic thank-you email</span><span class="hint">Sent to the client right after they write to you</span></span><button class="{{autoSw}}" type="button" aria-label="Automatic thank-you email" aria-pressed="{{autoPressed}}" onClick="{{toggleAuto}}"><span></span></button></div>
+            <div class="fld"><label class="lbl" for="eS">Subject</label><input class="inp" id="eS" value="{{em.subject}}" onChange="{{es.subject}}"></div>
+            <div class="fld"><label class="lbl" for="eB">Message</label><textarea class="inp tall" id="eB" value="{{em.body}}" onChange="{{es.body}}"></textarea><p class="hint">The email starts with “Hi &lt;their name&gt;,” automatically.</p></div>
+            <button class="pill" type="button" onClick="{{sendTest}}" style="align-self: flex-start">Send me a test email</button>
+          </div>
+          <div class="card" style="flex: 999 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 14px">
+            <span class="lbl">What the client receives</span>
+            <div style="border-radius: 18px; background: #FBF9FE; color: #1F1630; padding: 22px 24px; display: flex; flex-direction: column; gap: 12px">
+              <span style="font-size: 13px; color: #5B4F70">From: Mahnoor Siddiqui · To: ayesha@example.com</span>
+              <span style="font-weight: 700; font-size: 17px">{{em.subject}}</span>
+              <p style="margin: 0; white-space: pre-line; line-height: 1.65">Hi Ayesha,
+
+{{em.body}}</p>
+            </div>
+            <sc-if value="{{autoOff}}" hint-placeholder-val="{{false}}"><p class="hint">Auto-reply is off, so clients won't get this email.</p></sc-if>
+          </div>
+        </section>
+      </sc-if>
+
+      <!-- ============ USERS ============ -->
+      <sc-if value="{{v.users}}" hint-placeholder-val="{{false}}">
+        <div style="display: flex; flex-direction: column; gap: 6px"><span class="crumb">Settings</span><h1 class="h1">Users</h1><p class="sub">People who can sign in to this admin.</p></div>
+        <div class="list">
+          <sc-for list="{{userList}}" as="u" hint-placeholder-count="1">
+            <div class="row">
+              <span style="width: 42px; height: 42px; border-radius: 50%; background: var(--haze); color: var(--orchid); display: inline-flex; align-items: center; justify-content: center; font: 700 14px 'Syne', sans-serif; flex: none">{{u.initials}}</span>
+              <div class="grow" style="display: flex; flex-direction: column"><span class="b">{{u.name}}</span><span class="sub" style="font-size: 14px; overflow-wrap: anywhere">{{u.email}}</span></div>
+              <span class="chip">{{u.role}}</span><span class="{{u.chipCls}}">{{u.status}}</span>
+              <sc-if value="{{u.canRemove}}" hint-placeholder-val="{{false}}"><button class="pill sm danger" type="button" onClick="{{u.remove}}">Remove</button></sc-if>
+              <sc-if value="{{u.you}}" hint-placeholder-val="{{true}}"><span class="hint">You</span></sc-if>
+            </div>
+          </sc-for>
+        </div>
+        <form class="card" onSubmit="{{inviteUser}}" style="display: flex; flex-direction: column; gap: 14px">
+          <h2 class="h2">Invite someone</h2>
+          <div style="display: flex; flex-wrap: wrap; gap: 12px; align-items: flex-end">
+            <div class="fld" style="flex: 2 1 240px"><label class="lbl" for="uE">Email</label><input class="inp" id="uE" type="email" placeholder="name@example.com" value="{{inv.email}}" onChange="{{is.email}}"></div>
+            <div class="fld" style="flex: 1 1 160px"><label class="lbl" for="uR">Role</label><select class="inp" id="uR" value="{{inv.role}}" onChange="{{is.role}}"><option value="Editor">Editor (content only)</option><option value="Admin">Admin (everything)</option></select></div>
+            <button class="pill solid" type="submit">Send invite</button>
+          </div>
+          <sc-if value="{{invError}}" hint-placeholder-val="{{false}}"><p class="hint" style="color: #FF9DAF">Enter a valid email address.</p></sc-if>
+        </form>
+      </sc-if>
+
+    </main>
+  </div>
+
+  <sc-if value="{{hasToast}}" hint-placeholder-val="{{false}}">
+    <div class="toast" role="status" aria-live="polite"><span>{{toastText}}</span><sc-if value="{{canUndo}}" hint-placeholder-val="{{false}}"><button type="button" onClick="{{undo}}">Undo</button></sc-if></div>
+  </sc-if>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1100}}'>
+var VIBES = {
+  violet: { label: 'Ultraviolet', void: '#07040C', night: '#120A1F', haze: '#22143A', line: '#33224F', ink: '#F1EAFB', muted: '#A898C2', orchid: '#B38CFF', violet: '#7B3CFF', soft: '#D9C8FF', sw: '#B38CFF', sw2: '#7B3CFF' },
+  aqua: { label: 'Aqua', void: '#030A0B', night: '#08171A', haze: '#0F2A2E', line: '#1C4247', ink: '#E6FBFB', muted: '#8FB9BB', orchid: '#78E0E0', violet: '#2FB5B8', soft: '#C2F3F3', sw: '#78E0E0', sw2: '#2FB5B8' },
+  blush: { label: 'Blush', void: '#0C0507', night: '#1A0B10', haze: '#2E1520', line: '#4A2433', ink: '#FDEDF0', muted: '#C9A3AC', orchid: '#F6B0BB', violet: '#E2728A', soft: '#FBD6DC', sw: '#F6B0BB', sw2: '#E2728A' }
+};
+var CATS = { fe: 'Frontend', be: 'Backend', tl: 'Tools' };
+var MSG_STATUS = [['new', 'New'], ['read', 'Read'], ['replied', 'Replied'], ['spam', 'Spam'], ['archived', 'Archived']];
+var DEVICES = [['desktop', 'Desktop', '100%'], ['tablet', 'Tablet', '768px'], ['mobile', 'Mobile', '390px']];
+var SET_TABS = [['general', 'General & SEO'], ['hero', 'Hero'], ['about', 'About'], ['contact', 'Contact'], ['links', 'Links & footer'], ['cv', 'CV']];
+
+var MEDIA = [
+  { id: 'm1', name: 'ashen-monastery.webp', type: 'image', url: '/_blob/ed1e8ab7e73a9ee0813c235155516b10', meta: '900 × 506 · 35 KB' },
+  { id: 'm2', name: 'voltra.webp', type: 'image', url: '/_blob/51cb2c72a5bbd28f988685e7d8351e2b', meta: '900 × 572 · 34 KB' },
+  { id: 'm3', name: 'raycast-maze.webp', type: 'image', url: '/_blob/be3861067850e7486250917bf5812515', meta: '900 × 558 · 26 KB' },
+  { id: 'm4', name: 'rado-builders.webp', type: 'image', url: '/_blob/90e491204c2d91af2346542464033691', meta: '900 × 563 · 63 KB' },
+  { id: 'm5', name: 'avatar.webp', type: 'image', url: '/_blob/b3e66371914139747134c7197a8a7dfd', meta: '400 × 400 · 10 KB' }
+];
+var PROJECTS = [
+  { id: 1, title: 'The Ashen Monastery', category: '3D game', year: '2026', status: 'published', mediaId: 'm1', pos: 'center', tags: 'C99, raylib, GLSL', l1: 'Download game', u1: 'https://github.com/mahnoor986/The-Ashen-Monastery/releases/latest', l2: 'Source code', u2: 'https://github.com/mahnoor986/The-Ashen-Monastery', desc: 'A third-person, PS1-style gothic horror game I wrote from scratch in C99 with raylib, built as a college project. Five wings of a castle, relics to destroy and two boss fights, with low-poly architecture, custom GLSL shaders, fog and candlelight.' },
+  { id: 2, title: 'VOLTRA Showreel', category: 'Concept website', year: '2026', status: 'published', mediaId: 'm2', pos: 'center top', tags: 'HTML, CSS, JavaScript, Express', l1: 'View live', u1: 'https://voltramp4.vercel.app', l2: 'Source code', u2: 'https://github.com/mahnoor986/voltra-cinematic-showreel', desc: 'A cinematic concept site for an electric-bike brand, built to show what a premium, motion-heavy website can feel like. A letterboxed hero with a camera HUD, a 3D energy core, an AI ride assistant that streams answers and plots a route, an exploded bike view, a rotating 3D carousel and scroll-driven reveals, mostly in pure CSS.' },
+  { id: 3, title: 'Raycast Maze', category: 'Game', year: '2026', status: 'published', mediaId: 'm3', pos: 'center', tags: 'C, raylib, Algorithms', l1: 'Download game', u1: 'https://github.com/mahnoor986/The-Raycasting-3D-Maze-Game/releases/latest', l2: 'Source code', u2: 'https://github.com/mahnoor986/The-Raycasting-3D-Maze-Game', desc: 'A first-person 3D maze with no 3D engine: the view is computed from a 2D grid using DDA raycasting, the technique behind Wolfenstein 3D. Every run generates a new maze with a recursive backtracker, and BFS places the exit at the farthest cell.' },
+  { id: 4, title: 'Rado Builders', category: 'Client website', year: '2026', status: 'published', mediaId: 'm4', pos: 'center', tags: 'Next.js, TypeScript, Tailwind CSS, GSAP', l1: '', u1: '', l2: '', u2: '', desc: 'A dual-brand real-estate website for Rado Builders and its sister company Sarec, built at Alkhair Innovative Tech Solutions. I designed and built the frontend: a split-screen brand gate, project listings and detail pages, an interactive 3D globe and maps, and smooth GSAP and Lenis animations throughout.' }
+];
+var SKILLS = [['HTML5','Semantic, accessible markup','fe'],['CSS3','Layouts, grids and motion','fe'],['JavaScript','ES6+, the DOM, async','fe'],['TypeScript','Safer, scalable code','fe'],['React','Components, hooks, state','fe'],['Next.js','Routing, SSR, performance','fe'],['Tailwind CSS','Fast, consistent styling','fe'],['Bootstrap','Responsive layouts, quickly','fe'],['Vite','Fast builds and dev server','fe'],['Responsive UI','Every screen size','fe'],['Node.js','Server-side JavaScript','be'],['Express','APIs and middleware','be'],['Django','Python web backends','be'],['REST APIs','Clean, documented endpoints','be'],['PostgreSQL','Relational data and SQL','be'],['MySQL','Relational databases','be'],['MongoDB','Flexible document data','be'],['C / C++','Algorithms and game engines','be'],['Git','Version control, branching','tl'],['GitHub','Repos, releases, Pages','tl'],['Docker','Containerised workflows','tl'],['Figma','Designing and building UIs','tl'],['Stitch','AI-assisted UI design','tl'],['VS Code','My daily editor','tl'],['Vercel','Fast deploys and previews','tl'],['raylib','Games and graphics in C','tl']]
+  .map(function (s, i) { return { id: 100 + i, name: s[0], blurb: s[1], cat: s[2] }; });
+var STEPS = [
+  { id: 201, title: 'Understand', desc: 'I start by listening: your goals, your users and your constraints. Then we agree on what success looks like.', tags: 'Discovery call, Requirements, User flows' },
+  { id: 202, title: 'Plan & design', desc: 'Wireframes, data models and architecture come before production code, so the build is fast and the surprises are few.', tags: 'Wireframes, System design, Tech stack' },
+  { id: 203, title: 'Build', desc: 'Clean, component-based code shipped in small iterations, with progress you can see and test every week.', tags: 'Frontend, Backend, APIs' },
+  { id: 204, title: 'Test & polish', desc: 'Cross-device testing, performance tuning and the small details that make a product feel finished.', tags: 'QA, Performance, Accessibility' },
+  { id: 205, title: 'Launch & grow', desc: 'Deployment, monitoring and steady improvement after launch, so the product keeps growing with you.', tags: 'Deployment, Monitoring, Support' }
+];
+var JOBS = [
+  { id: 301, period: 'Aug 2026 to now', title: 'Intern Developer', org: 'KhairFlow, Karachi', desc: 'Working with the engineering team on real web products, following an AI-native development workflow with code reviews and a clear definition of done.' },
+  { id: 302, period: '2025 to 2027', title: 'Intermediate, Computer Science', org: 'G.D.C F/W Block M', desc: 'Studying computer science while building games in C, like The Ashen Monastery and Raycast Maze, as college projects.' }
+];
+var OPTIONS = ['Website', 'Web app', 'Mobile app', 'Full-time role', 'Something else'].map(function (l, i) { return { id: 401 + i, label: l, visible: true }; });
+var MESSAGES = [
+  { id: 1, name: 'Ayesha Khan', email: 'ayesha@example.com', when: '18 min', received: 'Today, 10:59', type: 'Web app', status: 'new', notes: '', message: "Hi Mahnoor,\n\nWe run a small bakery in Karachi and want an online ordering app so customers can order cakes for pickup. We'd like a menu with photos, an order form with date and time, and a simple page where we can see today's orders.\n\nCould you share a rough timeline and what you'd need from us?" },
+  { id: 2, name: 'Daniel Brooks', email: 'daniel@example.com', when: '2 h', received: 'Today, 09:14', type: 'Website', status: 'new', notes: '', message: 'Loved the VOLTRA showreel. Could you build a launch page in a similar cinematic style for our product? We have the copy and product renders ready.' },
+  { id: 3, name: 'Sana Iqbal', email: 'sana@example.com', when: 'Yesterday', received: 'Wed 14 Oct, 16:40', type: 'Full-time role', status: 'new', notes: '', message: 'We are hiring a junior frontend developer (React + TypeScript) and your portfolio stood out to our team. Would you be open to a short call this week?' },
+  { id: 4, name: 'Omar Farooq', email: 'omar@example.com', when: '2 days', received: 'Tue 13 Oct, 11:02', type: 'Mobile app', status: 'replied', notes: 'Sent intro + asked for the Figma file.', message: 'Is a React Native app something you take on? Happy to share the brief and designs.' },
+  { id: 5, name: 'Hira Malik', email: 'hira@example.com', when: '4 days', received: 'Sun 11 Oct, 19:25', type: 'Something else', status: 'read', notes: '', message: "Would you give a short talk on GSAP animations at our university's developer meetup next month?" },
+  { id: 6, name: 'Cheap SEO Pro', email: 'offers@example.com', when: '5 days', received: 'Sat 10 Oct, 03:12', type: 'Something else', status: 'spam', notes: '', message: 'Get 10,000 backlinks today!!! Limited offer.' }
+];
+var SETTINGS = {
+  seoTitle: 'Mahnoor Siddiqui — Developer', seoDesc: 'Mahnoor Siddiqui is a full-stack developer from Karachi building web apps with React, Next.js, Node.js and Django, and games in C.',
+  defaultVibe: 'violet', available: true, availText: 'Available for new projects',
+  heroIntro: 'Software developer building fast, thoughtful products for the web.', heroMuted: 'Clean code under the hood, careful details on the surface.', tagline: '[ full-stack & games ]', year: '2026',
+  marquee: 'Web apps, Clean code, Interfaces, APIs, Performance, Ideas to launch',
+  manifesto: 'I turn ideas into software that feels as good as it works, and I care about every detail between the first sketch and the final release.',
+  about: 'I’m **Mahnoor Siddiqui**, a software developer passionate about building modern, scalable digital products. Currently an Intern Developer at KhairFlow, I specialize in responsive web development using React, Next.js, and TypeScript, with experience in Node.js, Django, PostgreSQL, and MySQL. I focus on clean code, modern development workflows, user-focused experiences, and exploring AI-driven solutions.',
+  facts: [{ value: '2+', label: 'Years coding' }, { value: '15+', label: 'Projects on GitHub' }, { value: '2', label: 'Certifications' }],
+  cHead: 'Got an idea?', cLead: "Let's make it", cAccent: 'real.', cSub: "Tell me a little about what you're building. I'll get back to you with next steps, questions, and how I can help.",
+  cNote: 'Your message comes straight to my inbox. I usually reply within a day or two.', cSuccess: "Thanks! Your message is in. I'll get back to you soon.",
+  location: 'Based in Karachi, Pakistan. Open to internships, freelance and remote work.',
+  email: 'mahnoorrr41@gmail.com', github: 'https://github.com/mahnoor986', linkedin: 'https://www.linkedin.com/in/mahnoor-siddiqui-tech/', footer: '© 2026 Mahnoor Siddiqui. Designed and built with care.',
+  cvName: '', cvSize: '', cvLabel: 'Download CV'
+};
+var EMAIL = { notify: 'mahnoorrr41@gmail.com', auto: true, subject: 'Thanks for reaching out!', body: "Thanks for getting in touch. I've received your message and I'll reply within a day or two with next steps and any questions.\n\nTalk soon,\nMahnoor" };
+var USERS = [{ id: 501, name: 'Mahnoor Siddiqui', email: 'mahnoorrr41@gmail.com', role: 'Admin', status: 'Active', you: true }];
+
+function cap(s) { return s.charAt(0).toUpperCase() + s.slice(1); }
+function splitTags(s) { return String(s || '').split(',').map(function (x) { return x.trim(); }).filter(Boolean); }
+function has(s, q) { return String(s || '').toLowerCase().indexOf(q) !== -1; }
+function slugify(s) { return String(s || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'untitled-post'; }
+function readTime(s) { var w = String(s || '').trim().split(/\s+/).filter(Boolean).length; return Math.max(1, Math.round(w / 200)) + ' min read'; }
+function kb(n) { return n > 1048576 ? (n / 1048576).toFixed(1) + ' MB' : Math.max(1, Math.round(n / 1024)) + ' KB'; }
+
+class Component extends DCLogic {
+  constructor(props) {
+    super(props);
+    this.state = {
+      vibe: 'violet', view: 'dashboard', q: '',
+      messages: MESSAGES, selMsg: 1, msgFilter: 'all', msgQ: '',
+      projects: PROJECTS, projFilter: 'all', projQ: '', pd: null, device: 'desktop',
+      skills: SKILLS, skillCat: 'all', skillQ: '',
+      steps: STEPS, jobs: JOBS, options: OPTIONS,
+      editKind: null, editId: null, draft: {},
+      posts: [], postFilter: 'all', pe: null,
+      media: MEDIA, mediaFilter: 'all', mediaQ: '',
+      settings: SETTINGS, setTab: 'general', settingsDirty: false,
+      email: EMAIL, emailDirty: false,
+      users: USERS, inv: { email: '', role: 'Editor' }, invError: false,
+      toast: null, undoSnap: null, nextId: 1000
+    };
+  }
+  componentWillUnmount() { clearTimeout(this._tt); }
+  toast(text, snap) {
+    clearTimeout(this._tt);
+    this.setState({ toast: { text: text, undo: !!snap }, undoSnap: snap || null });
+    var self = this;
+    this._tt = setTimeout(function () { self.setState({ toast: null, undoSnap: null }); }, 5000);
+  }
+  go(view, extra) {
+    this.setState(Object.assign({ view: view, q: '', editKind: null }, extra || {}));
+    try { window.scrollTo(0, 0); } catch (e) {}
+  }
+  mediaUrl(id) { var m = this.state.media.find(function (x) { return x.id === id; }); return m && m.url ? m.url : (this.state.media.find(function (x) { return x.type === 'image'; }) || { url: '' }).url; }
+  openMsg(id) {
+    var msgs = this.state.messages.map(function (m) { return m.id === id && m.status === 'new' ? Object.assign({}, m, { status: 'read' }) : m; });
+    this.go('inbox', { selMsg: id, messages: msgs, msgFilter: 'all', msgQ: '' });
+  }
+  openProject(p) {
+    var id = this.state.nextId;
+    var d = p ? Object.assign({}, p) : { id: null, title: '', category: '', year: String(new Date().getFullYear()), status: 'draft', mediaId: 'm1', pos: 'center', tags: '', l1: 'View live', u1: '', l2: 'Source code', u2: '', desc: '' };
+    this.go('projectEdit', { pd: d, device: 'desktop' });
+  }
+  openPost(p) {
+    var d = p ? Object.assign({}, p) : { id: null, title: '', slug: '', slugEdited: false, excerpt: '', content: '', tags: '', coverId: 'm3', status: 'draft', date: '' };
+    this.go('postEdit', { pe: d });
+  }
+  listOps(kind) {
+    var self = this;
+    return {
+      move: function (id, dir) {
+        var arr = self.state[kind].slice(); var i = arr.findIndex(function (x) { return x.id === id; }); var j = i + dir;
+        if (i < 0 || j < 0 || j >= arr.length) return;
+        var tmp = arr[i]; arr[i] = arr[j]; arr[j] = tmp; var p = {}; p[kind] = arr; self.setState(p);
+      },
+      remove: function (id, label) {
+        var before = self.state[kind]; var p = {}; p[kind] = before.filter(function (x) { return x.id !== id; });
+        self.setState(p); self.toast('Deleted “' + label + '”', { kind: kind, value: before });
+      },
+      edit: function (item) { self.setState({ editKind: kind, editId: item.id, draft: Object.assign({}, item) }); },
+      add: function (blank) {
+        var id = self.state.nextId; var item = Object.assign({}, blank, { id: id }); var p = { nextId: id + 1, editKind: kind, editId: id, draft: item };
+        p[kind] = self.state[kind].concat([item]); self.setState(p);
+      }
+    };
+  }
+
+  renderVals() {
+    var self = this, S = this.state, t = VIBES[S.vibe], q = S.q.trim().toLowerCase();
+    var setField = function (key) { return function (e) { var p = {}; p[key] = e.target.value; self.setState(p); }; };
+
+    // ---- counts
+    var newMsgs = S.messages.filter(function (m) { return m.status === 'new'; });
+    var counts = {
+      newMsgs: newMsgs.length, projects: S.projects.length,
+      pubProjects: S.projects.filter(function (p) { return p.status === 'published'; }).length,
+      draftProjects: S.projects.filter(function (p) { return p.status === 'draft'; }).length,
+      skills: S.skills.length, posts: S.posts.length, media: S.media.length,
+      options: S.options.length, visibleOptions: S.options.filter(function (o) { return o.visible; }).length
+    };
+
+    // ---- nav
+    var views = ['dashboard', 'inbox', 'settings', 'projects', 'projectEdit', 'skills', 'steps', 'jobs', 'options', 'posts', 'postEdit', 'media', 'email', 'users'];
+    var v = {}, nav = {}, nc = {};
+    views.forEach(function (k) { v[k] = S.view === k; nav[k] = function () { self.go(k); }; });
+    ['dashboard', 'inbox', 'settings', 'projects', 'skills', 'steps', 'jobs', 'options', 'posts', 'media', 'email', 'users'].forEach(function (k) {
+      var on = S.view === k || (k === 'projects' && S.view === 'projectEdit') || (k === 'posts' && S.view === 'postEdit');
+      nc[k] = on ? 'nb on' : 'nb';
+    });
+
+    // ---- global search
+    var results = [];
+    if (q) {
+      S.messages.forEach(function (m) { if (has(m.name, q) || has(m.message, q) || has(m.email, q) || has(m.type, q)) results.push({ kind: 'Message', label: m.name, sub: m.type + ' · ' + m.message.slice(0, 70), open: function () { self.openMsg(m.id); } }); });
+      S.projects.forEach(function (p) { if (has(p.title, q) || has(p.desc, q) || has(p.tags, q)) results.push({ kind: 'Project', label: p.title, sub: p.category + ' · ' + p.year, open: function () { self.openProject(p); } }); });
+      S.posts.forEach(function (p) { if (has(p.title, q) || has(p.content, q)) results.push({ kind: 'Post', label: p.title || 'Untitled post', sub: p.excerpt, open: function () { self.openPost(p); } }); });
+      S.skills.forEach(function (k) { if (has(k.name, q) || has(k.blurb, q)) results.push({ kind: 'Skill', label: k.name, sub: CATS[k.cat] + ' · ' + k.blurb, open: function () { self.go('skills', { skillQ: k.name, skillCat: 'all' }); } }); });
+      S.media.forEach(function (m) { if (has(m.name, q)) results.push({ kind: 'Media', label: m.name, sub: m.meta, open: function () { self.go('media', { mediaQ: m.name, mediaFilter: 'all' }); } }); });
+      results = results.slice(0, 10);
+    }
+
+    // ---- dashboard
+    var hr = new Date().getHours();
+    var visibleMsgs = S.messages.filter(function (m) { return m.status !== 'spam' && m.status !== 'archived'; });
+    var latest = visibleMsgs.slice(0, 5).map(function (m) {
+      return { name: m.name, when: m.when, type: m.type, preview: m.message.replace(/\s+/g, ' '), statusLabel: cap(m.status),
+        nameCls: m.status === 'new' ? 'b ell' : 'ell', chipCls: 'chip ' + m.status, open: function () { self.openMsg(m.id); } };
+    });
+    var st = S.settings, em = S.email;
+
+    // ---- inbox
+    var mf = S.msgFilter, mq = S.msgQ.trim().toLowerCase();
+    var msgCounts = { all: visibleMsgs.length };
+    MSG_STATUS.forEach(function (x) { msgCounts[x[0]] = S.messages.filter(function (m) { return m.status === x[0]; }).length; });
+    var msgList = S.messages.filter(function (m) { return (mf === 'all' ? m.status !== 'spam' && m.status !== 'archived' : m.status === mf) && (!mq || has(m.name, mq) || has(m.email, mq) || has(m.message, mq)); });
+    var selM = S.messages.find(function (m) { return m.id === S.selMsg; }) || null;
+    var setMsg = function (id, patch) { self.setState({ messages: self.state.messages.map(function (m) { return m.id === id ? Object.assign({}, m, patch) : m; }) }); };
+
+    // ---- inline edit
+    var ds = {};
+    ['name', 'blurb', 'cat', 'title', 'desc', 'tags', 'period', 'org', 'label'].forEach(function (f) { ds[f] = function (e) { var d = Object.assign({}, self.state.draft); d[f] = e.target.value; self.setState({ draft: d }); }; });
+    var editing = function (kind, id) { return S.editKind === kind && S.editId === id; };
+    var mapRows = function (kind, arr, extra) {
+      var ops = self.listOps(kind);
+      return arr.map(function (x, i) {
+        var ed = editing(kind, x.id);
+        return Object.assign({}, x, {
+          editing: ed, view: !ed, rowCls: ed ? 'row ed' : 'row', first: i === 0, last: i === arr.length - 1,
+          up: function () { ops.move(x.id, -1); }, down: function () { ops.move(x.id, 1); },
+          edit: function () { ops.edit(x); }, remove: function () { ops.remove(x.id, x.name || x.title || x.label); }
+        }, extra ? extra(x, i) : {});
+      });
+    };
+
+    // skills
+    var sq = S.skillQ.trim().toLowerCase();
+    var skillList = mapRows('skills', S.skills.filter(function (k) { return (S.skillCat === 'all' || k.cat === S.skillCat || editing('skills', k.id)) && (!sq || has(k.name, sq) || has(k.blurb, sq) || editing('skills', k.id)); }), function (k) { return { catLabel: CATS[k.cat] }; });
+
+    // projects
+    var pq = S.projQ.trim().toLowerCase();
+    var projAll = S.projects;
+    var projOps = self.listOps('projects');
+    var projList = projAll.filter(function (p) { return (S.projFilter === 'all' || p.status === S.projFilter) && (!pq || has(p.title, pq) || has(p.category, pq) || has(p.tags, pq)); }).map(function (p) {
+      var i = projAll.indexOf(p);
+      return { title: p.title || 'Untitled project', category: p.category || 'No category', year: p.year, img: self.mediaUrl(p.mediaId),
+        statusLabel: p.status === 'published' ? 'Published' : 'Draft', chipCls: 'chip ' + p.status,
+        toggleLabel: p.status === 'published' ? 'Unpublish' : 'Publish', first: i === 0, last: i === projAll.length - 1,
+        toggle: function () { self.setState({ projects: self.state.projects.map(function (x) { return x.id === p.id ? Object.assign({}, x, { status: x.status === 'published' ? 'draft' : 'published' }) : x; }) }); self.toast(p.status === 'published' ? 'Hidden from your site' : 'Now live on your site'); },
+        up: function () { projOps.move(p.id, -1); }, down: function () { projOps.move(p.id, 1); },
+        edit: function () { self.openProject(p); }, remove: function () { projOps.remove(p.id, p.title); } };
+    });
+    var pdRaw = S.pd || PROJECTS[0];
+    var pd = Object.assign({}, pdRaw, {
+      mode: pdRaw.id ? 'Edit' : 'New project', titleShown: pdRaw.title || 'Untitled project', img: self.mediaUrl(pdRaw.mediaId), tagList: splitTags(pdRaw.tags),
+      hasL1: !!(pdRaw.l1 && pdRaw.u1), hasL2: !!(pdRaw.l2 && pdRaw.u2),
+      imgStyle: 'flex: 1 1 220px; min-width: 0; width: 100%; aspect-ratio: 16 / 10; object-fit: cover; object-position: ' + pdRaw.pos + '; border-radius: 14px; background: ' + t.haze + ';'
+    });
+    var ps = {};
+    ['title', 'category', 'year', 'desc', 'tags', 'mediaId', 'pos', 'l1', 'u1', 'l2', 'u2', 'status'].forEach(function (f) { ps[f] = function (e) { var d = Object.assign({}, self.state.pd); d[f] = e.target.value; self.setState({ pd: d }); }; });
+    var dev = DEVICES.find(function (d) { return d[0] === S.device; });
+
+    // posts
+    var postCounts = { all: S.posts.length, published: S.posts.filter(function (p) { return p.status === 'published'; }).length, draft: S.posts.filter(function (p) { return p.status === 'draft'; }).length };
+    var postOps = self.listOps('posts');
+    var postList = S.posts.filter(function (p) { return S.postFilter === 'all' || p.status === S.postFilter; }).map(function (p) {
+      return { titleShown: p.title || 'Untitled post', excerpt: p.excerpt || 'No summary yet', img: self.mediaUrl(p.coverId), statusLabel: p.status === 'published' ? 'Published' : 'Draft', chipCls: 'chip ' + p.status,
+        date: p.date || 'Not published', read: readTime(p.content), edit: function () { self.openPost(p); }, remove: function () { postOps.remove(p.id, p.title || 'Untitled post'); } };
+    });
+    var peRaw = S.pe || { id: null, title: '', slug: '', slugEdited: false, excerpt: '', content: '', tags: '', coverId: 'm3', status: 'draft', date: '' };
+    var pe = Object.assign({}, peRaw, {
+      mode: peRaw.id ? 'Edit' : 'New post', titleShown: peRaw.title || 'Untitled post', slugShown: peRaw.slugEdited ? peRaw.slug : slugify(peRaw.title),
+      img: self.mediaUrl(peRaw.coverId), read: readTime(peRaw.content), tagList: splitTags(peRaw.tags), isExisting: !!peRaw.id,
+      paras: String(peRaw.content || '').split(/\n\s*\n/).map(function (x) { return x.trim(); }).filter(Boolean),
+      dateShown: peRaw.date || 'Not published yet', publishLabel: peRaw.status === 'published' ? 'Update post' : 'Publish'
+    });
+    var pes = {};
+    ['title', 'excerpt', 'content', 'tags', 'coverId'].forEach(function (f) { pes[f] = function (e) { var d = Object.assign({}, self.state.pe); d[f] = e.target.value; self.setState({ pe: d }); }; });
+    pes.slug = function (e) { self.setState({ pe: Object.assign({}, self.state.pe, { slug: slugify(e.target.value), slugEdited: true }) }); };
+    var storePost = function (status) {
+      var d = Object.assign({}, self.state.pe); d.status = status; if (!d.slugEdited) d.slug = slugify(d.title);
+      if (status === 'published' && !d.date) d.date = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
+      var posts = self.state.posts, p = { pe: d };
+      if (d.id) p.posts = posts.map(function (x) { return x.id === d.id ? d : x; });
+      else { d.id = self.state.nextId; p.nextId = d.id + 1; p.posts = [d].concat(posts); }
+      return p;
+    };
+
+    // media
+    var mq2 = S.mediaQ.trim().toLowerCase();
+    var mediaOps = self.listOps('media');
+    var mediaList = S.media.filter(function (m) { return (S.mediaFilter === 'all' || (S.mediaFilter === 'images' ? m.type === 'image' : m.type === 'doc')) && (!mq2 || has(m.name, mq2)); }).map(function (m) {
+      return { name: m.name, url: m.url, meta: m.meta, isImage: m.type === 'image', isDoc: m.type !== 'image',
+        remove: function () {
+          var used = self.state.projects.some(function (p) { return p.mediaId === m.id; }) || self.state.posts.some(function (p) { return p.coverId === m.id; });
+          if (used) { self.toast('In use by a project or post, so it can’t be deleted'); return; }
+          mediaOps.remove(m.id, m.name);
+        } };
+    });
+
+    var pill = function (on) { return on ? 'pill on' : 'pill'; };
+    var pillSm = function (on) { return on ? 'pill sm on' : 'pill sm'; };
+
+    return {
+      t: t, v: v, nav: nav, nc: nc, counts: counts,
+      newCntCls: counts.newMsgs ? 'cnt hot' : 'cnt',
+      vibes: Object.keys(VIBES).map(function (k) {
+        var vb = VIBES[k], on = k === S.vibe;
+        return { label: vb.label, pressed: on ? 'true' : 'false', pick: function () { self.setState({ vibe: k }); },
+          swatch: 'display: block; width: 16px; height: 16px; border-radius: 50%; background: radial-gradient(circle at 35% 30%, #fff 0 8%, ' + vb.sw + ' 45%, ' + vb.sw2 + ' 100%);' + (on ? ' box-shadow: 0 0 0 3px ' + t.night + ', 0 0 0 4.5px ' + vb.sw + ';' : '') };
+      }),
+
+      // search
+      q: S.q, setQ: setField('q'), showResults: !!q, results: results, noResults: !!q && results.length === 0,
+
+      // dashboard
+      greeting: hr < 12 ? 'Good morning' : hr < 17 ? 'Good afternoon' : 'Good evening',
+      greetLine: counts.newMsgs ? 'You have ' + counts.newMsgs + ' new message' + (counts.newMsgs === 1 ? '' : 's') + ' waiting.' : 'Inbox zero. Nice work.',
+      latest: latest, noLatest: latest.length === 0,
+      latestLine: newMsgs.length ? 'Latest: ' + newMsgs[0].name + ' · ' + newMsgs[0].type : 'All caught up',
+      newStatCls: counts.newMsgs ? 'stat hot' : 'stat',
+      postsLine: counts.posts ? postCounts.published + ' published · ' + postCounts.draft + ' drafts' : 'Write your first post →',
+      availText: st.available ? st.availText : 'Not taking new projects',
+      availPressed: st.available ? 'true' : 'false', availDot: st.available ? 'dot' : 'dot off', availSw: st.available ? 'sw on' : 'sw',
+      toggleAvail: function () { self.setState({ settings: Object.assign({}, self.state.settings, { available: !self.state.settings.available }) }); self.toast(self.state.settings.available ? 'Status hidden on your site' : 'Showing “available” on your site'); },
+      defaultVibeName: VIBES[st.defaultVibe].label,
+      autoDot: em.auto ? 'dot' : 'dot off', autoText: em.auto ? 'On' : 'Off',
+      cvText: st.cvName ? 'Uploaded · View' : 'Not uploaded · Upload',
+      goCv: function () { self.go('settings', { setTab: 'cv' }); },
+      newProject: function () { self.openProject(null); },
+      newPost: function () { self.openPost(null); },
+
+      // inbox
+      msgQ: S.msgQ, setMsgQ: setField('msgQ'),
+      msgFilters: [['all', 'All']].concat(MSG_STATUS).map(function (x) { return { label: x[1], count: msgCounts[x[0]], pressed: mf === x[0] ? 'true' : 'false', cls: pill(mf === x[0]), pick: function () { self.setState({ msgFilter: x[0] }); } }; }),
+      msgEmpty: msgList.length === 0,
+      msgList: msgList.map(function (m) {
+        var on = selM && m.id === selM.id;
+        return { name: m.name, when: m.when, type: m.type, message: m.message.replace(/\s+/g, ' '), statusLabel: cap(m.status), chipCls: 'chip ' + m.status,
+          nameCls: m.status === 'new' ? 'b ell' : 'ell', cls: on ? 'msg on' : 'msg', current: on ? 'true' : 'false',
+          pick: function () { self.setState({ selMsg: m.id }); if (m.status === 'new') setMsg(m.id, { status: 'read' }); } };
+      }),
+      hasSel: !!selM,
+      sel: selM ? Object.assign({}, selM, {
+        mailto: 'mailto:' + selM.email + '?subject=' + encodeURIComponent('Re: your ' + selM.type.toLowerCase() + ' enquiry'),
+        markReplied: function () { setMsg(selM.id, { status: 'replied' }); },
+        setNotes: function (e) { setMsg(selM.id, { notes: e.target.value }); },
+        remove: function () { var before = self.state.messages; self.setState({ messages: before.filter(function (m) { return m.id !== selM.id; }), selMsg: null }); self.toast('Message deleted', { kind: 'messages', value: before }); }
+      }) : { name: '', email: '', mailto: '#', type: '', received: '', message: '', notes: '' },
+      statusBtns: MSG_STATUS.map(function (x) { var on = selM && selM.status === x[0]; return { label: x[1], pressed: on ? 'true' : 'false', cls: pillSm(on), pick: function () { if (selM) { setMsg(selM.id, { status: x[0] }); self.toast('Marked as ' + x[1].toLowerCase()); } } }; }),
+
+      // settings
+      s: st, st: (function () { var o = {}; SET_TABS.forEach(function (x) { o[x[0]] = S.setTab === x[0]; }); return o; })(),
+      setTabs: SET_TABS.map(function (x) { return { label: x[1], pressed: S.setTab === x[0] ? 'true' : 'false', cls: pill(S.setTab === x[0]), pick: function () { self.setState({ setTab: x[0] }); } }; }),
+      ss: (function () { var o = {}; Object.keys(SETTINGS).forEach(function (k) { o[k] = function (e) { var n = Object.assign({}, self.state.settings); n[k] = e.target.value; self.setState({ settings: n, settingsDirty: true }); }; }); return o; })(),
+      settingsState: S.settingsDirty ? 'Unsaved changes' : 'All changes saved',
+      saveSettings: function () { self.setState({ settingsDirty: false }); self.toast('Saved. Your site updates in a few seconds'); },
+      seoCount: st.seoDesc.length,
+      marqueeWords: splitTags(st.marquee),
+      facts: st.facts.map(function (f, i) {
+        var upd = function (key) { return function (e) { var arr = self.state.settings.facts.map(function (x, j) { if (j !== i) return x; var c = Object.assign({}, x); c[key] = e.target.value; return c; }); self.setState({ settings: Object.assign({}, self.state.settings, { facts: arr }), settingsDirty: true }); }; };
+        return { value: f.value, label: f.label, setValue: upd('value'), setLabel: upd('label') };
+      }),
+      noCv: !st.cvName, hasCv: !!st.cvName,
+      uploadCv: function (e) { var f = e.target.files && e.target.files[0]; if (!f) return; self.setState({ settings: Object.assign({}, self.state.settings, { cvName: f.name, cvSize: kb(f.size) }) }); self.toast('CV uploaded. The Download CV button is now live'); },
+      removeCv: function () { var before = self.state.settings; self.setState({ settings: Object.assign({}, before, { cvName: '', cvSize: '' }) }); self.toast('CV removed. The button is hidden', { kind: 'settings', value: before }); },
+
+      // projects
+      projQ: S.projQ, setProjQ: setField('projQ'), projList: projList, projEmpty: projList.length === 0,
+      projFilters: [['all', 'All', counts.projects], ['published', 'Published', counts.pubProjects], ['draft', 'Drafts', counts.draftProjects]].map(function (x) { return { label: x[1], count: x[2], pressed: S.projFilter === x[0] ? 'true' : 'false', cls: pill(S.projFilter === x[0]), pick: function () { self.setState({ projFilter: x[0] }); } }; }),
+      pd: pd, ps: ps, noSubmit: function (e) { e.preventDefault(); },
+      imageOptions: S.media.filter(function (m) { return m.type === 'image'; }).map(function (m) { return { id: m.id, name: m.name }; }),
+      devices: DEVICES.map(function (d) { return { label: d[1], pressed: S.device === d[0] ? 'true' : 'false', cls: pillSm(S.device === d[0]), pick: function () { self.setState({ device: d[0] }); } }; }),
+      frameStyle: 'width: 100%; max-width: ' + dev[2] + '; flex: none; border-radius: 18px; border: 1px solid ' + t.line + '; overflow: hidden; transition: max-width .3s;',
+      saveProject: function () {
+        var d = Object.assign({}, self.state.pd);
+        if (!d.title.trim()) { self.toast('Add a title first'); return; }
+        if (d.id) self.setState({ projects: self.state.projects.map(function (x) { return x.id === d.id ? d : x; }) });
+        else { d.id = self.state.nextId; self.setState({ projects: self.state.projects.concat([d]), nextId: d.id + 1 }); }
+        self.go('projects'); self.toast(d.status === 'published' ? 'Project saved and live' : 'Saved as draft');
+      },
+
+      // skills / steps / jobs / options
+      draft: S.draft, ds: ds,
+      saveEdit: function () {
+        var kind = self.state.editKind, d = Object.assign({}, self.state.draft); var p = { editKind: null };
+        p[kind] = self.state[kind].map(function (x) { return x.id === self.state.editId ? d : x; }); self.setState(p); self.toast('Saved');
+      },
+      cancelEdit: function () { self.setState({ editKind: null }); },
+      skillQ: S.skillQ, setSkillQ: setField('skillQ'), skillList: skillList,
+      skillFilters: [['all', 'All']].concat(Object.keys(CATS).map(function (k) { return [k, CATS[k]]; })).map(function (x) {
+        var c = x[0] === 'all' ? S.skills.length : S.skills.filter(function (k) { return k.cat === x[0]; }).length;
+        return { label: x[1], count: c, pressed: S.skillCat === x[0] ? 'true' : 'false', cls: pill(S.skillCat === x[0]), pick: function () { self.setState({ skillCat: x[0] }); } };
+      }),
+      addSkill: function () { self.setState({ skillQ: '' }); self.listOps('skills').add({ name: 'New skill', blurb: '', cat: S.skillCat === 'all' ? 'fe' : S.skillCat }); },
+      stepList: mapRows('steps', S.steps, function (x, i) { return { num: String(i + 1).padStart(2, '0'), tagList: splitTags(x.tags) }; }),
+      addStep: function () { self.listOps('steps').add({ title: 'New step', desc: '', tags: '' }); },
+      jobList: mapRows('jobs', S.jobs),
+      addJob: function () { self.listOps('jobs').add({ period: '', title: 'New role', org: '', desc: '' }); },
+      optList: mapRows('options', S.options, function (o) {
+        return { visText: o.visible ? 'Visible' : 'Hidden', visPressed: o.visible ? 'true' : 'false', swCls: o.visible ? 'sw on' : 'sw',
+          toggle: function () { self.setState({ options: self.state.options.map(function (x) { return x.id === o.id ? Object.assign({}, x, { visible: !x.visible }) : x; }) }); } };
+      }),
+      visibleOptions: S.options.filter(function (o) { return o.visible; }).map(function (o, i) { return { label: o.label, cls: i === 0 ? 'pill sm on' : 'pill sm' }; }),
+      addOption: function () { self.listOps('options').add({ label: 'New option', visible: true }); },
+
+      // posts
+      noPostsAtAll: S.posts.length === 0, hasPosts: S.posts.length > 0, postList: postList,
+      postFilters: [['all', 'All'], ['published', 'Published'], ['draft', 'Drafts']].map(function (x) { return { label: x[1], count: postCounts[x[0]], pressed: S.postFilter === x[0] ? 'true' : 'false', cls: pill(S.postFilter === x[0]), pick: function () { self.setState({ postFilter: x[0] }); } }; }),
+      pe: pe, pes: pes,
+      savePostDraft: function () { if (!self.state.pe.title.trim()) { self.toast('Add a title first'); return; } self.setState(storePost('draft')); self.toast('Draft saved'); },
+      publishPost: function () { if (!self.state.pe.title.trim()) { self.toast('Add a title first'); return; } self.setState(storePost('published')); self.toast('Published. The Blog link is now on your site'); },
+      deletePost: function () { var id = self.state.pe.id; var before = self.state.posts; self.go('posts', { posts: before.filter(function (x) { return x.id !== id; }) }); self.toast('Post deleted', { kind: 'posts', value: before }); },
+
+      // media
+      mediaQ: S.mediaQ, setMediaQ: setField('mediaQ'), mediaList: mediaList, mediaEmpty: mediaList.length === 0,
+      mediaFilters: [['all', 'All', S.media.length], ['images', 'Images', S.media.filter(function (m) { return m.type === 'image'; }).length], ['docs', 'PDFs', S.media.filter(function (m) { return m.type !== 'image'; }).length]].map(function (x) { return { label: x[1], count: x[2], pressed: S.mediaFilter === x[0] ? 'true' : 'false', cls: pill(S.mediaFilter === x[0]), pick: function () { self.setState({ mediaFilter: x[0] }); } }; }),
+      uploadMedia: function (e) {
+        var files = Array.prototype.slice.call(e.target.files || []); if (!files.length) return;
+        var id = self.state.nextId;
+        var added = files.map(function (f, i) { var img = /^image\//.test(f.type); return { id: 'u' + (id + i), name: f.name, type: img ? 'image' : 'doc', url: img ? URL.createObjectURL(f) : '', meta: kb(f.size) }; });
+        self.setState({ media: added.concat(self.state.media), nextId: id + files.length, mediaFilter: 'all', mediaQ: '' });
+        self.toast(files.length + ' file' + (files.length === 1 ? '' : 's') + ' uploaded');
+        e.target.value = '';
+      },
+
+      // email
+      em: em,
+      es: (function () { var o = {}; ['notify', 'subject', 'body'].forEach(function (k) { o[k] = function (e) { var n = Object.assign({}, self.state.email); n[k] = e.target.value; self.setState({ email: n, emailDirty: true }); }; }); return o; })(),
+      autoSw: em.auto ? 'sw on' : 'sw', autoPressed: em.auto ? 'true' : 'false', autoOff: !em.auto,
+      toggleAuto: function () { self.setState({ email: Object.assign({}, self.state.email, { auto: !self.state.email.auto }), emailDirty: true }); },
+      emailState: S.emailDirty ? 'Unsaved changes' : 'All changes saved',
+      saveEmail: function () { self.setState({ emailDirty: false }); self.toast('Email settings saved'); },
+      sendTest: function () { self.toast('Test email sent to ' + self.state.email.notify); },
+
+      // users
+      userList: S.users.map(function (u) {
+        var parts = u.name.split(' ');
+        return { name: u.name, email: u.email, role: u.role, status: u.status, chipCls: u.status === 'Active' ? 'chip active' : 'chip', initials: (parts[0][0] + (parts[1] ? parts[1][0] : '')).toUpperCase(),
+          you: !!u.you, canRemove: !u.you, remove: function () { var before = self.state.users; self.setState({ users: before.filter(function (x) { return x.id !== u.id; }) }); self.toast('Removed ' + u.email, { kind: 'users', value: before }); } };
+      }),
+      inv: S.inv, invError: S.invError,
+      is: { email: function (e) { self.setState({ inv: Object.assign({}, self.state.inv, { email: e.target.value }), invError: false }); }, role: function (e) { self.setState({ inv: Object.assign({}, self.state.inv, { role: e.target.value }) }); } },
+      inviteUser: function (e) {
+        e.preventDefault(); var inv = self.state.inv;
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(inv.email.trim())) { self.setState({ invError: true }); return; }
+        var id = self.state.nextId; var mail = inv.email.trim();
+        self.setState({ users: self.state.users.concat([{ id: id, name: mail.split('@')[0], email: mail, role: inv.role, status: 'Invited' }]), nextId: id + 1, inv: { email: '', role: 'Editor' } });
+        self.toast('Invite sent to ' + mail);
+      },
+
+      // toast
+      hasToast: !!S.toast, toastText: S.toast ? S.toast.text : '', canUndo: !!(S.toast && S.toast.undo),
+      undo: function () { var u = self.state.undoSnap; if (!u) return; clearTimeout(self._tt); var p = { toast: null, undoSnap: null }; p[u.kind] = u.value; self.setState(p); }
+    };
+  }
+}
+</script>
+</body>
+</html>
