@@ -1,31 +1,82 @@
 # Mahnoor — Developer Portfolio
 
-## Run it in VS Code
-1. Unzip this folder and open it in VS Code (File → Open Folder…).
-2. Install the **Live Server** extension (VS Code will suggest it automatically).
-3. Right-click `index.html` → **Open with Live Server**.
-4. The site opens at `http://127.0.0.1:5500`. It reloads automatically every time you save.
+My personal portfolio, built with **Next.js** and **Payload CMS**. All content,
+contact messages and emails are managed from the Payload admin panel, so updating
+the site never needs a code change.
 
-> Use Live Server (or any local server) rather than double-clicking `index.html`, so the logo images and scripts load correctly.
-> An internet connection is needed only for the Google Fonts (Syne, Unbounded, Space Grotesk, Instrument Sans). Everything else is included.
+> **Status:** moving from the original static HTML site to Next.js + Payload.
+> Progress is tracked in [`PLAN.md`](PLAN.md) and [`PROGRESS.md`](PROGRESS.md).
+> The original site is kept in [`legacy/`](legacy/) for reference.
+
+## Tech stack
+| Part | Tool |
+|---|---|
+| Frontend | Next.js (App Router), TypeScript |
+| CMS / backend | Payload 3 (admin panel at `/admin`) |
+| Database | PostgreSQL on Neon |
+| File storage | Vercel Blob (images, CV) |
+| Email | Resend |
+| Animations | GSAP + ScrollTrigger, Three.js, Matter.js, Lenis |
+| Hosting | Vercel |
+
+## What I can manage from the admin
+- **Site settings:** hero, about, photo, facts, section texts, contact texts, links, footer, SEO, default colour vibe
+- **Projects, skills, process steps, experience:** add, edit, hide, drag to reorder
+- **Contact form:** the "What do you need?" options and all its texts
+- **Messages inbox:** every message from the contact form, with status (New / Read / Replied / Spam / Archived) and private notes
+- **Emails:** where new-message alerts go, and the automatic thank-you reply to clients
+- **CV:** upload a PDF and the "Download CV" button updates itself
+- **Blog:** write, draft and publish posts
+- **Live Preview:** see changes on the site while editing
+
+## Run it locally
+Requirements: Node.js 20+, and a PostgreSQL database (Neon, or local Postgres in Docker).
+
+```bash
+npm install
+cp .env.example .env      # then fill in the values
+npm run dev
+```
+- Site: http://localhost:3000
+- Admin: http://localhost:3000/admin (create your admin user on first visit)
+
+Fill the admin with the starting content:
+```bash
+npx payload run src/seed.ts
+```
+
+## Environment variables
+See `.env.example` for the full list:
+
+| Variable | What it is |
+|---|---|
+| `DATABASE_URI` | Postgres connection string (Neon) |
+| `PAYLOAD_SECRET` | Long random string (`openssl rand -base64 32`) |
+| `NEXT_PUBLIC_SERVER_URL` | Site URL, e.g. `http://localhost:3000` |
+| `RESEND_API_KEY` | From the Resend dashboard |
+| `BLOB_READ_WRITE_TOKEN` | From Vercel → Storage → Blob (production uploads) |
+| `PREVIEW_SECRET` | Random string for Live Preview |
 
 ## Project structure
 ```
-index.html          Page content (all sections)
-css/style.css       All styles, colour themes (vibes) and responsive rules
-js/main.js          Animations, 3D orb, gravity, menu, vibe switcher, form, rocket
-assets/logo/        The 7 letters of the "mahnoor" logo (used as masks so they take the theme colour)
-assets/images/      Put your photo here
-vendor/             Libraries: GSAP + ScrollTrigger, Three.js, Matter.js, Lenis
+src/app/(frontend)/    public site, blog and the contact form action
+src/app/(payload)/     Payload admin + API, admin styling (custom.scss)
+src/collections/       Projects, Skills, ProcessSteps, Experience, ContactOptions, Messages, Posts, Media, Users
+src/globals/           SiteSettings, EmailSettings
+src/components/        page sections and Effects.tsx (all animations)
+src/seed.ts            starting content
+legacy/                the original static site (reference only)
 ```
 
-## Quick edits
-- **Text, projects, jobs, links:** search `index.html` for anything in `[square brackets]` and replace it.
-- **Email:** search for `your@email.com` in `index.html` (it appears in the menu, contact form and footer).
-- **Your photo:** see `assets/images/README.txt`.
-- **Theme colours:** at the top of `css/style.css`, edit the `:root[data-vibe="violet"]`, `"aqua"` and `"blush"` blocks.
-- **Toolkit skills:** the sphere's skill list is the `SK` array in `js/main.js`; the cards are in the Toolkit section of `index.html`.
+## Deploying (Vercel)
+1. Import the repo in Vercel.
+2. Add Neon (Vercel integration) and create a Blob store.
+3. Add the environment variables above.
+4. Build command: `payload migrate && next build`.
+5. Verify your domain in Resend so client auto-replies can be sent. Without a
+   verified domain, Resend can only email your own account address.
 
-## Contact form
-The form opens the visitor's email app with the message filled in. To receive messages directly,
-you can later connect a service such as Formspree.
+## Working with Claude Code
+`CLAUDE.md` holds the project rules for Claude Code, and `.claude/settings.json`
+pre-approves routine commands. The plan lives in `PLAN.md` and the work log in
+`PROGRESS.md`.

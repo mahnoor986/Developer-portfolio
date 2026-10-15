@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "permissions": {
+    "defaultMode": "acceptEdits",
+    "allow": [
+      "Bash(npm *)",
+      "Bash(npx *)",
+      "Bash(pnpm *)",
+      "Bash(node *)",
+      "Bash(git status *)",
+      "Bash(git diff *)",
+      "Bash(git log *)",
+      "Bash(git add *)",
+      "Bash(git commit *)",
+      "Bash(git checkout *)",
+      "Bash(git switch *)",
+      "Bash(git branch *)",
+      "Bash(git mv *)",
+      "Bash(git stash *)",
+      "Bash(git push origin payload-migration *)",
+      "Bash(git push -u origin payload-migration *)",
+      "Bash(docker *)",
+      "Bash(curl *)",
+      "Bash(ls *)",
+      "Bash(cat *)",
+      "Bash(mkdir *)",
+      "Bash(mv *)",
+      "Bash(cp *)",
+      "WebFetch",
+      "WebSearch"
+    ],
+    "ask": [
+      "Bash(git push origin master *)",
+      "Bash(git push origin main *)",
+      "Bash(git merge *)",
+      "Bash(git reset --hard *)",
+      "Bash(git rebase *)",
+      "Bash(rm -rf *)",
+      "Bash(vercel *)",
+      "Bash(npx vercel *)",
+      "Bash(npx payload migrate:fresh *)",
+      "Bash(npx payload migrate:reset *)"
+    ],
+    "deny": [
+      "Bash(git push --force *)",
+      "Bash(git push -f *)",
+      "Read(./.env)",
+      "Read(./.env.local)",
+      "Read(./.env.production)"
+    ]
+  }
+}
