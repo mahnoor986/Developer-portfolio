@@ -51,7 +51,6 @@ export default async function HomePage() {
 
       <Effects
         config={{
-          name: s.name,
           labels: {
             gravityOn: s.gravityOn ?? '',
             gravityOnHint: s.gravityOnHint ?? '',
@@ -61,8 +60,6 @@ export default async function HomePage() {
             cursorDrag: s.cursorDrag ?? '',
             cursorThrow: s.cursorThrow ?? '',
             vibeToast: s.vibeToast ?? '',
-            formError: s.errorMessage ?? '',
-            formSuccess: s.successMessage ?? '',
             copyEmail: s.copyEmailLabel ?? '',
             copied: s.copiedLabel ?? '',
           },

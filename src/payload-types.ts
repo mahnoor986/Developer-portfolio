@@ -797,6 +797,11 @@ export interface SiteSetting {
   formNote?: string | null;
   successMessage?: string | null;
   errorMessage?: string | null;
+  /**
+   * Shown after 5 messages from the same visitor within an hour.
+   */
+  rateLimitMessage?: string | null;
+  sendErrorMessage?: string | null;
   location?: string | null;
   emailCardTitle?: string | null;
   copyEmailLabel?: string | null;
@@ -984,6 +989,8 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   formNote?: T;
   successMessage?: T;
   errorMessage?: T;
+  rateLimitMessage?: T;
+  sendErrorMessage?: T;
   location?: T;
   emailCardTitle?: T;
   copyEmailLabel?: T;

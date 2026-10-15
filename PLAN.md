@@ -53,10 +53,10 @@ Log details in `PROGRESS.md`. Branch: `payload-migration`.
 **Done when:** side by side with `legacy/index.html` the page looks and animates the same, `npm run build` passes, and editing a text in the admin changes the site.
 
 ## Phase 4 — Contact form + inbox
-- [ ] Client form component → Server Action `sendMessage`
-- [ ] zod validation (name ≤120 chars, no `<>`; valid email; message 1–5000 chars), honeypot, max 5 per IP per hour (hashed IP), create with `overrideAccess: true`
-- [ ] Options from ContactOptions, notes/success text from SiteSettings, same error styling as legacy
-- [ ] Admin list: newest first, columns status/date/name/type
+- [x] Client form component → Server Action `sendMessage`
+- [x] zod validation (name ≤120 chars, no `<>`; valid email; message 1–5000 chars), honeypot, max 5 per IP per hour (hashed IP), create with `overrideAccess: true`
+- [x] Options from ContactOptions, notes/success text from SiteSettings, same error styling as legacy
+- [x] Admin list: newest first, columns status/date/name/type
 
 **Done when:** a test message appears in the admin; invalid input and the honeypot are rejected.
 

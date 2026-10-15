@@ -231,10 +231,24 @@ export const SiteSettings: GlobalConfig = {
               ],
             },
             text('sendLabel', 'Send button', 'Send message'),
-            textarea('formNote', 'Note under the form', { admin: { rows: 2 } }),
-            textarea('successMessage', 'Success message', { admin: { rows: 2 } }),
+            textarea('formNote', 'Note under the form', {
+              defaultValue: 'I usually reply within a day or two.',
+              admin: { rows: 2 },
+            }),
+            textarea('successMessage', 'Success message', {
+              defaultValue: "Thanks! Your message is on its way. I'll get back to you soon.",
+              admin: { rows: 2 },
+            }),
             textarea('errorMessage', 'Error message (invalid input)', {
               defaultValue: 'Add your name, a valid email and a short message, then send again.',
+              admin: { rows: 2 },
+            }),
+            textarea('rateLimitMessage', 'Error message (too many messages)', {
+              defaultValue: "You've sent a few messages already. Please try again in an hour.",
+              admin: { rows: 2, description: 'Shown after 5 messages from the same visitor within an hour.' },
+            }),
+            textarea('sendErrorMessage', 'Error message (sending failed)', {
+              defaultValue: 'Something went wrong while sending. Please try again, or email me directly.',
               admin: { rows: 2 },
             }),
             textarea('location', 'Location / availability card', { admin: { rows: 2 } }),

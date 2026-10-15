@@ -14,7 +14,6 @@ import * as THREE from 'three'
 import { createScope } from './scope'
 
 export type EffectsConfig = {
-  name: string
   labels: {
     gravityOn: string
     gravityOnHint: string
@@ -24,8 +23,6 @@ export type EffectsConfig = {
     cursorDrag: string
     cursorThrow: string
     vibeToast: string
-    formError: string
-    formSuccess: string
     copyEmail: string
     copied: string
   }
@@ -441,23 +438,7 @@ export function initEffects(cfg: EffectsConfig): () => void {
   })
   $$('.tk-card').forEach((c) => S.on(c, 'click', () => selectCat(c.getAttribute('data-go')!, true)))
 
-  /* ---------- collab form -> email app (replaced by a Server Action in Phase 4) ---------- */
-  const form = document.getElementById('collabForm') as HTMLFormElement | null, note = $('#formNote')
-  if (form) S.on(form, 'submit', (e: SubmitEvent) => {
-    e.preventDefault()
-    const val = (n: string) => ((form.elements.namedItem(n) as HTMLInputElement | null)?.value ?? '').trim()
-    const f = { name: val('name'), email: val('email'), msg: val('message'), type: (form.querySelector<HTMLInputElement>('input[name=type]:checked') || { value: '' }).value }
-    const bad: string[] = []
-    ;([['fName', f.name], ['fEmail', /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(f.email) ? f.email : ''], ['fMsg', f.msg]] as const).forEach((x) => {
-      const fld = document.getElementById(x[0])!.parentElement!; fld.classList.toggle('err', !x[1]); if (!x[1]) bad.push(x[0])
-    })
-    if (bad.length) { note.className = 'form-note bad'; note.textContent = L.formError; document.getElementById(bad[0])!.focus(); return }
-    const to = $('#emailLink').getAttribute('href')!.replace('mailto:', '')
-    const subject = encodeURIComponent('New project: ' + f.type + ' from ' + f.name)
-    const body = encodeURIComponent('Hi ' + cfg.name + ',\n\n' + f.msg + '\n\nProject type: ' + f.type + '\nName: ' + f.name + '\nEmail: ' + f.email)
-    window.location.href = 'mailto:' + to + '?subject=' + subject + '&body=' + body
-    note.className = 'form-note good'; note.textContent = L.formSuccess
-  })
+  /* ---------- collab form: handled by <ContactForm> (Server Action), no longer the mailto link ---------- */
 
   /* ---------- vibe (colour theme) switcher ---------- */
   const root = document.documentElement, vibeBtns = $$('.vibe'), toast = $('#vibeToast')

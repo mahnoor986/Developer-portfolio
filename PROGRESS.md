@@ -3,13 +3,44 @@
 ## Waiting for Mahnoor
 - Nothing blocking right now. Still needed later (see PLAN.md "Waiting on Mahnoor"):
   Neon `DATABASE_URI`, `RESEND_API_KEY`, a verified domain in Resend, Vercel project + Blob token.
-- (Not blocking, needed by Phase 4) New wording for the contact form texts. The old site opened your email app,
-  the new form sends directly. My defaults unless you prefer others:
-  - Note under the form: "I usually reply within a day or two."
-  - Success message: "Thanks! Your message is on its way. I'll get back to you soon."
 - (Not blocking) Upload your CV PDF in Admin → Site settings → CV whenever you're ready.
+- (Not blocking) The contact form texts now use my defaults ("I usually reply within a day or two." /
+  "Thanks! Your message is on its way. I'll get back to you soon."). Change them any time in
+  Admin → Site settings → Contact.
 
 ## Log
+
+### 2026-10-15 — Phase 4 (contact form + inbox) ✅
+**Done**
+- `src/components/ContactForm.tsx` (client): same markup/classes as legacy, calls the `sendMessage` Server Action
+  (`src/app/(frontend)/actions/sendMessage.ts`). The old mailto handler was removed from `initEffects.ts`.
+- `src/lib/contactSchema.ts` (zod): name 1–120 chars without `<`/`>`, valid email, message 1–5000 chars. Used for
+  instant feedback in the browser and enforced again on the server.
+- Honeypot field `company` (off-screen, `aria-hidden`, not tabbable): if filled, the visitor sees success and
+  nothing is stored.
+- Rate limit: max 5 messages per IP per hour, using a SHA-256 hash of the IP salted with `PAYLOAD_SECRET`
+  (the raw IP is never stored). Message created with `overrideAccess: true`.
+- Project type is only saved if it matches a visible contact option.
+- New Site settings texts (Contact tab): rate-limit message and "sending failed" message.
+- Inbox list: newest first, columns Status / Created At / Name / Project type.
+- `tests/int/contactSchema.int.spec.ts`: validation unit tests.
+
+**Decisions**
+- Contact texts now use my default wording (seed updated; the local DB was updated only where the old mailto texts
+  were still unedited).
+- While sending, the button gets `aria-disabled` instead of `disabled`, so the browser's disabled styling never
+  changes the legacy look; double submits are blocked in code.
+- Error styling is the legacy one: `.field.err` on bad fields, `form-note bad` / `form-note good`.
+
+**Verified** (production build, headless Chromium)
+- Empty form → all three fields red + error note, nothing saved. Bad email → only email red. Name with `<` → rejected.
+- Honeypot filled → success shown, nothing saved. Valid message → success, form reset, saved with project type,
+  page URL, 64-char IP hash, status `new`. 6th message within the hour → rate-limit message (exactly 5 rows).
+- Logged-in admin: list shows newest first with the right columns; a message's name/email/type/message are
+  read-only, status and notes editable. POST /api/messages stays 403 (Phase 1).
+- Unit tests 4/4 ✓, build ✓ (`/` still static), lint ✓, types ✓. Computed styles still match legacy (only the
+  hidden honeypot and the shorter one-line note differ).
+- Test messages and the temporary admin were deleted afterwards.
 
 ### 2026-10-15 — Phase 3 (frontend port) ✅
 **Done**
@@ -67,7 +98,7 @@
 - Footer text uses `{year}` ("© {year} Mahnoor Siddiqui…"), so it stays current; it renders as 2026 today.
 - `formNote` / `successMessage` are copied exactly from legacy, but they describe the old mailto form
   ("Sending opens your email app…"). Phase 4 replaces the mailto with a real Server Action, so these two texts
-  need new wording then (see Waiting for Mahnoor).
+  need new wording then (done in Phase 4).
 - No CV PDF exists in the repo, so `cv` is left empty (the button stays hidden until one is uploaded).
 
 **Verified**
@@ -129,4 +160,4 @@
 - `npm run dev`: `/` 200, `/admin` 200 ("Dashboard - Payload"), Payload created its tables in Postgres.
 
 ## Next
-- Phase 4: contact form → Server Action + messages inbox.
+- Phase 5: emails with Resend (alert to Mahnoor + optional auto-reply). Works without a key in dev; needs RESEND_API_KEY to really send.
