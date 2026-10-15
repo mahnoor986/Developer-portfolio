@@ -88,11 +88,25 @@ _(Code done and tested without a key and with an invalid key. Final check waits 
 
 **Done when:** publishing a post shows it; unpublishing hides it.
 
-## Phase 9 — Admin design
-- [ ] `admin.meta` (title suffix "· Mahnoor", favicon), Logo/Icon components using the "mahnoor" letters
-- [ ] `custom.scss`: vibe colours, fonts, dark mode as default
-- [ ] `beforeDashboard`: welcome card with "X new messages", quick links (Edit homepage, New post, Upload CV), View site
-- [ ] Status badge cell for Messages, thumbnail cell for Projects
+## Phase 9 — Admin design ("Night Studio", see `design/ADMIN_DESIGN.md` + `design/admin-prototype.dc.html`)
+Build in this order, commit after each. Check each against the prototype's CSS/markup in all three vibes,
+at desktop and 390px wide, with real Payload data; keep access rules, hooks and Live Preview working.
+- [ ] Tokens / `custom.scss` (vibes on `html[data-vibe]`, fonts, Payload variables, buttons/inputs/tabs/tables, no scrollbars), `admin.theme: 'dark'`, `admin.meta`
+- [ ] Sticky Nav + logo (mask "mahnoor" letters, ADMIN chip, groups with counts, active pill, user card + logout)
+- [ ] Top bar (global search, vibe switcher saved as `mahnoor-admin-vibe`, View site)
+- [ ] Dashboard (greeting, Available toggle, 4 stat cards, latest messages, quick actions, site at a glance)
+- [ ] Inbox (status filters with counts, search, split list/reading pane, auto Read, Reply by email → Replied, delete, status pills, autosaving notes)
+- [ ] Site settings (pill tabs, save state text, Contact heading preview, CV empty/uploaded states)
+- [ ] Projects (card list: thumbnail, status chip, ↑/↓ order, Publish/Unpublish, Edit, Delete, filters, search; edit view styled, Live Preview kept)
+- [ ] Skills (inline edit, add, delete, ↑/↓, category filter, search)
+- [ ] Process steps (inline edit, add, delete, ↑/↓)
+- [ ] Experience (inline edit, add, delete, ↑/↓)
+- [ ] Contact options (inline rename, add, delete, ↑/↓, show/hide switch, "on your site" preview)
+- [ ] Blog posts (card list, filter pills, "No posts yet" empty state; Payload editor + Live Preview)
+- [ ] Media (grid, All/Images/PDFs filters, search, upload, delete blocked when in use)
+- [ ] Email settings (email preview card that updates while typing, "Send me a test email")
+- [ ] Users (rows with initials avatar, role chip, status chip)
+- [ ] Toasts (orchid pill, bottom centre, Undo for deletes where possible)
 
 **Done when:** the admin matches the portfolio's look.
 
