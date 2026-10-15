@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { anyone, authenticated } from '../access'
+import { homeHooks } from '../hooks/revalidate'
 
 export const skillCategories = [
   { label: 'Frontend', value: 'fe' },
@@ -23,6 +24,7 @@ export const Skills: CollectionConfig = {
     update: authenticated,
     delete: authenticated,
   },
+  hooks: { ...homeHooks },
   fields: [
     {
       type: 'row',

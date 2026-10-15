@@ -7,6 +7,7 @@ import {
 import type { CollectionConfig, FieldHook } from 'payload'
 
 import { authenticated, publishedOrAuthenticated } from '../access'
+import { revalidatePost, revalidatePostAfterDelete } from '../hooks/revalidate'
 
 export const slugify = (value: string): string =>
   value
@@ -36,6 +37,7 @@ export const Posts: CollectionConfig = {
     update: authenticated,
     delete: authenticated,
   },
+  hooks: { afterChange: [revalidatePost], afterDelete: [revalidatePostAfterDelete] },
   versions: {
     drafts: {
       autosave: { interval: 800 },

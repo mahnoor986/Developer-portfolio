@@ -42,13 +42,13 @@ Log details in `PROGRESS.md`. Branch: `payload-migration`.
 **Done when:** the admin shows exactly what the old site shows.
 
 ## Phase 3 — Frontend port (largest phase)
-- [ ] Layout with `next/font` (Syne, Unbounded, Space Grotesk, Instrument Sans) + legacy CSS as global CSS + the vibe init script (localStorage `mahnoor-vibe`, falls back to the default vibe from SiteSettings)
-- [ ] Server components: Header, MobileMenu, Loader, Hero, Marquee, About, Work, Toolkit, Process, Experience, Contact, Footer. Same class names and ids as legacy.
-- [ ] All content from the Payload Local API, nothing hard-coded
-- [ ] `Effects.tsx` client component with `main.js` logic in `useEffect` + cleanup; libraries from npm; skill-sphere words come from Skills data
-- [ ] Project images through each project's image URL (replacing the `.art-1..4` CSS images)
-- [ ] Revalidation hooks on all collections/globals (`revalidatePath('/')`, and `/blog` for posts)
-- [ ] SEO metadata from SiteSettings
+- [x] Layout with `next/font` (Syne, Unbounded, Space Grotesk, Instrument Sans) + legacy CSS as global CSS + the vibe init script (localStorage `mahnoor-vibe`, falls back to the default vibe from SiteSettings)
+- [x] Server components: Header, MobileMenu, Loader, Hero, Marquee, About, Work, Toolkit, Process, Experience, Contact, Footer. Same class names and ids as legacy.
+- [x] All content from the Payload Local API, nothing hard-coded
+- [x] `Effects.tsx` client component with `main.js` logic in `useEffect` + cleanup; libraries from npm; skill-sphere words come from Skills data
+- [x] Project images through each project's image URL (replacing the `.art-1..4` CSS images)
+- [x] Revalidation hooks on all collections/globals (`revalidatePath('/')`, and `/blog` for posts)
+- [x] SEO metadata from SiteSettings
 
 **Done when:** side by side with `legacy/index.html` the page looks and animates the same, `npm run build` passes, and editing a text in the admin changes the site.
 

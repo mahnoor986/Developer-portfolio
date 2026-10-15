@@ -1,6 +1,7 @@
 import type { Field, GlobalConfig, TextareaField, TextField } from 'payload'
 
 import { anyone, authenticated } from '../access'
+import { revalidateGlobal } from '../hooks/revalidate'
 import { headingField } from '../fields/heading'
 
 export const vibes = [
@@ -46,6 +47,7 @@ export const SiteSettings: GlobalConfig = {
     read: anyone,
     update: authenticated,
   },
+  hooks: { afterChange: [revalidateGlobal] },
   fields: [
     {
       type: 'tabs',
@@ -339,6 +341,17 @@ export const SiteSettings: GlobalConfig = {
                 },
                 text('scrollBadge', 'Scroll badge', 'SCROLL TO EXPLORE • SCROLL TO EXPLORE • '),
                 text('sphereHint', 'Skill sphere hint', 'Drag to spin'),
+                text('stepLabel', 'Process step label', 'Step {n} of {total}', {
+                  admin: { description: '{n} and {total} are replaced by the step number and the number of steps.' },
+                }),
+                {
+                  type: 'row',
+                  fields: [
+                    text('cursorOpen', 'Cursor on projects', 'Open'),
+                    text('cursorDrag', 'Cursor on skill sphere', 'Drag'),
+                    text('cursorThrow', 'Cursor on falling letters', 'Throw'),
+                  ],
+                },
               ],
             },
             {

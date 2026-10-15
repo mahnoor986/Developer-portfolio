@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { anyone, authenticated } from '../access'
+import { homeHooks } from '../hooks/revalidate'
 
 export const Experience: CollectionConfig = {
   slug: 'experience',
@@ -18,6 +19,7 @@ export const Experience: CollectionConfig = {
     update: authenticated,
     delete: authenticated,
   },
+  hooks: { ...homeHooks },
   fields: [
     {
       type: 'row',

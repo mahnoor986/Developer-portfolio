@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { authenticated, visibleOrAuthenticated } from '../access'
+import { homeHooks } from '../hooks/revalidate'
 
 export const ContactOptions: CollectionConfig = {
   slug: 'contact-options',
@@ -18,6 +19,7 @@ export const ContactOptions: CollectionConfig = {
     update: authenticated,
     delete: authenticated,
   },
+  hooks: { ...homeHooks },
   fields: [
     { name: 'label', type: 'text', required: true },
     { name: 'visible', type: 'checkbox', defaultValue: true },

@@ -11,6 +11,49 @@
 
 ## Log
 
+### 2026-10-15 — Phase 3 (frontend port) ✅
+**Done**
+- `src/app/(frontend)/layout.tsx`: next/font (Syne, Instrument Sans, Unbounded, Space Grotesk), legacy CSS,
+  vibe init script before paint (saved `mahnoor-vibe` wins, else the default vibe from Site settings).
+- `src/app/(frontend)/style.css`: copy of `legacy/css/style.css` with four changes (listed in its header comment):
+  logo urls → `/assets/logo` (copied to `public/`), fonts via next/font variables, `.art-1..4` removed,
+  and `-webkit-backdrop-filter` moved before `backdrop-filter` (see Decisions).
+- Server components in `src/components/` (Header, MobileMenu, Loader, Hero, Marquee, About, Work, Toolkit,
+  Process, Experience, Contact, Footer, Ambient layers): same markup, class names and ids as legacy; all content
+  from the Local API (`src/lib/content.ts`). Empty sections/links/badges hide themselves.
+- `src/components/Effects.tsx` + `effects/initEffects.ts`: port of `legacy/js/main.js` with npm libraries
+  pinned to the legacy versions (gsap 3.12.5, three 0.149.0, matter-js 0.19.0, lenis 1.1.13). Every listener,
+  frame, timer, observer, gsap animation/pin, Lenis instance and WebGL context is cleaned up on unmount.
+- Revalidation hooks (`src/hooks/revalidate.ts`) on Projects, Skills, ProcessSteps, Experience, ContactOptions,
+  Media, Posts and Site settings. SEO title/description/OpenGraph from Site settings.
+
+**Decisions**
+- three.js is pinned to r149 on purpose: r152+ changes colour management, which would shift the orb's colours.
+- Manifesto words and skill-sphere words are rendered as spans on the server (legacy created them in JS), so React
+  never has its DOM replaced. Resulting DOM is identical.
+- Project images: `.art-N` classes replaced by an inline background built from each project's image + crop
+  position; the hover preview uses the same value.
+- Next's CSS minifier keeps only the last of `backdrop-filter` / `-webkit-backdrop-filter`; legacy wrote the
+  standard one first, so the header pills lost their blur. Swapping the order fixes it with identical rendering.
+- Heading rule: a one-line lead puts the accent on its own line ("Selected" / "work"); a multi-line lead keeps its
+  breaks and the accent follows ("From idea\nto" + "launch"). Explained in the admin field description.
+- Added labels for cursor words (Open/Drag/Throw) and "Step {n} of {total}". Accessibility strings
+  (aria-labels like "Open menu", "Scroll to explore") stay in code.
+- Loader + hero entrance play once per page load, not again if effects re-run (e.g. Live Preview later).
+- The contact form still uses the legacy mailto behaviour until Phase 4.
+- Footer `{year}` is filled at build/revalidation time.
+
+**Verified**
+- build ✓ (`/` is static ○), lint ✓ (0 errors), types ✓.
+- DOM comparison with legacy (tags, ids, classes, key attributes, text): identical except the expected items above.
+- Computed styles of all 667 elements identical, except logo mask URL host, an equivalent `circle()` value, and
+  ~0.03px text widths from self-hosted fonts.
+- Headless Chromium 1440×900 and iPhone 13, legacy (`npx serve legacy`) vs Next: same page height, same hero name
+  size, same scroll positions, loader → orb lands in the logo, gravity, vibe switch (+ toast, localStorage), menu,
+  no console errors. Screenshots compared by eye.
+- Production build (`next start`): page served from cache; editing Site settings (temp admin, deleted afterwards)
+  showed on the page within seconds; restoring brought the original back.
+
 ### 2026-10-15 — Phase 2 (seed) ✅
 **Done**
 - `src/seed.ts` (`npx payload run src/seed.ts`): uploads the avatar + 4 project images from `legacy/assets`,
@@ -86,4 +129,4 @@
 - `npm run dev`: `/` 200, `/admin` 200 ("Dashboard - Payload"), Payload created its tables in Postgres.
 
 ## Next
-- Phase 3: frontend port (layout + fonts + legacy CSS, section components, Effects.tsx).
+- Phase 4: contact form → Server Action + messages inbox.

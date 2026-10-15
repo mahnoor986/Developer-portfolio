@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { anyone, authenticated } from '../access'
+import { homeHooks } from '../hooks/revalidate'
 
 export const Media: CollectionConfig = {
   slug: 'media',
@@ -15,6 +16,7 @@ export const Media: CollectionConfig = {
     update: authenticated,
     delete: authenticated,
   },
+  hooks: { ...homeHooks },
   fields: [
     {
       name: 'alt',

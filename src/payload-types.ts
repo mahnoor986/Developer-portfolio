@@ -709,7 +709,7 @@ export interface SiteSetting {
       }[]
     | null;
   /**
-   * The accent part is shown in the vibe colour. Line breaks in the first part are kept.
+   * The accent part is shown in the vibe colour. If the text is a single line, the accent starts on a new line; otherwise line breaks in the text are kept and the accent follows the last line.
    */
   workHeading?: {
     lead?: string | null;
@@ -717,7 +717,7 @@ export interface SiteSetting {
   };
   workIntro?: string | null;
   /**
-   * The accent part is shown in the vibe colour. Line breaks in the first part are kept.
+   * The accent part is shown in the vibe colour. If the text is a single line, the accent starts on a new line; otherwise line breaks in the text are kept and the accent follows the last line.
    */
   toolkitHeading?: {
     lead?: string | null;
@@ -765,7 +765,7 @@ export interface SiteSetting {
     | null;
   processKicker?: string | null;
   /**
-   * The accent part is shown in the vibe colour. Line breaks in the first part are kept.
+   * The accent part is shown in the vibe colour. If the text is a single line, the accent starts on a new line; otherwise line breaks in the text are kept and the accent follows the last line.
    */
   processHeading?: {
     lead?: string | null;
@@ -773,7 +773,7 @@ export interface SiteSetting {
   };
   processIntro?: string | null;
   /**
-   * The accent part is shown in the vibe colour. Line breaks in the first part are kept.
+   * The accent part is shown in the vibe colour. If the text is a single line, the accent starts on a new line; otherwise line breaks in the text are kept and the accent follows the last line.
    */
   experienceHeading?: {
     lead?: string | null;
@@ -782,7 +782,7 @@ export interface SiteSetting {
   experienceIntro?: string | null;
   contactKicker?: string | null;
   /**
-   * The accent part is shown in the vibe colour. Line breaks in the first part are kept.
+   * The accent part is shown in the vibe colour. If the text is a single line, the accent starts on a new line; otherwise line breaks in the text are kept and the accent follows the last line.
    */
   contactHeading?: {
     lead?: string | null;
@@ -836,6 +836,13 @@ export interface SiteSetting {
   gravityOffHint?: string | null;
   scrollBadge?: string | null;
   sphereHint?: string | null;
+  /**
+   * {n} and {total} are replaced by the step number and the number of steps.
+   */
+  stepLabel?: string | null;
+  cursorOpen?: string | null;
+  cursorDrag?: string | null;
+  cursorThrow?: string | null;
   backToTop?: string | null;
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -1007,6 +1014,10 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   gravityOffHint?: T;
   scrollBadge?: T;
   sphereHint?: T;
+  stepLabel?: T;
+  cursorOpen?: T;
+  cursorDrag?: T;
+  cursorThrow?: T;
   backToTop?: T;
   updatedAt?: T;
   createdAt?: T;

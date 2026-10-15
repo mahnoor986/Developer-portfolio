@@ -1,6 +1,7 @@
 import type { CollectionConfig, Field } from 'payload'
 
 import { authenticated, publishedOrAuthenticated } from '../access'
+import { homeHooks } from '../hooks/revalidate'
 
 const linkGroup = (name: string, label: string): Field => ({
   name,
@@ -33,6 +34,7 @@ export const Projects: CollectionConfig = {
     update: authenticated,
     delete: authenticated,
   },
+  hooks: { ...homeHooks },
   versions: {
     drafts: true,
   },

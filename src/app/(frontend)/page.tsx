@@ -1,59 +1,73 @@
-import { headers as getHeaders } from 'next/headers.js'
-import Image from 'next/image'
-import { getPayload } from 'payload'
-import React from 'react'
-import { fileURLToPath } from 'url'
+import type { Metadata } from 'next'
 
-import config from '@/payload.config'
-import './styles.css'
+import { About } from '@/components/About'
+import { Backdrop, Pointer } from '@/components/Ambient'
+import { Contact } from '@/components/Contact'
+import { Effects } from '@/components/Effects'
+import { Footer } from '@/components/Footer'
+import { Header, MobileMenu } from '@/components/Header'
+import { Hero, Marquee } from '@/components/Hero'
+import { Loader } from '@/components/Loader'
+import { Experience, Process } from '@/components/Process'
+import { Toolkit } from '@/components/Toolkit'
+import { Work } from '@/components/Work'
+import { getHomeContent } from '@/lib/content'
+
+export async function generateMetadata(): Promise<Metadata> {
+  const { settings } = await getHomeContent()
+  return {
+    title: settings.metaTitle,
+    description: settings.metaDescription,
+    metadataBase: process.env.NEXT_PUBLIC_SERVER_URL ? new URL(process.env.NEXT_PUBLIC_SERVER_URL) : undefined,
+    openGraph: { title: settings.metaTitle, description: settings.metaDescription ?? undefined, type: 'website' },
+  }
+}
 
 export default async function HomePage() {
-  const headers = await getHeaders()
-  const payloadConfig = await config
-  const payload = await getPayload({ config: payloadConfig })
-  const { user } = await payload.auth({ headers })
-
-  const fileURL = `vscode://file/${fileURLToPath(import.meta.url)}`
+  const { settings: s, projects, skills, steps, experience, contactOptions } = await getHomeContent()
 
   return (
-    <div className="home">
-      <div className="content">
-        <picture>
-          <source srcSet="https://raw.githubusercontent.com/payloadcms/payload/3.x/packages/ui/src/assets/payload-favicon.svg" />
-          <Image
-            alt="Payload Logo"
-            height={65}
-            src="https://raw.githubusercontent.com/payloadcms/payload/3.x/packages/ui/src/assets/payload-favicon.svg"
-            width={65}
-          />
-        </picture>
-        {!user && <h1>Welcome to your new project.</h1>}
-        {user && <h1>Welcome back, {user.email}</h1>}
-        <div className="links">
-          <a
-            className="admin"
-            href={payloadConfig.routes.admin}
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Go to admin panel
-          </a>
-          <a
-            className="docs"
-            href="https://payloadcms.com/docs"
-            rel="noopener noreferrer"
-            target="_blank"
-          >
-            Documentation
-          </a>
-        </div>
-      </div>
-      <div className="footer">
-        <p>Update this page by editing</p>
-        <a className="codeLink" href={fileURL}>
-          <code>app/(frontend)/page.tsx</code>
-        </a>
-      </div>
-    </div>
+    <>
+      <Backdrop />
+      <Loader label={s.loaderLabel ?? ''} />
+      <Pointer />
+
+      <Header s={s} />
+      <MobileMenu s={s} />
+
+      <main id="home">
+        <Hero s={s} />
+        <Marquee s={s} />
+        <About s={s} />
+        <Work s={s} projects={projects} />
+        <Toolkit s={s} skills={skills} />
+        <Process s={s} steps={steps} />
+        <Experience s={s} jobs={experience} />
+        <Contact s={s} options={contactOptions} />
+      </main>
+
+      <Footer s={s} />
+      <div className="vibe-toast" id="vibeToast" role="status" aria-live="polite" />
+
+      <Effects
+        config={{
+          name: s.name,
+          labels: {
+            gravityOn: s.gravityOn ?? '',
+            gravityOnHint: s.gravityOnHint ?? '',
+            gravityOff: s.gravityOff ?? '',
+            gravityOffHint: s.gravityOffHint ?? '',
+            cursorOpen: s.cursorOpen ?? '',
+            cursorDrag: s.cursorDrag ?? '',
+            cursorThrow: s.cursorThrow ?? '',
+            vibeToast: s.vibeToast ?? '',
+            formError: s.errorMessage ?? '',
+            formSuccess: s.successMessage ?? '',
+            copyEmail: s.copyEmailLabel ?? '',
+            copied: s.copiedLabel ?? '',
+          },
+        }}
+      />
+    </>
   )
 }
