@@ -67,8 +67,15 @@ export interface Config {
   };
   blocks: {};
   collections: {
-    users: User;
+    projects: Project;
+    skills: Skill;
+    'process-steps': ProcessStep;
+    experience: Experience;
+    posts: Post;
     media: Media;
+    messages: Message;
+    'contact-options': ContactOption;
+    users: User;
     'payload-kv': PayloadKv;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
@@ -76,8 +83,15 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
-    users: UsersSelect<false> | UsersSelect<true>;
+    projects: ProjectsSelect<false> | ProjectsSelect<true>;
+    skills: SkillsSelect<false> | SkillsSelect<true>;
+    'process-steps': ProcessStepsSelect<false> | ProcessStepsSelect<true>;
+    experience: ExperienceSelect<false> | ExperienceSelect<true>;
+    posts: PostsSelect<false> | PostsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    messages: MessagesSelect<false> | MessagesSelect<true>;
+    'contact-options': ContactOptionsSelect<false> | ContactOptionsSelect<true>;
+    users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
@@ -87,8 +101,14 @@ export interface Config {
     defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'site-settings': SiteSetting;
+    'email-settings': EmailSetting;
+  };
+  globalsSelect: {
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+    'email-settings': EmailSettingsSelect<false> | EmailSettingsSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
@@ -118,11 +138,196 @@ export interface UserAuthOperations {
   };
 }
 /**
+ * Shown in "Selected work". Drag rows to change the order.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "projects".
+ */
+export interface Project {
+  id: number;
+  _order?: string | null;
+  title: string;
+  category: string;
+  year: string;
+  description: string;
+  /**
+   * Press Enter after each tag.
+   */
+  tags?: string[] | null;
+  image?: (number | null) | Media;
+  /**
+   * Which part of the image stays visible when it is cropped.
+   */
+  imagePosition?: ('center' | 'center top' | 'center bottom' | 'left center' | 'right center') | null;
+  /**
+   * Leave both empty to hide this button.
+   */
+  primaryLink?: {
+    label?: string | null;
+    url?: string | null;
+  };
+  /**
+   * Leave both empty to hide this button.
+   */
+  secondaryLink?: {
+    label?: string | null;
+    url?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  /**
+   * Describe the image for screen readers. Not needed for PDFs.
+   */
+  alt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+}
+/**
+ * Shown in "My toolkit" and on the skill sphere. Drag rows to change the order.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "skills".
+ */
+export interface Skill {
+  id: number;
+  _order?: string | null;
+  name: string;
+  category: 'fe' | 'be' | 'tl';
+  blurb?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * The cards in "How I build". Numbers (01, Step 1 of 5) follow the order here.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "process-steps".
+ */
+export interface ProcessStep {
+  id: number;
+  _order?: string | null;
+  title: string;
+  description: string;
+  tags?: string[] | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * The timeline in "My experience". Drag rows to change the order.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "experience".
+ */
+export interface Experience {
+  id: number;
+  _order?: string | null;
+  title: string;
+  period: string;
+  organization?: string | null;
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts".
+ */
+export interface Post {
+  id: number;
+  title: string;
+  /**
+   * One or two sentences for the blog list and SEO.
+   */
+  excerpt?: string | null;
+  cover?: (number | null) | Media;
+  content: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  /**
+   * The address of the post: /blog/your-slug. Filled from the title if left empty.
+   */
+  slug: string;
+  publishedAt?: string | null;
+  tags?: string[] | null;
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * Messages sent through the contact form.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "messages".
+ */
+export interface Message {
+  id: number;
+  name: string;
+  email: string;
+  projectType?: string | null;
+  message: string;
+  status: 'new' | 'read' | 'replied' | 'spam' | 'archived';
+  /**
+   * Private notes, never shown to the sender.
+   */
+  notes?: string | null;
+  pageUrl?: string | null;
+  /**
+   * Hashed IP, used only for rate limiting.
+   */
+  ipHash?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * The "What do you need?" choices on the contact form. The first visible one is selected by default.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-options".
+ */
+export interface ContactOption {
+  id: number;
+  _order?: string | null;
+  label: string;
+  visible?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
 export interface User {
   id: number;
+  name?: string | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -142,25 +347,6 @@ export interface User {
     | null;
   password?: string | null;
   collection: 'users';
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: number;
-  alt: string;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -187,12 +373,40 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
-        relationTo: 'users';
-        value: number | User;
+        relationTo: 'projects';
+        value: number | Project;
+      } | null)
+    | ({
+        relationTo: 'skills';
+        value: number | Skill;
+      } | null)
+    | ({
+        relationTo: 'process-steps';
+        value: number | ProcessStep;
+      } | null)
+    | ({
+        relationTo: 'experience';
+        value: number | Experience;
+      } | null)
+    | ({
+        relationTo: 'posts';
+        value: number | Post;
       } | null)
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'messages';
+        value: number | Message;
+      } | null)
+    | ({
+        relationTo: 'contact-options';
+        value: number | ContactOption;
+      } | null)
+    | ({
+        relationTo: 'users';
+        value: number | User;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -238,26 +452,85 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users_select".
+ * via the `definition` "projects_select".
  */
-export interface UsersSelect<T extends boolean = true> {
-  updatedAt?: T;
-  createdAt?: T;
-  email?: T;
-  resetPasswordToken?: T;
-  resetPasswordExpiration?: T;
-  salt?: T;
-  hash?: T;
-  resetPasswordRequestedAt?: T;
-  loginAttempts?: T;
-  lockUntil?: T;
-  sessions?:
+export interface ProjectsSelect<T extends boolean = true> {
+  _order?: T;
+  title?: T;
+  category?: T;
+  year?: T;
+  description?: T;
+  tags?: T;
+  image?: T;
+  imagePosition?: T;
+  primaryLink?:
     | T
     | {
-        id?: T;
-        createdAt?: T;
-        expiresAt?: T;
+        label?: T;
+        url?: T;
       };
+  secondaryLink?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "skills_select".
+ */
+export interface SkillsSelect<T extends boolean = true> {
+  _order?: T;
+  name?: T;
+  category?: T;
+  blurb?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "process-steps_select".
+ */
+export interface ProcessStepsSelect<T extends boolean = true> {
+  _order?: T;
+  title?: T;
+  description?: T;
+  tags?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "experience_select".
+ */
+export interface ExperienceSelect<T extends boolean = true> {
+  _order?: T;
+  title?: T;
+  period?: T;
+  organization?: T;
+  description?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts_select".
+ */
+export interface PostsSelect<T extends boolean = true> {
+  title?: T;
+  excerpt?: T;
+  cover?: T;
+  content?: T;
+  slug?: T;
+  publishedAt?: T;
+  tags?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -276,6 +549,57 @@ export interface MediaSelect<T extends boolean = true> {
   height?: T;
   focalX?: T;
   focalY?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "messages_select".
+ */
+export interface MessagesSelect<T extends boolean = true> {
+  name?: T;
+  email?: T;
+  projectType?: T;
+  message?: T;
+  status?: T;
+  notes?: T;
+  pageUrl?: T;
+  ipHash?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-options_select".
+ */
+export interface ContactOptionsSelect<T extends boolean = true> {
+  _order?: T;
+  label?: T;
+  visible?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users_select".
+ */
+export interface UsersSelect<T extends boolean = true> {
+  name?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  email?: T;
+  resetPasswordToken?: T;
+  resetPasswordExpiration?: T;
+  salt?: T;
+  hash?: T;
+  resetPasswordRequestedAt?: T;
+  loginAttempts?: T;
+  lockUntil?: T;
+  sessions?:
+    | T
+    | {
+        id?: T;
+        createdAt?: T;
+        expiresAt?: T;
+      };
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -316,6 +640,390 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   batch?: T;
   updatedAt?: T;
   createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: number;
+  /**
+   * The big letters in the hero.
+   */
+  name: string;
+  fullName: string;
+  metaTitle: string;
+  metaDescription: string;
+  /**
+   * Visitors who already picked a vibe keep their own choice.
+   */
+  defaultVibe: 'violet' | 'aqua' | 'blush';
+  /**
+   * Shows the green status badge.
+   */
+  available?: boolean | null;
+  availabilityText?: string | null;
+  intro?: string | null;
+  /**
+   * Shown right after the intro, in a lighter colour.
+   */
+  introMuted?: string | null;
+  heroLabel?: string | null;
+  tagline?: string | null;
+  year?: string | null;
+  /**
+   * The scrolling words under the hero. Every second word is highlighted.
+   */
+  marquee?:
+    | {
+        word: string;
+        id?: string | null;
+      }[]
+    | null;
+  aboutKicker?: string | null;
+  manifesto?: string | null;
+  aboutText?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  photo?: (number | null) | Media;
+  photoAlt?: string | null;
+  photoTagName?: string | null;
+  photoTagRole?: string | null;
+  facts?:
+    | {
+        value: string;
+        label: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * The accent part is shown in the vibe colour. Line breaks in the first part are kept.
+   */
+  workHeading?: {
+    lead?: string | null;
+    accent?: string | null;
+  };
+  workIntro?: string | null;
+  /**
+   * The accent part is shown in the vibe colour. Line breaks in the first part are kept.
+   */
+  toolkitHeading?: {
+    lead?: string | null;
+    accent?: string | null;
+  };
+  toolkitOverviewTab?: string | null;
+  toolkitTitle?: string | null;
+  toolkitText?: string | null;
+  frontend?: {
+    tabLabel?: string | null;
+    title?: string | null;
+    /**
+     * "10 skills" on the overview card
+     */
+    countWord?: string | null;
+    text?: string | null;
+    cardText?: string | null;
+  };
+  backend?: {
+    tabLabel?: string | null;
+    title?: string | null;
+    /**
+     * "10 skills" on the overview card
+     */
+    countWord?: string | null;
+    text?: string | null;
+    cardText?: string | null;
+  };
+  tools?: {
+    tabLabel?: string | null;
+    title?: string | null;
+    /**
+     * "10 tools" on the overview card
+     */
+    countWord?: string | null;
+    text?: string | null;
+    cardText?: string | null;
+  };
+  exploringLabel?: string | null;
+  exploring?:
+    | {
+        item: string;
+        id?: string | null;
+      }[]
+    | null;
+  processKicker?: string | null;
+  /**
+   * The accent part is shown in the vibe colour. Line breaks in the first part are kept.
+   */
+  processHeading?: {
+    lead?: string | null;
+    accent?: string | null;
+  };
+  processIntro?: string | null;
+  /**
+   * The accent part is shown in the vibe colour. Line breaks in the first part are kept.
+   */
+  experienceHeading?: {
+    lead?: string | null;
+    accent?: string | null;
+  };
+  experienceIntro?: string | null;
+  contactKicker?: string | null;
+  /**
+   * The accent part is shown in the vibe colour. Line breaks in the first part are kept.
+   */
+  contactHeading?: {
+    lead?: string | null;
+    accent?: string | null;
+  };
+  contactSubtext?: string | null;
+  optionsLabel?: string | null;
+  nameLabel?: string | null;
+  emailLabel?: string | null;
+  messageLabel?: string | null;
+  sendLabel?: string | null;
+  formNote?: string | null;
+  successMessage?: string | null;
+  errorMessage?: string | null;
+  location?: string | null;
+  emailCardTitle?: string | null;
+  copyEmailLabel?: string | null;
+  copiedLabel?: string | null;
+  socialsTitle?: string | null;
+  email: string;
+  githubUrl?: string | null;
+  linkedinUrl?: string | null;
+  ctaLabel?: string | null;
+  /**
+   * Use {year} for the current year.
+   */
+  footerText?: string | null;
+  /**
+   * Upload a new PDF here to replace the download. Leave empty to hide the button.
+   */
+  cv?: (number | null) | Media;
+  cvLabel?: string | null;
+  menuAbout?: string | null;
+  menuWork?: string | null;
+  menuToolkit?: string | null;
+  menuProcess?: string | null;
+  menuExperience?: string | null;
+  menuContact?: string | null;
+  menuBlog?: string | null;
+  menuSayHi?: string | null;
+  menuSocials?: string | null;
+  vibesLabel?: string | null;
+  /**
+   * {vibe} is replaced by the vibe name.
+   */
+  vibeToast?: string | null;
+  loaderLabel?: string | null;
+  gravityOn?: string | null;
+  gravityOnHint?: string | null;
+  gravityOff?: string | null;
+  gravityOffHint?: string | null;
+  scrollBadge?: string | null;
+  sphereHint?: string | null;
+  backToTop?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "email-settings".
+ */
+export interface EmailSetting {
+  id: number;
+  notifyEmail: string;
+  /**
+   * Needs a domain verified in Resend. Until then, leave this off.
+   */
+  autoReplyEnabled?: boolean | null;
+  autoReplySubject?: string | null;
+  /**
+   * {name} is replaced by the sender's name.
+   */
+  autoReplyBody?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  name?: T;
+  fullName?: T;
+  metaTitle?: T;
+  metaDescription?: T;
+  defaultVibe?: T;
+  available?: T;
+  availabilityText?: T;
+  intro?: T;
+  introMuted?: T;
+  heroLabel?: T;
+  tagline?: T;
+  year?: T;
+  marquee?:
+    | T
+    | {
+        word?: T;
+        id?: T;
+      };
+  aboutKicker?: T;
+  manifesto?: T;
+  aboutText?: T;
+  photo?: T;
+  photoAlt?: T;
+  photoTagName?: T;
+  photoTagRole?: T;
+  facts?:
+    | T
+    | {
+        value?: T;
+        label?: T;
+        id?: T;
+      };
+  workHeading?:
+    | T
+    | {
+        lead?: T;
+        accent?: T;
+      };
+  workIntro?: T;
+  toolkitHeading?:
+    | T
+    | {
+        lead?: T;
+        accent?: T;
+      };
+  toolkitOverviewTab?: T;
+  toolkitTitle?: T;
+  toolkitText?: T;
+  frontend?:
+    | T
+    | {
+        tabLabel?: T;
+        title?: T;
+        countWord?: T;
+        text?: T;
+        cardText?: T;
+      };
+  backend?:
+    | T
+    | {
+        tabLabel?: T;
+        title?: T;
+        countWord?: T;
+        text?: T;
+        cardText?: T;
+      };
+  tools?:
+    | T
+    | {
+        tabLabel?: T;
+        title?: T;
+        countWord?: T;
+        text?: T;
+        cardText?: T;
+      };
+  exploringLabel?: T;
+  exploring?:
+    | T
+    | {
+        item?: T;
+        id?: T;
+      };
+  processKicker?: T;
+  processHeading?:
+    | T
+    | {
+        lead?: T;
+        accent?: T;
+      };
+  processIntro?: T;
+  experienceHeading?:
+    | T
+    | {
+        lead?: T;
+        accent?: T;
+      };
+  experienceIntro?: T;
+  contactKicker?: T;
+  contactHeading?:
+    | T
+    | {
+        lead?: T;
+        accent?: T;
+      };
+  contactSubtext?: T;
+  optionsLabel?: T;
+  nameLabel?: T;
+  emailLabel?: T;
+  messageLabel?: T;
+  sendLabel?: T;
+  formNote?: T;
+  successMessage?: T;
+  errorMessage?: T;
+  location?: T;
+  emailCardTitle?: T;
+  copyEmailLabel?: T;
+  copiedLabel?: T;
+  socialsTitle?: T;
+  email?: T;
+  githubUrl?: T;
+  linkedinUrl?: T;
+  ctaLabel?: T;
+  footerText?: T;
+  cv?: T;
+  cvLabel?: T;
+  menuAbout?: T;
+  menuWork?: T;
+  menuToolkit?: T;
+  menuProcess?: T;
+  menuExperience?: T;
+  menuContact?: T;
+  menuBlog?: T;
+  menuSayHi?: T;
+  menuSocials?: T;
+  vibesLabel?: T;
+  vibeToast?: T;
+  loaderLabel?: T;
+  gravityOn?: T;
+  gravityOnHint?: T;
+  gravityOff?: T;
+  gravityOffHint?: T;
+  scrollBadge?: T;
+  sphereHint?: T;
+  backToTop?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "email-settings_select".
+ */
+export interface EmailSettingsSelect<T extends boolean = true> {
+  notifyEmail?: T;
+  autoReplyEnabled?: T;
+  autoReplySubject?: T;
+  autoReplyBody?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

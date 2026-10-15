@@ -1,16 +1,32 @@
 import type { CollectionConfig } from 'payload'
 
+import { anyone, authenticated } from '../access'
+
 export const Media: CollectionConfig = {
   slug: 'media',
+  admin: {
+    group: 'Content',
+    useAsTitle: 'filename',
+    defaultColumns: ['filename', 'alt', 'mimeType', 'updatedAt'],
+  },
   access: {
-    read: () => true,
+    read: anyone,
+    create: authenticated,
+    update: authenticated,
+    delete: authenticated,
   },
   fields: [
     {
       name: 'alt',
+      label: 'Alt text',
       type: 'text',
-      required: true,
+      admin: {
+        description: 'Describe the image for screen readers. Not needed for PDFs.',
+      },
     },
   ],
-  upload: true,
+  upload: {
+    mimeTypes: ['image/*', 'application/pdf'],
+    focalPoint: true,
+  },
 }

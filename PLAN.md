@@ -20,18 +20,18 @@ Log details in `PROGRESS.md`. Branch: `payload-migration`.
 **Done when:** `npm run dev` starts and `/admin` opens and connects to the database.
 
 ## Phase 1 — Content model
-- [ ] Global `SiteSettings` with tabs: General/SEO (title, description, default vibe, available yes/no, availability text) · Hero (intro, muted intro, tagline, year, marquee words) · About (manifesto, about text, photo, photo alt, facts[value,label]) · Sections (work intro, toolkit heading/text, FE/BE/Tools texts, currently exploring, process intro, experience intro) · Contact (heading, heading lead, heading accent, subtext, options label, form note, success message, location) · Links (email, GitHub, LinkedIn, footer text) · CV (PDF upload + button label)
-- [ ] Global `EmailSettings` (admin-only): notify email, auto-reply on/off, subject, body
-- [ ] `Projects`: title, category, year, description, tags, image, image position, primary/secondary link label+URL, drafts, orderable
-- [ ] `Skills`: name, blurb, category (fe/be/tl), orderable
-- [ ] `ProcessSteps`: title, description, tags, orderable
-- [ ] `Experience`: period, title, organization, description, orderable
-- [ ] `ContactOptions`: label, visible, orderable
-- [ ] `Messages`: name, email, projectType, message, status (new/read/replied/spam/archived), notes, pageUrl, ipHash, createdAt. Read-only except status and notes. No public create/read.
-- [ ] `Posts`: title, slug, excerpt, cover, content (Lexical with code blocks + images), tags, publishedAt, drafts + autosave
-- [ ] `Media`: images + PDF, Vercel Blob adapter (enabled only when `BLOB_READ_WRITE_TOKEN` is set, so local dev still works)
-- [ ] Access rules: public reads published content only
-- [ ] `npx payload generate:types`
+- [x] Global `SiteSettings` with tabs: General/SEO (title, description, default vibe, available yes/no, availability text) · Hero (intro, muted intro, tagline, year, marquee words) · About (manifesto, about text, photo, photo alt, facts[value,label]) · Sections (work intro, toolkit heading/text, FE/BE/Tools texts, currently exploring, process intro, experience intro) · Contact (heading, heading lead, heading accent, subtext, options label, form note, success message, location) · Links (email, GitHub, LinkedIn, footer text) · CV (PDF upload + button label)
+- [x] Global `EmailSettings` (admin-only): notify email, auto-reply on/off, subject, body
+- [x] `Projects`: title, category, year, description, tags, image, image position, primary/secondary link label+URL, drafts, orderable
+- [x] `Skills`: name, blurb, category (fe/be/tl), orderable
+- [x] `ProcessSteps`: title, description, tags, orderable
+- [x] `Experience`: period, title, organization, description, orderable
+- [x] `ContactOptions`: label, visible, orderable
+- [x] `Messages`: name, email, projectType, message, status (new/read/replied/spam/archived), notes, pageUrl, ipHash, createdAt. Read-only except status and notes. No public create/read.
+- [x] `Posts`: title, slug, excerpt, cover, content (Lexical with code blocks + images), tags, publishedAt, drafts + autosave
+- [x] `Media`: images + PDF, Vercel Blob adapter (enabled only when `BLOB_READ_WRITE_TOKEN` is set, so local dev still works)
+- [x] Access rules: public reads published content only
+- [x] `npx payload generate:types`
 
 **Done when:** every section of `legacy/index.html` has a matching place in the admin.
 
