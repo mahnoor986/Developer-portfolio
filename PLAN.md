@@ -69,10 +69,10 @@ Log details in `PROGRESS.md`. Branch: `payload-migration`.
 _(Code done and tested without a key and with an invalid key. Final check waits for Mahnoor's `RESEND_API_KEY`.)_
 
 ## Phase 6 — Live Preview
-- [ ] `admin.livePreview` for site-settings, projects and posts, with Mobile/Tablet/Desktop breakpoints
-- [ ] Drafts + autosave (short interval) on those
-- [ ] `/api/preview` route (secret) → Next `draftMode`; pages fetch with `draft: true` in draft mode
-- [ ] `RefreshRouteOnSave` (`@payloadcms/live-preview-react`) in the layout
+- [x] `admin.livePreview` for site-settings, projects and posts, with Mobile/Tablet/Desktop breakpoints
+- [x] Drafts + autosave (short interval) on those
+- [x] `/api/preview` route (secret) → Next `draftMode`; pages fetch with `draft: true` in draft mode
+- [x] `RefreshRouteOnSave` (`@payloadcms/live-preview-react`) in the layout
 
 **Done when:** editing a hero text or project in the admin updates the preview pane.
 

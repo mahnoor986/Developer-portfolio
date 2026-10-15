@@ -48,6 +48,11 @@ export const SiteSettings: GlobalConfig = {
     update: authenticated,
   },
   hooks: { afterChange: [revalidateGlobal] },
+  versions: {
+    // Autosave keeps Live Preview in sync while typing; visitors only see published changes.
+    drafts: { autosave: { interval: 500 } },
+    max: 30,
+  },
   fields: [
     {
       type: 'tabs',

@@ -36,7 +36,9 @@ export const Projects: CollectionConfig = {
   },
   hooks: { ...homeHooks },
   versions: {
-    drafts: true,
+    // Autosave keeps Live Preview in sync while typing; visitors only see published changes.
+    drafts: { autosave: { interval: 500 } },
+    maxPerDoc: 30,
   },
   fields: [
     { name: 'title', type: 'text', required: true },

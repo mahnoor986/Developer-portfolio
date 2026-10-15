@@ -14,6 +14,37 @@
 
 ## Log
 
+### 2026-10-15 — Phase 6 (Live Preview) ✅
+**Done**
+- `admin.livePreview` (`src/lib/preview.ts`) for Site settings, Projects and Posts, with Mobile (390×844),
+  Tablet (820×1180) and Desktop (1440×900) breakpoints. Posts preview at `/blog/{slug}` (page comes in Phase 8).
+- Drafts + autosave every 500 ms on Site settings, Projects and Posts (max 30 versions kept per document).
+- `/api/preview` turns on Next draft mode only with the right `PREVIEW_SECRET` **and** a logged-in admin, and
+  only redirects to same-site paths. `/api/exit-preview` turns it off.
+- `src/lib/content.ts`: in draft mode the latest drafts are loaded (`draft: true`); visitors get published content.
+  Contact options are always filtered to `visible`.
+- `LivePreviewListener` (`RefreshRouteOnSave`) is rendered only in draft mode and refreshes the page on every
+  (auto)save.
+- Revalidation hooks ignore autosaved drafts; they rebuild the site when something is published, or when a
+  published document is unpublished.
+
+**Decisions**
+- Enabling drafts on Site settings made the existing row a draft; I republished it (same content) with a one-off
+  script, and the seed now publishes Site settings explicitly.
+- Live Preview works when the admin is opened on the same address as `NEXT_PUBLIC_SERVER_URL` (the preview iframe
+  and the "saved" messages are matched by that origin). In production that's the real domain.
+
+**Verified**
+- `/api/preview` with a wrong secret → 401; with the right secret but not logged in → 403.
+- Logged-in admin (temp user, deleted afterwards), headless Chromium: Site settings → typing in "Work intro"
+  updated the preview pane within seconds without saving; Projects → typing a new title updated the project list in
+  the preview. No page errors. Public site kept the published text throughout.
+- Production build: `/` still static. An autosaved draft did not reach the public page or the public API;
+  publishing did (page updated in seconds); original text restored.
+- Test drafts were overwritten by republishing the original values. Their autosave versions remain in each
+  document's Versions history (harmless).
+- build ✓, lint ✓, types ✓.
+
 ### 2026-10-15 — Phase 5 (emails) ✅ code done · ⏳ final check needs RESEND_API_KEY
 **Done**
 - `@payloadcms/email-resend` 3.90.2 in `payload.config.ts`, only when `RESEND_API_KEY` is set. Without a key,
@@ -190,5 +221,5 @@
 - `npm run dev`: `/` 200, `/admin` 200 ("Dashboard - Payload"), Payload created its tables in Postgres.
 
 ## Next
-- Phase 6: Live Preview (drafts + autosave, /api/preview, RefreshRouteOnSave).
+- Phase 7: "Download CV" button (hero, mobile menu, contact card), hidden until a CV PDF is uploaded.
 - When the Resend key arrives: send a real test message and confirm the alert (finishes Phase 5).

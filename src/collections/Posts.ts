@@ -40,7 +40,7 @@ export const Posts: CollectionConfig = {
   hooks: { afterChange: [revalidatePost], afterDelete: [revalidatePostAfterDelete] },
   versions: {
     drafts: {
-      autosave: { interval: 800 },
+      autosave: { interval: 500 },
     },
     maxPerDoc: 30,
   },

@@ -1,5 +1,6 @@
 import 'server-only'
 
+import { draftMode } from 'next/headers'
 import { getPayload } from 'payload'
 import { cache } from 'react'
 
@@ -8,21 +9,31 @@ import type { Media } from '@/payload-types'
 
 export const getPayloadClient = cache(async () => getPayload({ config }))
 
-/** Everything the home page needs, fetched in parallel through the Local API. */
+/** True inside the admin's Live Preview (draft mode is only turned on for logged-in admins). */
+export const isDraftMode = cache(async () => (await draftMode()).isEnabled)
+
+/**
+ * Everything the home page needs, fetched in parallel through the Local API.
+ * Normal visitors get published content only; in draft mode the latest drafts are shown.
+ */
 export const getHomeContent = cache(async () => {
   const payload = await getPayloadClient()
-  const common = { depth: 1, pagination: false, overrideAccess: false } as const
+  const draft = await isDraftMode()
+  // Draft mode is only reachable through /api/preview, which checks the admin login.
+  const access = draft ? { draft: true, overrideAccess: true } : { draft: false, overrideAccess: false }
+  const list = { depth: 1, pagination: false, ...access } as const
 
   const [settings, projects, skills, steps, experience, contactOptions] = await Promise.all([
-    payload.findGlobal({ slug: 'site-settings', depth: 1, overrideAccess: false }),
-    payload.find({ collection: 'projects', sort: '_order', ...common }),
-    payload.find({ collection: 'skills', sort: '_order', ...common }),
-    payload.find({ collection: 'process-steps', sort: '_order', ...common }),
-    payload.find({ collection: 'experience', sort: '_order', ...common }),
-    payload.find({ collection: 'contact-options', sort: '_order', ...common }),
+    payload.findGlobal({ slug: 'site-settings', depth: 1, ...access }),
+    payload.find({ collection: 'projects', sort: '_order', ...list }),
+    payload.find({ collection: 'skills', sort: '_order', ...list }),
+    payload.find({ collection: 'process-steps', sort: '_order', ...list }),
+    payload.find({ collection: 'experience', sort: '_order', ...list }),
+    payload.find({ collection: 'contact-options', sort: '_order', where: { visible: { equals: true } }, ...list }),
   ])
 
   return {
+    draft,
     settings,
     projects: projects.docs,
     skills: skills.docs,

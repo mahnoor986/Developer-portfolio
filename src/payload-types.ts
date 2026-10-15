@@ -849,6 +849,7 @@ export interface SiteSetting {
   cursorDrag?: string | null;
   cursorThrow?: string | null;
   backToTop?: string | null;
+  _status?: ('draft' | 'published') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1026,6 +1027,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   cursorDrag?: T;
   cursorThrow?: T;
   backToTop?: T;
+  _status?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;

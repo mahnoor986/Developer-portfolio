@@ -312,6 +312,7 @@ async function seed() {
     await payload.updateGlobal({
       slug: 'site-settings',
       data: {
+        _status: 'published',
         // General & SEO
         name: 'Mahnoor',
         fullName: 'Mahnoor Siddiqui',

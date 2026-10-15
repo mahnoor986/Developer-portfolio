@@ -18,6 +18,7 @@ import { Skills } from './collections/Skills'
 import { Users } from './collections/Users'
 import { EmailSettings } from './globals/EmailSettings'
 import { SiteSettings } from './globals/SiteSettings'
+import { livePreview } from './lib/preview'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -28,6 +29,7 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    livePreview,
   },
   collections: [
     Projects,

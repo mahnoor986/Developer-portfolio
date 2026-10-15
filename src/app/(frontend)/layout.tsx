@@ -1,6 +1,7 @@
 import { Instrument_Sans, Space_Grotesk, Syne, Unbounded } from 'next/font/google'
 import React from 'react'
 
+import { LivePreviewListener } from '@/components/LivePreviewListener'
 import { getHomeContent } from '@/lib/content'
 
 import './style.css'
@@ -23,7 +24,7 @@ const grotesk = Space_Grotesk({
 const VIBES = ['violet', 'aqua', 'blush']
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const { settings } = await getHomeContent()
+  const { settings, draft } = await getHomeContent()
   const defaultVibe = VIBES.includes(settings.defaultVibe) ? settings.defaultVibe : 'violet'
 
   // Runs before paint: a visitor's saved vibe wins over the default from Site settings.
@@ -39,7 +40,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <head>
         <script dangerouslySetInnerHTML={{ __html: vibeScript }} />
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        {draft && <LivePreviewListener serverURL={process.env.NEXT_PUBLIC_SERVER_URL ?? ''} />}
+      </body>
     </html>
   )
 }
