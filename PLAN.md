@@ -82,9 +82,9 @@ _(Code done and tested without a key and with an invalid key. Final check waits 
 **Done when:** uploading a new PDF changes the download.
 
 ## Phase 8 — Blog
-- [ ] `/blog` list (cover, title, date, tags, excerpt) in portfolio style
-- [ ] `/blog/[slug]` with Lexical rendering, styled headings/images/code blocks, `generateStaticParams`, `generateMetadata`
-- [ ] Blog link in the menu + optional "Latest posts" strip on the home page, hidden when there are 0 published posts
+- [x] `/blog` list (cover, title, date, tags, excerpt) in portfolio style
+- [x] `/blog/[slug]` with Lexical rendering, styled headings/images/code blocks, `generateStaticParams`, `generateMetadata`
+- [x] Blog link in the menu + optional "Latest posts" strip on the home page, hidden when there are 0 published posts
 
 **Done when:** publishing a post shows it; unpublishing hides it.
 

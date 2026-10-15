@@ -8,6 +8,7 @@ import type { CollectionConfig, FieldHook } from 'payload'
 
 import { authenticated, publishedOrAuthenticated } from '../access'
 import { revalidatePost, revalidatePostAfterDelete } from '../hooks/revalidate'
+import { codeLanguages } from '../lib/codeLanguages'
 
 export const slugify = (value: string): string =>
   value
@@ -65,21 +66,7 @@ export const Posts: CollectionConfig = {
             blocks: [
               CodeBlock({
                 defaultLanguage: 'ts',
-                languages: {
-                  plaintext: 'Plain text',
-                  ts: 'TypeScript',
-                  tsx: 'TSX',
-                  js: 'JavaScript',
-                  jsx: 'JSX',
-                  css: 'CSS',
-                  html: 'HTML',
-                  json: 'JSON',
-                  bash: 'Bash',
-                  python: 'Python',
-                  c: 'C',
-                  cpp: 'C++',
-                  sql: 'SQL',
-                },
+                languages: codeLanguages,
               }),
             ],
           }),

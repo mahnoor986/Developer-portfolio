@@ -14,6 +14,42 @@
 
 ## Log
 
+### 2026-10-15 — Phase 8 (blog) ✅
+**Done**
+- `/blog` (static): kicker, two-part heading, intro and a grid of post cards (cover, date, title, excerpt, tags,
+  "Read post"); "No posts yet" text if visited with no posts.
+- `/blog/[slug]` (static, `generateStaticParams` + `generateMetadata` with OpenGraph article data): back link,
+  date, title, excerpt, tags, cover, and the Lexical body (`src/components/blog/PostBody.tsx`) with styled
+  headings, lists, quotes, inline code, images and code blocks (language label + `<pre>`). Unknown slugs → 404.
+- Home: "Latest posts" strip (3 newest) after "Selected work", and a "Blog" link in the menu. Both hidden while
+  no post is published.
+- `SiteShell` component: background layers, header, menu, footer and Effects shared by the home page and blog
+  pages. On blog pages the logo/menu/CTA link back to home sections (`/#work`); no loader.
+- `initEffects` now skips home-only parts (loader, hero name, gravity, sphere…) when they aren't on the page;
+  Effects re-runs when the route changes, so animations re-attach after client-side navigation.
+- Site settings → Sections → Blog: kicker, heading, intro, "All posts" / "Read post" / "Back" labels, empty text.
+- Blog styles appended to the "additions" block of `style.css`, built only from the legacy colour tokens and
+  fonts, so all three vibes work.
+
+**Decisions**
+- No syntax highlighting library (keeps the bundle small); code blocks get the site's monospace styling and a
+  language label. Easy to add Shiki later if wanted.
+- The strip sits after "Selected work", not near Experience, so it doesn't interfere with the
+  Experience → Contact pin/curl animation.
+- Internal blog links use `next/link`; links from blog pages back to home sections are full page loads (the
+  loader plays, like opening the site fresh).
+
+**Verified** (production build)
+- No posts: home page identical to before (computed-style diff unchanged), no menu link, `/blog` shows empty text,
+  `/blog/unknown` → 404.
+- Published a rich test post (bold, inline code, h2/h3, list, C code block, image, quote, cover) through the API:
+  it appeared in the home strip, the menu, `/blog` and its own page, all rendered correctly; screenshots checked
+  in violet and blush.
+- Browser: home → /blog → post (client-side) → menu "Work" → back on home at the Work section. Always exactly one
+  WebGL canvas, cursor/orb/vibe working, no console errors.
+- Unpublish → gone from home, menu, /blog and the public API; post page 404. Republish → back. Delete → gone.
+- Test post, its versions and the temp admin deleted. build ✓, lint ✓, types ✓.
+
 ### 2026-10-15 — Phase 7 (CV download) ✅
 **Done**
 - `src/components/Cv.tsx`: `getCv()` returns the uploaded PDF (or null → every CV button hides) and `CvButton`.
@@ -243,5 +279,5 @@
 - `npm run dev`: `/` 200, `/admin` 200 ("Dashboard - Payload"), Payload created its tables in Postgres.
 
 ## Next
-- Phase 8: blog (/blog list, /blog/[slug] with Lexical, menu link + latest posts strip when posts exist).
+- Phase 9: admin design (meta + logo, vibe colours and fonts, dark default, dashboard welcome card, message badges, project thumbnails).
 - When the Resend key arrives: send a real test message and confirm the alert (finishes Phase 5).

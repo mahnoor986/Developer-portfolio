@@ -213,6 +213,30 @@ export const SiteSettings: GlobalConfig = {
                 textarea('experienceIntro', 'Intro'),
               ],
             },
+            {
+              type: 'collapsible',
+              label: 'Blog',
+              admin: {
+                description:
+                  'The blog link, the "Latest posts" strip and /blog only appear once at least one post is published.',
+              },
+              fields: [
+                text('blogKicker', 'Kicker', 'From the blog'),
+                headingField({ name: 'blogHeading', label: 'Heading', lead: 'Notes &', accent: 'writing' }),
+                textarea('blogIntro', 'Intro', {
+                  defaultValue: 'Things I learned while building, breaking and fixing my projects.',
+                }),
+                {
+                  type: 'row',
+                  fields: [
+                    text('blogAllLabel', '"All posts" link', 'All posts'),
+                    text('blogReadLabel', '"Read" link on cards', 'Read post'),
+                    text('blogBackLabel', '"Back" link on a post', 'Back to all posts'),
+                  ],
+                },
+                text('blogEmptyText', 'Text when there are no posts', 'No posts yet. Check back soon.'),
+              ],
+            },
           ],
         },
         {

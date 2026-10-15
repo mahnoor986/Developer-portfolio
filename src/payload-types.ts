@@ -780,6 +780,19 @@ export interface SiteSetting {
     accent?: string | null;
   };
   experienceIntro?: string | null;
+  blogKicker?: string | null;
+  /**
+   * The accent part is shown in the vibe colour. If the text is a single line, the accent starts on a new line; otherwise line breaks in the text are kept and the accent follows the last line.
+   */
+  blogHeading?: {
+    lead?: string | null;
+    accent?: string | null;
+  };
+  blogIntro?: string | null;
+  blogAllLabel?: string | null;
+  blogReadLabel?: string | null;
+  blogBackLabel?: string | null;
+  blogEmptyText?: string | null;
   contactKicker?: string | null;
   /**
    * The accent part is shown in the vibe colour. If the text is a single line, the accent starts on a new line; otherwise line breaks in the text are kept and the accent follows the last line.
@@ -975,6 +988,18 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         accent?: T;
       };
   experienceIntro?: T;
+  blogKicker?: T;
+  blogHeading?:
+    | T
+    | {
+        lead?: T;
+        accent?: T;
+      };
+  blogIntro?: T;
+  blogAllLabel?: T;
+  blogReadLabel?: T;
+  blogBackLabel?: T;
+  blogEmptyText?: T;
   contactKicker?: T;
   contactHeading?:
     | T

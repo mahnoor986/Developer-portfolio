@@ -2,7 +2,7 @@ import { Instrument_Sans, Space_Grotesk, Syne, Unbounded } from 'next/font/googl
 import React from 'react'
 
 import { LivePreviewListener } from '@/components/LivePreviewListener'
-import { getHomeContent } from '@/lib/content'
+import { getSiteSettings, isDraftMode } from '@/lib/content'
 
 import './style.css'
 
@@ -24,7 +24,7 @@ const grotesk = Space_Grotesk({
 const VIBES = ['violet', 'aqua', 'blush']
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const { settings, draft } = await getHomeContent()
+  const [settings, draft] = await Promise.all([getSiteSettings(), isDraftMode()])
   const defaultVibe = VIBES.includes(settings.defaultVibe) ? settings.defaultVibe : 'violet'
 
   // Runs before paint: a visitor's saved vibe wins over the default from Site settings.

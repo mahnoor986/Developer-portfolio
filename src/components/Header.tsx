@@ -16,11 +16,14 @@ const Arrow = () => (
   </svg>
 )
 
-export function Header({ s }: { s: Settings }) {
+/** `#about` on the home page, `/#about` on other pages. */
+const sectionHref = (onHome: boolean, hash: string) => (onHome ? hash : `/${hash}`)
+
+export function Header({ s, onHome }: { s: Settings; onHome: boolean }) {
   return (
     <header className="top" id="top">
       <nav className="navpill" aria-label="Main">
-        <a href="#home" className="logo" aria-label={`${s.name}, back to top`}>
+        <a href={onHome ? '#home' : '/'} className="logo" aria-label={`${s.name}, back to top`}>
           <Wordmark id="wm" />
         </a>
         <div className="nav-right">
@@ -42,7 +45,7 @@ export function Header({ s }: { s: Settings }) {
               </button>
             ))}
           </div>
-          <a href="#collab" className="nav-cta" data-magnetic="">
+          <a href={sectionHref(onHome, '#collab')} className="nav-cta" data-magnetic="">
             {s.ctaLabel}
             <Arrow />
           </a>
@@ -66,18 +69,20 @@ const MenuLink = ({ href, label, className }: { href: string; label?: string | n
     </a>
   ) : null
 
-export function MobileMenu({ s }: { s: Settings }) {
+export function MobileMenu({ s, onHome, hasPosts }: { s: Settings; onHome: boolean; hasPosts: boolean }) {
   const cv = getCv(s)
+  const href = (hash: string) => sectionHref(onHome, hash)
   return (
     <div className="mmenu" id="mmenu" aria-hidden="true">
       <div className="mm-inner wrap">
         <nav className="mm-links" aria-label="Menu">
-          <MenuLink href="#about" label={s.menuAbout} />
-          <MenuLink href="#work" label={s.menuWork} />
-          <MenuLink href="#skills" label={s.menuToolkit} />
-          <MenuLink href="#process" label={s.menuProcess} />
-          <MenuLink href="#experience" label={s.menuExperience} />
-          <MenuLink href="#collab" label={s.menuContact} className="o" />
+          <MenuLink href={href('#about')} label={s.menuAbout} />
+          <MenuLink href={href('#work')} label={s.menuWork} />
+          <MenuLink href={href('#skills')} label={s.menuToolkit} />
+          <MenuLink href={href('#process')} label={s.menuProcess} />
+          <MenuLink href={href('#experience')} label={s.menuExperience} />
+          {hasPosts && <MenuLink href="/blog" label={s.menuBlog} />}
+          <MenuLink href={href('#collab')} label={s.menuContact} className="o" />
         </nav>
         <div className="mm-side">
           <div>

@@ -665,3 +665,46 @@ html.lenis,html.lenis body{height:auto}
 /* ===== additions for the Next.js version (not in legacy) ===== */
 /* CV download button under the hero intro; hidden entirely when no CV is uploaded */
 .hero-cv{margin-top:22px}
+/* Blog: cards, /blog list and post pages. Built only from the legacy tokens (colours, fonts, radii). */
+.post-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,340px),1fr));gap:20px}
+.post-card{border:1px solid var(--line);border-radius:22px;background:rgba(var(--night-rgb),.6);overflow:hidden;transition:border-color .3s}
+.post-card:hover{border-color:rgba(var(--orchid-rgb),.5)}
+.post-card>a{display:flex;flex-direction:column;height:100%;text-decoration:none;color:inherit}
+.post-cover{display:block;aspect-ratio:16/9;background:var(--haze) center/cover no-repeat;border-bottom:1px solid var(--line)}
+.post-in{display:flex;flex-direction:column;align-items:flex-start;gap:12px;padding:24px;flex:1}
+.post-date{font-family:var(--grotesk);font-size:14px;color:var(--muted)}
+.post-card h3{margin:0;font-family:var(--display);font-weight:700;font-size:clamp(22px,2vw,28px);line-height:1.12;letter-spacing:-.02em;color:var(--ink)}
+.post-card p{margin:0;color:var(--muted)}
+.post-read{margin-top:auto;padding-top:6px;display:inline-flex;align-items:center;gap:8px;font-family:var(--grotesk);font-weight:600;color:var(--orchid)}
+.post-read svg{transition:transform .3s}
+.post-card:hover .post-read svg{transform:translateX(4px)}
+.blog-more{margin-top:32px}
+.blog-empty{color:var(--muted);font-size:18px}
+.post-wrap{max-width:780px;margin-inline:auto}
+.post-back{margin-bottom:40px}
+.post-head{display:flex;flex-direction:column;align-items:flex-start;gap:20px;margin-bottom:40px}
+.post-head .kicker{margin:0}
+.post-title{font-size:clamp(40px,6vw,84px);line-height:.98}
+.post-excerpt{margin:0;color:var(--muted);font-size:clamp(18px,1.6vw,22px);line-height:1.5}
+.post-cover-lg{margin:0 0 48px;border-radius:22px;overflow:hidden;border:1px solid var(--line)}
+.post-cover-lg img{display:block;width:100%;height:auto}
+.post-body{font-size:18px;line-height:1.75;color:rgba(var(--ink-rgb),.9)}
+.post-body>*:first-child{margin-top:0}
+.post-body p{margin:0 0 1.2em}
+.post-body h2,.post-body h3,.post-body h4{font-family:var(--display);color:var(--ink);letter-spacing:-.02em;line-height:1.12;margin:1.8em 0 .6em}
+.post-body h2{font-size:clamp(28px,3vw,40px)}
+.post-body h3{font-size:clamp(22px,2.2vw,30px)}
+.post-body h4{font-size:20px}
+.post-body a{color:var(--orchid)}
+.post-body strong{color:var(--ink)}
+.post-body ul,.post-body ol{margin:0 0 1.2em;padding-left:1.3em}
+.post-body li{margin:.35em 0}
+.post-body li::marker{color:var(--orchid)}
+.post-body blockquote{margin:1.6em 0;padding:4px 0 4px 20px;border-left:3px solid var(--orchid);color:var(--muted)}
+.post-body hr{border:0;border-top:1px solid var(--line);margin:2.5em 0}
+.post-body img{display:block;max-width:100%;height:auto;margin:1.6em 0;border-radius:16px;border:1px solid var(--line)}
+.post-body code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;background:var(--haze);padding:.15em .4em;border-radius:6px}
+.post-code{margin:1.6em 0;border:1px solid var(--line);border-radius:16px;background:rgba(var(--void-rgb),.75);overflow:hidden}
+.post-code-head{font-family:var(--grotesk);font-size:13px;color:var(--muted);padding:10px 16px;border-bottom:1px solid var(--line)}
+.post-code pre{margin:0;padding:18px 16px;overflow-x:auto;font-size:14.5px;line-height:1.65;color:var(--soft)}
+.post-code pre code{background:none;padding:0;font-size:inherit}

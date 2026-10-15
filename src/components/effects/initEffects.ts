@@ -161,9 +161,10 @@ export function initEffects(cfg: EffectsConfig): () => void {
     S.timeout(() => goTo(t), wasOpen ? 450 : 0)
   })
 
-  /* fit the hero name to the full width */
-  const nameEl = $('#name')
+  /* fit the hero name to the full width (home page only) */
+  const nameEl = document.getElementById('name')
   function fitName() {
+    if (!nameEl) return
     const base = 100; nameEl.style.fontSize = base + 'px'
     const cs = nameEl.querySelectorAll<HTMLElement>('.ch'), f = cs[0], l = cs[cs.length - 1]
     if (!f || !l) return
@@ -171,12 +172,14 @@ export function initEffects(cfg: EffectsConfig): () => void {
     const avail = nameEl.clientWidth
     if (sum > 0) nameEl.style.fontSize = Math.min(base * avail / sum * 0.99, 620) + 'px'
   }
-  fitName()
-  document.fonts?.ready.then(() => S.alive && fitName())
-  S.on(window, 'resize', fitName)
+  if (nameEl) {
+    fitName()
+    document.fonts?.ready.then(() => S.alive && fitName())
+    S.on(window, 'resize', fitName)
+  }
 
   /* ---------- preloader + hero entrance ---------- */
-  const loader = $('#loader'), num = $('#countNum')
+  const loader = document.getElementById('loader'), num = document.getElementById('countNum')
   const letters = $$('#name .ch')
   function entrance() {
     introPlayed = true
@@ -190,7 +193,8 @@ export function initEffects(cfg: EffectsConfig): () => void {
         .to(intro, { pop: 1, duration: 1.6, ease: 'elastic.out(1, 0.5)' }, 0.55)
     })
   }
-  if (RM || introPlayed) { loader.style.display = 'none'; intro.pop = 1; introPlayed = true }
+  if (!loader || !num) { intro.pop = 1 } // pages without the loader (blog): no intro
+  else if (RM || introPlayed) { loader.style.display = 'none'; intro.pop = 1; introPlayed = true }
   else {
     const t0 = performance.now(), dur = 1700
     ;(function tick(now: number) {
@@ -202,82 +206,84 @@ export function initEffects(cfg: EffectsConfig): () => void {
   }
 
   /* ---------- gravity hero (Matter.js) ---------- */
-  const hero = $('#hero'), gravBtn = $('#gravBtn'), gravLabel = $('#gravLabel'), gravHint = $('#gravHint')
-  const M = Matter
-  type Item = { el: HTMLElement; body: Matter.Body; ox: number; oy: number }
-  let engine: Matter.Engine | null = null, items: Item[] = [], walls: Matter.Body[] = [], running = false, drag: Matter.Constraint | null = null
-  const bodiesEls = letters.concat($$('#hero .gw, #hero .gb'))
-  const heroRect = () => hero.getBoundingClientRect()
-  function startGravity() {
-    const hr = heroRect()
-    engine = M.Engine.create(); engine.gravity.y = 1.1
-    items = bodiesEls.map((el) => {
-      el.style.transform = ''
-      const r = el.getBoundingClientRect()
-      const isLetter = el.classList.contains('ch')
-      const w = Math.max(6, r.width * (isLetter ? 0.86 : 1)), h = Math.max(6, r.height * (isLetter ? 0.78 : 1))
-      const ox = r.left - hr.left + r.width / 2, oy = r.top - hr.top + r.height / 2
-      const b = M.Bodies.rectangle(ox, oy, w, h, { restitution: 0.45, friction: 0.25, frictionAir: 0.012, density: isLetter ? 0.002 : 0.001, chamfer: { radius: Math.min(w, h) * 0.3 } })
-      if (!isLetter && el.offsetParent === null) b.isSensor = true
-      M.Body.setVelocity(b, { x: (Math.random() - 0.5) * 4, y: -Math.random() * 3 })
-      M.Body.setAngularVelocity(b, (Math.random() - 0.5) * 0.08)
-      return { el, body: b, ox, oy }
+  if (document.getElementById('gravBtn')) {
+    const hero = $('#hero'), gravBtn = $('#gravBtn'), gravLabel = $('#gravLabel'), gravHint = $('#gravHint')
+    const M = Matter
+    type Item = { el: HTMLElement; body: Matter.Body; ox: number; oy: number }
+    let engine: Matter.Engine | null = null, items: Item[] = [], walls: Matter.Body[] = [], running = false, drag: Matter.Constraint | null = null
+    const bodiesEls = letters.concat($$('#hero .gw, #hero .gb'))
+    const heroRect = () => hero.getBoundingClientRect()
+    function startGravity() {
+      const hr = heroRect()
+      engine = M.Engine.create(); engine.gravity.y = 1.1
+      items = bodiesEls.map((el) => {
+        el.style.transform = ''
+        const r = el.getBoundingClientRect()
+        const isLetter = el.classList.contains('ch')
+        const w = Math.max(6, r.width * (isLetter ? 0.86 : 1)), h = Math.max(6, r.height * (isLetter ? 0.78 : 1))
+        const ox = r.left - hr.left + r.width / 2, oy = r.top - hr.top + r.height / 2
+        const b = M.Bodies.rectangle(ox, oy, w, h, { restitution: 0.45, friction: 0.25, frictionAir: 0.012, density: isLetter ? 0.002 : 0.001, chamfer: { radius: Math.min(w, h) * 0.3 } })
+        if (!isLetter && el.offsetParent === null) b.isSensor = true
+        M.Body.setVelocity(b, { x: (Math.random() - 0.5) * 4, y: -Math.random() * 3 })
+        M.Body.setAngularVelocity(b, (Math.random() - 0.5) * 0.08)
+        return { el, body: b, ox, oy }
+      })
+      const TH = 400, w = hr.width, h = hr.height
+      walls = [
+        M.Bodies.rectangle(w / 2, h + TH / 2, w * 3, TH, { isStatic: true }),
+        M.Bodies.rectangle(-TH / 2, h / 2, TH, h * 4, { isStatic: true }),
+        M.Bodies.rectangle(w + TH / 2, h / 2, TH, h * 4, { isStatic: true }),
+        M.Bodies.rectangle(w / 2, -TH / 2 + 70, w * 3, TH, { isStatic: true }),
+      ]
+      M.Composite.add(engine.world, items.map((i) => i.body).concat(walls))
+      running = true; hero.classList.add('falling')
+      gravBtn.setAttribute('aria-pressed', 'true'); gravLabel.textContent = L.gravityOff; gravHint.textContent = L.gravityOffHint
+      let last = performance.now()
+      ;(function step(now: number) {
+        if (!running || !engine) return
+        const dt = Math.min(32, now - last); last = now
+        M.Engine.update(engine, dt)
+        for (let i = 0; i < items.length; i++) {
+          const it = items[i], p = it.body.position
+          it.el.style.transform = 'translate(' + (p.x - it.ox) + 'px,' + (p.y - it.oy) + 'px) rotate(' + it.body.angle + 'rad)'
+        }
+        S.raf(step)
+      })(last)
+    }
+    function stopGravity(instant = false) {
+      running = false
+      if (engine) { M.Composite.clear(engine.world, false); M.Engine.clear(engine); engine = null }
+      drag = null
+      items.forEach((it, i) => {
+        if (instant) { it.el.style.transition = ''; it.el.style.transform = ''; return }
+        it.el.style.transition = 'transform 1s cubic-bezier(.34,1.4,.5,1) ' + (i * 0.04) + 's'
+        it.el.style.transform = 'translate(0,0) rotate(0rad)'
+        S.timeout(() => { it.el.style.transition = ''; it.el.style.transform = '' }, 1100 + i * 40)
+      })
+      items = []
+      hero.classList.remove('falling')
+      gravBtn.setAttribute('aria-pressed', 'false'); gravLabel.textContent = L.gravityOn; gravHint.textContent = L.gravityOnHint
+    }
+    S.on(gravBtn, 'click', () => (running ? stopGravity() : startGravity()))
+    S.add(() => { if (running) stopGravity(true) })
+    bodiesEls.forEach((el) => {
+      S.on(el, 'pointerdown', (e: PointerEvent) => {
+        if (!running || !engine) return
+        const it = items.find((x) => x.el === el); if (!it) return
+        e.preventDefault()
+        const hr = heroRect(), px = e.clientX - hr.left, py = e.clientY - hr.top
+        const c = M.Constraint.create({ pointA: { x: px, y: py }, bodyB: it.body, pointB: { x: px - it.body.position.x, y: py - it.body.position.y }, stiffness: 0.12, damping: 0.08, length: 0 })
+        M.Composite.add(engine.world, c); drag = c
+        try { el.setPointerCapture(e.pointerId) } catch { /* not supported */ }
+      })
     })
-    const TH = 400, w = hr.width, h = hr.height
-    walls = [
-      M.Bodies.rectangle(w / 2, h + TH / 2, w * 3, TH, { isStatic: true }),
-      M.Bodies.rectangle(-TH / 2, h / 2, TH, h * 4, { isStatic: true }),
-      M.Bodies.rectangle(w + TH / 2, h / 2, TH, h * 4, { isStatic: true }),
-      M.Bodies.rectangle(w / 2, -TH / 2 + 70, w * 3, TH, { isStatic: true }),
-    ]
-    M.Composite.add(engine.world, items.map((i) => i.body).concat(walls))
-    running = true; hero.classList.add('falling')
-    gravBtn.setAttribute('aria-pressed', 'true'); gravLabel.textContent = L.gravityOff; gravHint.textContent = L.gravityOffHint
-    let last = performance.now()
-    ;(function step(now: number) {
-      if (!running || !engine) return
-      const dt = Math.min(32, now - last); last = now
-      M.Engine.update(engine, dt)
-      for (let i = 0; i < items.length; i++) {
-        const it = items[i], p = it.body.position
-        it.el.style.transform = 'translate(' + (p.x - it.ox) + 'px,' + (p.y - it.oy) + 'px) rotate(' + it.body.angle + 'rad)'
-      }
-      S.raf(step)
-    })(last)
+    S.on(window, 'pointermove', (e: PointerEvent) => {
+      if (!drag) return; const hr = heroRect()
+      drag.pointA.x = e.clientX - hr.left; drag.pointA.y = e.clientY - hr.top
+    })
+    S.on(window, 'pointerup', () => { if (drag && engine) M.Composite.remove(engine.world, drag); drag = null })
+    S.on(window, 'resize', () => { if (running) stopGravity() })
   }
-  function stopGravity(instant = false) {
-    running = false
-    if (engine) { M.Composite.clear(engine.world, false); M.Engine.clear(engine); engine = null }
-    drag = null
-    items.forEach((it, i) => {
-      if (instant) { it.el.style.transition = ''; it.el.style.transform = ''; return }
-      it.el.style.transition = 'transform 1s cubic-bezier(.34,1.4,.5,1) ' + (i * 0.04) + 's'
-      it.el.style.transform = 'translate(0,0) rotate(0rad)'
-      S.timeout(() => { it.el.style.transition = ''; it.el.style.transform = '' }, 1100 + i * 40)
-    })
-    items = []
-    hero.classList.remove('falling')
-    gravBtn.setAttribute('aria-pressed', 'false'); gravLabel.textContent = L.gravityOn; gravHint.textContent = L.gravityOnHint
-  }
-  S.on(gravBtn, 'click', () => (running ? stopGravity() : startGravity()))
-  S.add(() => { if (running) stopGravity(true) })
-  bodiesEls.forEach((el) => {
-    S.on(el, 'pointerdown', (e: PointerEvent) => {
-      if (!running || !engine) return
-      const it = items.find((x) => x.el === el); if (!it) return
-      e.preventDefault()
-      const hr = heroRect(), px = e.clientX - hr.left, py = e.clientY - hr.top
-      const c = M.Constraint.create({ pointA: { x: px, y: py }, bodyB: it.body, pointB: { x: px - it.body.position.x, y: py - it.body.position.y }, stiffness: 0.12, damping: 0.08, length: 0 })
-      M.Composite.add(engine.world, c); drag = c
-      try { el.setPointerCapture(e.pointerId) } catch { /* not supported */ }
-    })
-  })
-  S.on(window, 'pointermove', (e: PointerEvent) => {
-    if (!drag) return; const hr = heroRect()
-    drag.pointA.x = e.clientX - hr.left; drag.pointA.y = e.clientY - hr.top
-  })
-  S.on(window, 'pointerup', () => { if (drag && engine) M.Composite.remove(engine.world, drag); drag = null })
-  S.on(window, 'resize', () => { if (running) stopGravity() })
 
   /* ---------- marquee driven by scroll velocity ---------- */
   const track = document.getElementById('track')
@@ -483,7 +489,7 @@ export function initEffects(cfg: EffectsConfig): () => void {
   initHero3D(S, intro, mouse, RM)
 
   /* ---------- hero scroll-out: name tips back in 3D ---------- */
-  if (!RM) G(() => {
+  if (!RM && nameEl) G(() => {
     gsap.to('#name', { rotateX: 55, y: 60, opacity: 0.12, transformPerspective: 900, transformOrigin: '50% 100%', ease: 'none',
       scrollTrigger: { trigger: '#hero', start: 'top top', end: 'bottom top', scrub: true } })
     gsap.to('.hero-top', { yPercent: -60, opacity: 0, ease: 'none', scrollTrigger: { trigger: '#hero', start: 'top top', end: '60% top', scrub: true } })
