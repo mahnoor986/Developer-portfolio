@@ -1,14 +1,44 @@
 # PROGRESS
 
 ## Waiting for Mahnoor
-- Nothing blocking right now. Still needed later (see PLAN.md "Waiting on Mahnoor"):
-  Neon `DATABASE_URI`, `RESEND_API_KEY`, a verified domain in Resend, Vercel project + Blob token.
+- **Resend API key (finishes Phase 5).** Sign up at resend.com with **mahnoorrr41@gmail.com** (with the shared
+  `onboarding@resend.dev` sender, Resend only delivers to the address the account was created with), create an
+  API key, and add `RESEND_API_KEY=re_...` to `.env`. Then tell me and I'll send a test message and confirm the
+  alert arrives. The auto-reply to visitors needs your own verified domain; leave it off until then.
+- Still needed later (see PLAN.md "Waiting on Mahnoor"): Neon `DATABASE_URI`, a domain verified in Resend,
+  Vercel project + Blob token.
 - (Not blocking) Upload your CV PDF in Admin → Site settings → CV whenever you're ready.
 - (Not blocking) The contact form texts now use my defaults ("I usually reply within a day or two." /
   "Thanks! Your message is on its way. I'll get back to you soon."). Change them any time in
   Admin → Site settings → Contact.
 
 ## Log
+
+### 2026-10-15 — Phase 5 (emails) ✅ code done · ⏳ final check needs RESEND_API_KEY
+**Done**
+- `@payloadcms/email-resend` 3.90.2 in `payload.config.ts`, only when `RESEND_API_KEY` is set. Without a key,
+  Payload prints emails to the server console instead (useful in dev).
+- `src/hooks/messageEmails.ts` (Messages `afterChange`, create only):
+  - alert to Email settings → "Send new-message alerts to": subject "New message from {name} ({type})",
+    reply-to = the visitor, text + HTML (escaped) with a link to the message in the admin;
+  - auto-reply to the visitor if enabled in Email settings, `{name}` replaced, reply-to = Mahnoor.
+  - Runs in Next's `after()` so the form answers first; outside Next (scripts) it runs in the background.
+    Each email is sent independently (`Promise.allSettled`); failures are logged, never thrown.
+- New optional env vars `EMAIL_FROM_ADDRESS` (default `onboarding@resend.dev`) and `EMAIL_FROM_NAME`
+  (default "Mahnoor Portfolio"), documented in `.env.example`.
+
+**Decisions**
+- Auto-reply stays **off** by default: with `onboarding@resend.dev` Resend can only email the account owner, so
+  replies to visitors would fail until a domain is verified.
+- `req.context.skipEmails` lets scripts create messages without sending email.
+- I did not edit `.env` (the permission check blocked it, which is right); the sender defaults live in code.
+
+**Verified** (production build, real form submit in headless Chromium, auto-reply switched on temporarily)
+- No key: form answered with success; server log shows both emails (alert to mahnoorrr41@gmail.com, auto-reply to
+  the visitor). Message saved.
+- Invalid key: Resend API answered `401 API key is invalid` for both emails; errors were logged, form still showed
+  success, message saved.
+- build ✓, lint ✓, types ✓. Auto-reply switched back off and test messages deleted.
 
 ### 2026-10-15 — Phase 4 (contact form + inbox) ✅
 **Done**
@@ -160,4 +190,5 @@
 - `npm run dev`: `/` 200, `/admin` 200 ("Dashboard - Payload"), Payload created its tables in Postgres.
 
 ## Next
-- Phase 5: emails with Resend (alert to Mahnoor + optional auto-reply). Works without a key in dev; needs RESEND_API_KEY to really send.
+- Phase 6: Live Preview (drafts + autosave, /api/preview, RefreshRouteOnSave).
+- When the Resend key arrives: send a real test message and confirm the alert (finishes Phase 5).

@@ -1,6 +1,7 @@
 import type { CollectionConfig, Field } from 'payload'
 
 import { authenticated, authenticatedField, nobody, nobodyField } from '../access'
+import { emailOnNewMessage } from '../hooks/messageEmails'
 
 /** Fields written once by the contact form and never edited afterwards. */
 const fromForm = (field: Field): Field =>
@@ -34,6 +35,9 @@ export const Messages: CollectionConfig = {
     read: authenticated,
     update: authenticated,
     delete: authenticated,
+  },
+  hooks: {
+    afterChange: [emailOnNewMessage],
   },
   fields: [
     fromForm({ name: 'name', type: 'text', required: true }),

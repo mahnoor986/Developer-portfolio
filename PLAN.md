@@ -61,11 +61,12 @@ Log details in `PROGRESS.md`. Branch: `payload-migration`.
 **Done when:** a test message appears in the admin; invalid input and the honeypot are rejected.
 
 ## Phase 5 — Emails (Resend)
-- [ ] `resendAdapter` in `payload.config.ts` (skip gracefully if there's no API key in dev)
-- [ ] `Messages` afterChange (create): alert to notify email (reply-to = client, link to the admin item) + auto-reply "Hi {name}, …" if enabled
-- [ ] Send with Next `after()` so the form responds fast; log failures and don't throw
+- [x] `resendAdapter` in `payload.config.ts` (skip gracefully if there's no API key in dev)
+- [x] `Messages` afterChange (create): alert to notify email (reply-to = client, link to the admin item) + auto-reply "Hi {name}, …" if enabled
+- [x] Send with Next `after()` so the form responds fast; log failures and don't throw
 
 **Done when:** with a real key, the alert arrives (and the auto-reply too, once the domain is verified).
+_(Code done and tested without a key and with an invalid key. Final check waits for Mahnoor's `RESEND_API_KEY`.)_
 
 ## Phase 6 — Live Preview
 - [ ] `admin.livePreview` for site-settings, projects and posts, with Mobile/Tablet/Desktop breakpoints
