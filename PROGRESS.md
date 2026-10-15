@@ -8,29 +8,29 @@
 
 ### 2026-10-15 — Phase 1 (content model) ✅
 **Done**
-- Globals:  (tabs: General & SEO, Hero, About, Sections, Contact, Links, CV, Labels) and
-   (admin-only).
+- Globals: `site-settings` (tabs: General & SEO, Hero, About, Sections, Contact, Links, CV, Labels) and
+  `email-settings` (admin-only).
 - Collections: Projects (drafts, orderable), Skills, ProcessSteps, Experience, ContactOptions (all orderable),
   Messages, Posts (drafts + autosave, Lexical with code blocks + uploads, auto slug), Media (images + PDF), Users.
-- Vercel Blob plugin, enabled only when  is set.
-- Access helpers in . Types generated.
+- Vercel Blob plugin, enabled only when `BLOB_READ_WRITE_TOKEN` is set.
+- Access helpers in `src/access`. Types generated.
 
 **Decisions**
 - Every visible text is editable, including small interface labels (menu, gravity button, loader, ring texts),
-  in a  tab whose defaults match the legacy site.
-- Two-part headings ( + , e.g. "Selected" + "work"); a newline in  = .
-- Tags are  fields with  (no separate tags collection).
-- Messages:  is blocked for everyone (incl. admins); form fields have field-level create/update
-  locked, so only  and  can change. Default sort newest first.
-- ContactOptions: the public only sees  ones.
-- Legacy has two LinkedIn URLs (menu: , contact card: );
+  in a `Labels` tab whose defaults match the legacy site.
+- Two-part headings (`lead` + `accent`, e.g. "Selected" + "work"); a newline in `lead` becomes `<br>`.
+- Tags are `text` fields with `hasMany` (no separate tags collection).
+- Messages: `create` is blocked for everyone (incl. admins); form fields have field-level create/update
+  locked, so only `status` and `notes` can change. Default sort newest first.
+- ContactOptions: the public only sees `visible` ones.
+- Legacy has two LinkedIn URLs (menu: `/in/mahnoorsiddiqui-tech`, contact card: `/in/mahnoor-siddiqui-tech/`);
   using the one from CLAUDE.md (the second).
--  is marked experimental in Payload 3.90 but is what the plan asks for.
+- `orderable: true` is marked experimental in Payload 3.90 but is what the plan asks for.
 
 **Verified**
 - build ✓, lint ✓ (0 errors). REST as anonymous: content 200; messages/users/email-settings 403; POST /api/messages 403.
 - Local API checks: drafts and hidden contact options are hidden from the public; admin can change message
-  status/notes but not name/email/message; admins can't create messages; slug "Héllo Wörld: test!" → .
+  status/notes but not name/email/message; admins can't create messages; slug "Héllo Wörld: test!" → `hello-world-test`.
 - Logged-in admin: all globals/collection pages render. Temporary test data and users were deleted.
 
 ### 2026-10-15 — Phase 0 (project setup) ✅
