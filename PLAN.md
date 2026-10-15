@@ -36,8 +36,8 @@ Log details in `PROGRESS.md`. Branch: `payload-migration`.
 **Done when:** every section of `legacy/index.html` has a matching place in the admin.
 
 ## Phase 2 — Seed
-- [ ] `src/seed.ts` copies all content from `legacy/index.html` (texts, 4 projects, 26 skills, 5 steps, 2 jobs, 5 contact options, links) and uploads the avatar + 4 project images
-- [ ] Seed is safe to re-run (skips existing data)
+- [x] `src/seed.ts` copies all content from `legacy/index.html` (texts, 4 projects, 26 skills, 5 steps, 2 jobs, 5 contact options, links) and uploads the avatar + 4 project images
+- [x] Seed is safe to re-run (skips existing data)
 
 **Done when:** the admin shows exactly what the old site shows.
 

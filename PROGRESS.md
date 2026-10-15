@@ -3,8 +3,35 @@
 ## Waiting for Mahnoor
 - Nothing blocking right now. Still needed later (see PLAN.md "Waiting on Mahnoor"):
   Neon `DATABASE_URI`, `RESEND_API_KEY`, a verified domain in Resend, Vercel project + Blob token.
+- (Not blocking, needed by Phase 4) New wording for the contact form texts. The old site opened your email app,
+  the new form sends directly. My defaults unless you prefer others:
+  - Note under the form: "I usually reply within a day or two."
+  - Success message: "Thanks! Your message is on its way. I'll get back to you soon."
+- (Not blocking) Upload your CV PDF in Admin → Site settings → CV whenever you're ready.
 
 ## Log
+
+### 2026-10-15 — Phase 2 (seed) ✅
+**Done**
+- `src/seed.ts` (`npx payload run src/seed.ts`): uploads the avatar + 4 project images from `legacy/assets`,
+  creates 4 projects (published, same order and links), 26 skills (10 fe / 8 be / 8 tl), 5 process steps,
+  2 experience entries, 5 contact options, and fills every Site settings field with the legacy texts.
+
+**Decisions**
+- Re-run safety: documents are matched by title/name/label/filename and skipped if they exist; Site settings
+  are only filled while `metaTitle` is empty, so admin edits are never overwritten.
+- The about text is rich text, with "Mahnoor Siddiqui" in bold as on the legacy site.
+- Footer text uses `{year}` ("© {year} Mahnoor Siddiqui…"), so it stays current; it renders as 2026 today.
+- `formNote` / `successMessage` are copied exactly from legacy, but they describe the old mailto form
+  ("Sending opens your email app…"). Phase 4 replaces the mailto with a real Server Action, so these two texts
+  need new wording then (see Waiting for Mahnoor).
+- No CV PDF exists in the repo, so `cv` is left empty (the button stays hidden until one is uploaded).
+
+**Verified**
+- First run created everything; second run created nothing (all skipped).
+- API counts: projects 4, skills 26, process-steps 5, experience 2, contact-options 5, media 5. Image files
+  return 200 `image/png`; Voltra keeps `center top` crop; Rado Builders has no buttons (as on legacy).
+- build ✓, lint ✓ (0 errors).
 
 ### 2026-10-15 — Phase 1 (content model) ✅
 **Done**
@@ -59,4 +86,4 @@
 - `npm run dev`: `/` 200, `/admin` 200 ("Dashboard - Payload"), Payload created its tables in Postgres.
 
 ## Next
-- Phase 2: seed script.
+- Phase 3: frontend port (layout + fonts + legacy CSS, section components, Effects.tsx).
