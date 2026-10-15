@@ -938,3 +938,224 @@ html {
     outline-offset: 3px;
   }
 }
+
+/* ------------------------------------------------ 5. layout + sticky sidebar */
+@layer payload {
+  /* Payload's grid layout → the prototype's flex layout (sidebar + main column). */
+  .template-default,
+  .template-default--nav-open,
+  .template-default--nav-hydrated,
+  .template-default--nav-hydrated.template-default--nav-open {
+    display: flex;
+    flex-wrap: wrap;
+    grid-template-columns: none;
+    min-height: 100vh;
+    background: var(--void);
+  }
+  .template-default__wrap,
+  .template-default .template-default__wrap {
+    flex: 999 1 560px;
+    min-width: 0;
+    width: auto;
+    display: flex;
+    flex-direction: column;
+    background: var(--void);
+  }
+  .template-default__wrap::before,
+  .template-default__nav-overlay,
+  .template-default__nav-toggler-wrapper,
+  .app-header__mobile-nav-toggler {
+    display: none !important;
+  }
+
+  .ms-side {
+    flex: 1 1 100%;
+    background: var(--night);
+    border-right: 1px solid var(--line);
+    padding: 22px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    color: var(--ink);
+    font: 15px/1.55 var(--ms-body);
+  }
+  @media (min-width: 900px) {
+    .ms-side {
+      flex: 0 0 264px;
+      position: sticky;
+      top: 0;
+      height: 100vh;
+      overflow-y: auto;
+      align-self: flex-start;
+    }
+  }
+  .ms-side__top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .ms-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 12px;
+    border: 0;
+    background: transparent;
+    cursor: pointer;
+    border-radius: 999px;
+    min-height: 44px;
+    text-decoration: none;
+  }
+  .ms-wm {
+    display: flex;
+    align-items: flex-start;
+    height: 24px;
+  }
+  .ms-wm--icon {
+    height: 14px;
+  }
+  .ms-lt {
+    display: block;
+    height: 100%;
+    flex: none;
+    background: linear-gradient(110deg, var(--orchid) 0 38%, var(--ink) 50%, var(--orchid) 62% 100%);
+    background-size: 320% 100%;
+    background-position: 100% 0;
+    -webkit-mask: var(--m) center / 100% 100% no-repeat;
+    mask: var(--m) center / 100% 100% no-repeat;
+    transition: background-position 0.9s ease;
+  }
+  .ms-logo:hover .ms-lt,
+  .ms-logo:focus-visible .ms-lt {
+    background-position: 0 0;
+  }
+  .ms-l1 { --m: url('/assets/logo/letter-1.png'); aspect-ratio: 244 / 308; }
+  .ms-l2 { --m: url('/assets/logo/letter-2.png'); aspect-ratio: 188 / 308; }
+  .ms-l3 { --m: url('/assets/logo/letter-3.png'); aspect-ratio: 181 / 308; }
+  .ms-l4 { --m: url('/assets/logo/letter-4.png'); aspect-ratio: 175 / 308; }
+  .ms-l5 { --m: url('/assets/logo/letter-5.png'); aspect-ratio: 185 / 308; }
+  .ms-l6 { --m: url('/assets/logo/letter-6.png'); aspect-ratio: 186 / 308; }
+  .ms-l7 { --m: url('/assets/logo/letter-7.png'); aspect-ratio: 111 / 308; }
+  .ms-logo--login {
+    cursor: default;
+    justify-content: center;
+  }
+  .ms-logo--login .ms-wm {
+    height: 40px;
+  }
+  .ms-tagadmin {
+    font-family: var(--ms-grotesk);
+    font-size: 10.5px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--muted);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 3px 8px;
+    line-height: 1.55;
+  }
+  .ms-navgroups {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+  }
+  .ms-navgrp {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .ms-navlbl {
+    padding: 0 14px 6px;
+    font-family: var(--ms-grotesk);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+  .ms-nb {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    min-height: 42px;
+    padding: 0 14px;
+    border-radius: 999px;
+    border: 0;
+    background: transparent;
+    color: var(--muted);
+    font-size: 14.5px;
+    font-weight: 500;
+    text-align: left;
+    text-decoration: none;
+    cursor: pointer;
+    transition:
+      background 0.2s,
+      color 0.2s;
+  }
+  .ms-nb:hover {
+    background: var(--haze);
+    color: var(--ink);
+  }
+  .ms-nb.on,
+  .ms-nb.on:hover {
+    background: var(--orchid);
+    color: var(--void);
+    font-weight: 600;
+  }
+  .ms-nb .cnt {
+    margin-left: auto;
+    min-width: 24px;
+    height: 22px;
+    padding: 0 8px;
+    border-radius: 999px;
+    background: var(--haze);
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 700;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .ms-nb .cnt.hot {
+    background: var(--orchid);
+    color: var(--void);
+  }
+  .ms-nb.on .cnt {
+    background: var(--void);
+    color: var(--orchid);
+  }
+  .ms-usercard {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 14px;
+    border-radius: 18px;
+    background: var(--void);
+    border: 1px solid var(--line);
+  }
+  .ms-usercard__who {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    flex: 1;
+    text-decoration: none;
+    color: var(--ink);
+    line-height: 1.4;
+  }
+  .ms-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: var(--haze);
+    color: var(--orchid);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font: 700 14px var(--ms-display);
+    flex: none;
+  }
+}

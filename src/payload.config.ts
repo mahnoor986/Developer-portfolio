@@ -37,6 +37,13 @@ export default buildConfig({
       icons: [{ rel: 'icon', type: 'image/png', url: '/admin-icon.png' }],
     },
     toast: { position: 'bottom-center', duration: 5000 },
+    components: {
+      Nav: '@/admin/Nav',
+      graphics: {
+        Logo: '@/admin/Wordmark',
+        Icon: '@/admin/Wordmark#Icon',
+      },
+    },
   },
   collections: [
     Projects,
