@@ -30,6 +30,7 @@ import { Icon as Icon_03452ec5a81ade8ff66f76e668fce489 } from '@/admin/Wordmark'
 import { default as default_03452ec5a81ade8ff66f76e668fce489 } from '@/admin/Wordmark'
 import { default as default_234f0394bb53ea743a1ddf5fe7c28c2d } from '@/admin/TopBar'
 import { VibeProvider as VibeProvider_0a2e2d66ed5b51ab84d4e535977c17d1 } from '@/admin/VibeInit'
+import { default as default_c602bba5f858100118b6b3553ff47182 } from '@/admin/Dashboard'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
 import { VercelBlobClientUploadHandler as VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e } from '@payloadcms/storage-vercel-blob/client'
 
@@ -67,6 +68,7 @@ export const importMap = {
   "@/admin/Wordmark#default": default_03452ec5a81ade8ff66f76e668fce489,
   "@/admin/TopBar#default": default_234f0394bb53ea743a1ddf5fe7c28c2d,
   "@/admin/VibeInit#VibeProvider": VibeProvider_0a2e2d66ed5b51ab84d4e535977c17d1,
+  "@/admin/Dashboard#default": default_c602bba5f858100118b6b3553ff47182,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1,
   "@payloadcms/storage-vercel-blob/client#VercelBlobClientUploadHandler": VercelBlobClientUploadHandler_16c82c5e25f430251a3e3ba57219ff4e
 }

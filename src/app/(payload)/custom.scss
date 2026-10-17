@@ -1259,3 +1259,166 @@ html {
     justify-content: center;
   }
 }
+
+/* -------------------------------------------------------- 7. dashboard */
+@layer payload {
+  .ms-dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    padding: 28px clamp(18px, 3.4vw, 48px) 72px;
+  }
+  .ms-dash-heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .ms-dash-intro {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
+  }
+  .ms-dash-greeting {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--ms-head);
+    font-size: clamp(28px, 3.2vw, 44px);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: -0.02em;
+  }
+  .ms-dash-greeting span,
+  .ms-accent {
+    color: var(--orchid);
+  }
+  .ms-dash-subline {
+    font-size: 16px;
+  }
+  .ms-availability {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 50px;
+    padding: 0 8px 0 18px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--night);
+    color: var(--ink);
+    font: 500 14.5px var(--ms-body);
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+  }
+  .ms-availability:hover {
+    border-color: var(--orchid);
+  }
+  .ms-availability:disabled {
+    opacity: 0.65;
+    cursor: progress;
+  }
+  .ms-dashboard-stats {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+  .ms-stat-sub {
+    font-size: 14px;
+  }
+  .ms-dashboard-lower {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 24px;
+  }
+  .ms-latest-card {
+    flex: 999 1 520px;
+    min-width: 0;
+    padding: 20px 12px 12px;
+  }
+  .ms-latest-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 0 10px 10px;
+  }
+  .ms-latest-scroll {
+    overflow-x: auto;
+  }
+  .ms-latest-list {
+    display: flex;
+    min-width: 540px;
+    flex-direction: column;
+    gap: 2px;
+  }
+  .ms-empty-messages {
+    padding: 20px 12px;
+  }
+  .ms-message-person,
+  .ms-message-preview {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+  }
+  .ms-message-preview {
+    align-items: flex-start;
+    gap: 4px;
+  }
+  .ms-muted-small {
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .ms-dashboard-aside {
+    display: flex;
+    flex: 1 1 300px;
+    min-width: 0;
+    flex-direction: column;
+    gap: 24px;
+  }
+  .ms-quick-card,
+  .ms-glance-card {
+    display: flex;
+    flex-direction: column;
+  }
+  .ms-quick-card {
+    gap: 14px;
+  }
+  .ms-dashboard-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+  .ms-glance-card .ms-h2 {
+    margin-bottom: 8px;
+  }
+  .ms-glance-row,
+  .ms-glance-cv {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--line);
+  }
+  .ms-glance-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .ms-glance-cv {
+    padding: 6px 0 0;
+    border-bottom: 0;
+  }
+  .ms-dash-error {
+    margin: -12px 0 0;
+    color: var(--ms-danger);
+  }
+  @media (max-width: 560px) {
+    .ms-dashboard-stats {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .ms-dash-heading {
+      align-items: flex-start;
+    }
+  }
+}

@@ -41,6 +41,9 @@ export default buildConfig({
       Nav: '@/admin/Nav',
       providers: ['@/admin/VibeInit#VibeProvider'],
       actions: ['@/admin/TopBar'],
+      views: {
+        dashboard: { Component: '@/admin/Dashboard' },
+      },
       graphics: {
         Logo: '@/admin/Wordmark',
         Icon: '@/admin/Wordmark#Icon',

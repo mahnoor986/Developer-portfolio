@@ -14,6 +14,25 @@
 
 ## Log
 
+### 2026-10-17 — Phase 9 (4/16): Dashboard
+**Done**
+- Replaced Payload's default dashboard with the Night Studio greeting, availability control, four live stat cards,
+  latest messages, quick actions and site-at-a-glance card.
+- Availability saves to the Site settings global. Dashboard data comes through the authenticated Local API.
+- The Upload CV shortcut opens Site settings with the CV tab selected.
+
+**Verified**
+- Local Payload data rendered correctly (4 projects, 26 skills, 5 visible contact options); a temporary new
+  message populated the count and latest-message row, then was deleted.
+- Availability toggled off and back on through the REST API. Add project and Upload CV shortcuts opened their
+  intended views; temporary admin removed after testing.
+- Desktop (1440px) and 390px views checked in Ultraviolet, Aqua and Blush; no horizontal overflow or app console
+  errors. The blocked Gravatar request from the admin account avatar was excluded as an external resource.
+- `npm run lint` passes (three existing test warnings); `npm run build` passes.
+
+**Next**
+- Phase 9 Inbox.
+
 ### 2026-10-17 — Phase 9 (3/16): top bar
 **Done**
 - Added sticky Payload top bar with REST API search across messages, projects, posts, skills and media;
