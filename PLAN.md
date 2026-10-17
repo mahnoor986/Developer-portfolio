@@ -93,7 +93,7 @@ Build in this order, commit after each. Check each against the prototype's CSS/m
 at desktop and 390px wide, with real Payload data; keep access rules, hooks and Live Preview working.
 - [x] Tokens / `custom.scss` (vibes on `html[data-vibe]`, fonts, Payload variables, buttons/inputs/tabs/tables, no scrollbars), `admin.theme: 'dark'`, `admin.meta`
 - [x] Sticky Nav + logo (mask "mahnoor" letters, ADMIN chip, groups with counts, active pill, user card + logout)
-- [ ] Top bar (global search, vibe switcher saved as `mahnoor-admin-vibe`, View site)
+- [x] Top bar (global search, vibe switcher saved as `mahnoor-admin-vibe`, View site)
 - [ ] Dashboard (greeting, Available toggle, 4 stat cards, latest messages, quick actions, site at a glance)
 - [ ] Inbox (status filters with counts, search, split list/reading pane, auto Read, Reply by email → Replied, delete, status pills, autosaving notes)
 - [ ] Site settings (pill tabs, save state text, Contact heading preview, CV empty/uploaded states)

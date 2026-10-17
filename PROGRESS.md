@@ -14,6 +14,26 @@
 
 ## Log
 
+### 2026-10-17 — Phase 9 (3/16): top bar
+**Done**
+- Added sticky Payload top bar with REST API search across messages, projects, posts, skills and media;
+  results link to matching admin records or lists.
+- Added Ultraviolet/Aqua/Blush switcher, persisted as `mahnoor-admin-vibe`, and a View site link.
+- Removed the inline script from the custom Payload header after browser inspection showed a React warning;
+  the admin provider now applies the saved vibe during layout setup.
+
+**Verified**
+- `npm run lint` passes (three existing warnings in E2E test files); `npm run build` passes.
+- Authenticated admin checked at 1440px and 390px in all three vibes; no horizontal overflow, top bar and
+  search visible in every case. Search for `React` returned a matching skill; Aqua persisted after reload.
+- No app runtime errors. The browser sandbox blocked the Payload avatar's Gravatar request; this is external
+  to the top bar. Temporary admin removed after verification.
+
+**Next**
+- Phase 9 Dashboard.
+- Top bar changes are ready for a separate commit; commit is pending because `.git` is read-only in the
+  current tool permission profile. Git Credential Manager reports the authenticated account `mahnoor986`.
+
 ### 2026-10-15 — Phase 8 (blog) ✅
 **Done**
 - `/blog` (static): kicker, two-part heading, intro and a grid of post cards (cover, date, title, excerpt, tags,

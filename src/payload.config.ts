@@ -39,6 +39,8 @@ export default buildConfig({
     toast: { position: 'bottom-center', duration: 5000 },
     components: {
       Nav: '@/admin/Nav',
+      providers: ['@/admin/VibeInit#VibeProvider'],
+      actions: ['@/admin/TopBar'],
       graphics: {
         Logo: '@/admin/Wordmark',
         Icon: '@/admin/Wordmark#Icon',
