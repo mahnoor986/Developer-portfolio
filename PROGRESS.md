@@ -31,8 +31,7 @@
 
 **Next**
 - Phase 9 Dashboard.
-- Top bar changes are ready for a separate commit; commit is pending because `.git` is read-only in the
-  current tool permission profile. Git Credential Manager reports the authenticated account `mahnoor986`.
+- Commit `4f49fd6` was pushed to `origin/payload-migration`.
 
 ### 2026-10-15 — Phase 8 (blog) ✅
 **Done**
