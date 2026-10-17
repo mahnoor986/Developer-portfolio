@@ -1422,3 +1422,199 @@ html {
     }
   }
 }
+
+/* ------------------------------------------------------------- 8. inbox */
+@layer payload {
+  .ms-inbox {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 28px clamp(18px, 3.4vw, 48px) 72px;
+  }
+  .ms-inbox-heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .ms-inbox-title {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .ms-inbox-search {
+    flex: 1 1 280px;
+    max-width: 340px;
+  }
+  .ms-inbox-filters {
+    align-items: center;
+  }
+  .ms-inbox-layout {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    gap: 22px;
+  }
+  .ms-inbox-list-card {
+    display: flex;
+    flex: 1 1 330px;
+    min-width: 0;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px;
+  }
+  .ms-inbox-list-card .ms-msg {
+    gap: 7px;
+  }
+  .ms-inbox-row-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+  }
+  .ms-inbox-row-tags {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .ms-inbox-empty {
+    padding: 22px 14px;
+  }
+  .ms-inbox-reading {
+    display: flex;
+    flex: 2 1 440px;
+    min-width: 0;
+    flex-direction: column;
+    gap: 18px;
+  }
+  .ms-inbox-person-head {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+  }
+  .ms-inbox-person-copy {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .ms-inbox-sender {
+    font-size: 24px;
+  }
+  .ms-inbox-email {
+    min-width: 0;
+    color: var(--muted);
+    overflow-wrap: anywhere;
+  }
+  .ms-inbox-email:hover {
+    color: var(--orchid);
+  }
+  .ms-inbox-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .ms-inbox-actions .ms-pill {
+    min-height: 40px;
+  }
+  .ms-inbox-info {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .ms-inbox-info > div {
+    display: flex;
+    min-width: 0;
+    flex-direction: column;
+    gap: 7px;
+    padding: 13px 14px;
+    border: 1px solid var(--line);
+    border-radius: 14px;
+    background: var(--void);
+    overflow-wrap: anywhere;
+  }
+  .ms-inbox-message-body {
+    padding: 20px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--void);
+  }
+  .ms-inbox-message-body p {
+    margin: 0;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+  .ms-inbox-status-block {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+  }
+  .ms-inbox-notes-label {
+    margin-bottom: -10px;
+    color: var(--ink);
+    font-family: var(--ms-grotesk);
+    font-size: 11.5px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+  .ms-inbox-notes {
+    min-height: 120px;
+    resize: vertical;
+  }
+  .ms-inbox-save-state {
+    margin-top: -12px;
+    color: var(--muted);
+    font-size: 13px;
+  }
+  .ms-inbox-source {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+    color: var(--muted);
+    font-size: 13px;
+    overflow-wrap: anywhere;
+  }
+  .ms-inbox-source span {
+    color: var(--ink);
+  }
+  .ms-inbox-error {
+    margin: -8px 0 0;
+    color: var(--ms-danger);
+  }
+  .ms-inbox-no-selection {
+    display: flex;
+    flex: 2 1 440px;
+    min-height: 280px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    text-align: center;
+  }
+  .ms-inbox-empty-mark {
+    display: flex;
+    width: 48px;
+    height: 48px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--haze);
+    color: var(--orchid);
+  }
+  @media (max-width: 720px) {
+    .ms-inbox-info {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .ms-inbox-actions {
+      width: 100%;
+    }
+    .ms-inbox-actions .ms-pill {
+      flex: 1;
+    }
+  }
+}

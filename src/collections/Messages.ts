@@ -27,6 +27,11 @@ export const Messages: CollectionConfig = {
     defaultColumns: ['status', 'createdAt', 'name', 'projectType'],
     listSearchableFields: ['name', 'email', 'message'],
     description: 'Messages sent through the contact form.',
+    components: {
+      views: {
+        list: { Component: '@/admin/Inbox' },
+      },
+    },
   },
   defaultSort: '-createdAt',
   access: {

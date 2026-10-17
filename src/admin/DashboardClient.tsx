@@ -129,7 +129,7 @@ export default function DashboardClient({ data }: { data: DashboardData }) {
               {data.latest.length === 0 ? (
                 <p className="ms-hint ms-empty-messages">No messages yet.</p>
               ) : data.latest.map((message) => (
-                <Link className="ms-mrow" href={`${admin}/collections/messages/${message.id}`} key={message.id}>
+                <Link className="ms-mrow" href={`${admin}/collections/messages?open=${encodeURIComponent(message.id)}`} key={message.id}>
                   <span className="ms-message-person">
                     <span className={message.status === 'new' ? 'ms-b ms-ell' : 'ms-ell'}>{message.name}</span>
                     <span className="ms-muted-small">{message.when}</span>

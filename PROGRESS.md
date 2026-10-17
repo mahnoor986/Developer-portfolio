@@ -14,6 +14,23 @@
 
 ## Log
 
+### 2026-10-17 — Phase 9 (5/16): Inbox
+**Done**
+- Replaced the Messages list with a two-pane inbox. Added counts and filters for All/New/Read/Replied/Spam/Archived,
+  search, message details, status controls, Reply by email, delete confirmation and private notes autosave.
+- Opening a new message marks it Read. Reply by email marks it Replied. Name, email and message remain read-only;
+  mutations use the authenticated REST API and preserve the collection's access rules and hooks.
+- Dashboard and global-search message links use `?open=id` to select and show the target in the Inbox.
+
+**Verified**
+- Temporary local records exercised auto-read, status counts/filters, search and empty state, reply status,
+  notes persistence after reload, deep-link selection, and deletion; temporary user and records removed.
+- Desktop (1440px) and 390px checked in Ultraviolet, Aqua and Blush; no horizontal overflow or app console errors.
+- `npm run lint` passes with the three pre-existing test warnings; `npm run build` passes.
+
+**Next**
+- Phase 9 Site settings.
+
 ### 2026-10-17 — Phase 9 (4/16): Dashboard
 **Done**
 - Replaced Payload's default dashboard with the Night Studio greeting, availability control, four live stat cards,
