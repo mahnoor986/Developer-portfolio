@@ -14,6 +14,20 @@
 
 ## Log
 
+### 2026-10-19 — Phase 9 (14/16): Email settings — complete
+**Done**
+- Added a live automatic-reply preview that updates with the subject, body and alert address, plus clear messaging when auto-reply is disabled.
+- Added an authenticated test-email action that sends to the saved alert address when Resend is configured and reports a clear setup message when the API key is missing.
+
+**Verified**
+- Authenticated browser checks confirmed the preview updates while typing and the test-email action returns the expected missing-Resend-key message.
+- Email settings checked in violet, aqua and blush at 1440px and 390px; no horizontal overflow or application page errors.
+- Production build passed and includes `/api/email-settings/test`; lint passed with only three existing unused-variable warnings in E2E specs.
+- Temporary admin account and browser scripts were removed. Sending a real email remains pending the Resend API key already listed under Waiting for Mahnoor.
+
+**Next**
+- Users (Phase 9 item 15/16).
+
 ### 2026-10-19 — Phase 9 (13/16): Media — complete
 **Done**
 - Added a media grid with All/Images/PDFs filters, search, multi-file image/PDF upload, file details and deletion controls.

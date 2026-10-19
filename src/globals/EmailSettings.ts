@@ -12,6 +12,15 @@ export const EmailSettings: GlobalConfig = {
   },
   fields: [
     {
+      name: 'emailSettingsPreview',
+      type: 'ui',
+      admin: {
+        components: {
+          Field: '@/admin/EmailSettingsDesign#EmailSettingsPreview',
+        },
+      },
+    },
+    {
       name: 'notifyEmail',
       label: 'Send new-message alerts to',
       type: 'email',
