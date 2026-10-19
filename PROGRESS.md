@@ -29,7 +29,24 @@
   remain null.
 
 **Next**
-- Projects (Phase 9 item 7/16).
+- Skills (Phase 9 item 8/16).
+
+### 2026-10-19 — Phase 9 (7/16): Projects — complete
+**Done**
+- Replaced Payload's standard Projects list with authenticated project cards showing thumbnails, category/year,
+  publication status and accessible ordering controls.
+- Added All/Published/Drafts filters, search, publish/unpublish, edit, delete confirmation and Add project links.
+- Kept Payload's standard project editor and configured Live Preview available from Edit.
+
+**Verified**
+- Production build passed; lint passed with the three existing unused-variable warnings in E2E specs.
+- Authenticated browser checks exercised filters/search, publish and unpublish, reorder and order restoration, delete,
+  Add and Edit routes. The temporary test project and admin account were deleted afterwards.
+- Projects list and editor checked in violet, aqua and blush at 1440px and 390px; no horizontal overflow.
+- Development UI had no application exceptions. Browser sandbox blocked the existing Gravatar avatar request.
+
+**Next**
+- Skills (Phase 9 item 8/16).
 
 ### 2026-10-17 — Phase 9 (5/16): Inbox
 **Done**

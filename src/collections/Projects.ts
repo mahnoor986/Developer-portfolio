@@ -26,7 +26,12 @@ export const Projects: CollectionConfig = {
     group: 'Content',
     useAsTitle: 'title',
     defaultColumns: ['title', 'category', 'year', '_status'],
-    description: 'Shown in "Selected work". Drag rows to change the order.',
+    description: 'Shown in "Selected work". Use the arrows in the project list to change the order.',
+    components: {
+      views: {
+        list: { Component: '@/admin/Projects' },
+      },
+    },
   },
   access: {
     read: publishedOrAuthenticated,

@@ -97,7 +97,7 @@ at desktop and 390px wide, with real Payload data; keep access rules, hooks and 
 - [x] Dashboard (greeting, Available toggle, 4 stat cards, latest messages, quick actions, site at a glance)
 - [x] Inbox (status filters with counts, search, split list/reading pane, auto Read, Reply by email → Replied, delete, status pills, autosaving notes)
 - [x] Site settings (pill tabs, save state text, Contact heading preview, CV empty/uploaded states)
-- [ ] Projects (card list: thumbnail, status chip, ↑/↓ order, Publish/Unpublish, Edit, Delete, filters, search; edit view styled, Live Preview kept)
+- [x] Projects (card list: thumbnail, status chip, ↑/↓ order, Publish/Unpublish, Edit, Delete, filters, search; edit view styled, Live Preview kept)
 - [ ] Skills (inline edit, add, delete, ↑/↓, category filter, search)
 - [ ] Process steps (inline edit, add, delete, ↑/↓)
 - [ ] Experience (inline edit, add, delete, ↑/↓)

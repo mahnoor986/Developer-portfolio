@@ -138,7 +138,7 @@ export interface UserAuthOperations {
   };
 }
 /**
- * Shown in "Selected work". Drag rows to change the order.
+ * Shown in "Selected work". Use the arrows in the project list to change the order.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "projects".
