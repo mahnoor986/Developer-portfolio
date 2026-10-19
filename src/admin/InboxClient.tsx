@@ -1,6 +1,8 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { showUndoableDelete } from './toasts'
 
 export type MessageStatus = 'new' | 'read' | 'replied' | 'spam' | 'archived'
 export type InboxFilter = 'all' | MessageStatus
@@ -69,6 +71,7 @@ function MailIcon() {
 }
 
 export default function InboxClient({ initialData, initialFilter, initialSelectedId }: { initialData: InboxData; initialFilter?: InboxFilter; initialSelectedId?: string }) {
+  const router = useRouter()
   const [messages, setMessages] = useState(initialData.messages)
   const [counts, setCounts] = useState(initialData.counts)
   const [filter, setFilter] = useState<InboxFilter>(initialFilter ?? 'all')
@@ -173,22 +176,41 @@ export default function InboxClient({ initialData, initialFilter, initialSelecte
   }
 
   const removeMessage = async () => {
-    if (!selected || !window.confirm(`Delete the message from ${selected.name}? This cannot be undone.`)) return
-    setError('')
-    try {
-      const response = await fetch(`/api/messages/${encodeURIComponent(selected.id)}`, { method: 'DELETE', credentials: 'include' })
-      if (!response.ok) throw new Error('Delete failed')
-      const removedStatus = selected.status
-      setMessages((current) => current.filter((message) => message.id !== selected.id))
-      setCounts((current) => ({
-        ...current,
-        [removedStatus]: Math.max(0, current[removedStatus] - 1),
-        all: ['spam', 'archived'].includes(removedStatus) ? current.all : Math.max(0, current.all - 1),
-      }))
-      setSelectedId(null)
-    } catch {
-      setError('The message could not be deleted. Please try again.')
-    }
+    if (!selected || !window.confirm(`Delete the message from ${selected.name}? You can undo this for five seconds.`)) return
+    const message = selected
+    const index = messages.findIndex((item) => item.id === message.id)
+    const removedStatus = message.status
+    showUndoableDelete({
+      label: `Message from ${message.name}`,
+      remove: () => {
+        setMessages((current) => current.filter((item) => item.id !== message.id))
+        setCounts((current) => ({
+          ...current,
+          [removedStatus]: Math.max(0, current[removedStatus] - 1),
+          all: ['spam', 'archived'].includes(removedStatus) ? current.all : Math.max(0, current.all - 1),
+        }))
+        setSelectedId(null)
+      },
+      undo: () => {
+        setMessages((current) => {
+          if (current.some((item) => item.id === message.id)) return current
+          const next = [...current]
+          next.splice(Math.min(index, next.length), 0, message)
+          return next
+        })
+        setCounts((current) => ({
+          ...current,
+          [removedStatus]: current[removedStatus] + 1,
+          all: ['spam', 'archived'].includes(removedStatus) ? current.all : current.all + 1,
+        }))
+        setSelectedId(message.id)
+      },
+      commit: async () => {
+        const response = await fetch(`/api/messages/${encodeURIComponent(message.id)}`, { method: 'DELETE', credentials: 'include' })
+        if (!response.ok) throw new Error('The message could not be deleted. Please try again.')
+        router.refresh()
+      },
+    })
   }
 
   const replyHref = selected

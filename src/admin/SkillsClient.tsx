@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useMemo, useState } from 'react'
+import { showUndoableDelete } from './toasts'
 
 export type SkillCategory = 'fe' | 'be' | 'tl'
 export type SkillCard = { id: string; name: string; category: SkillCategory; blurb: string; order: string }
@@ -93,19 +94,23 @@ export default function SkillsClient({ initialSkills }: { initialSkills: SkillCa
   }
 
   const remove = async (skill: SkillCard) => {
-    if (!window.confirm(`Delete “${skill.name}”? This cannot be undone.`)) return
-    setBusy(skill.id)
-    setFeedback('')
-    try {
+    if (!window.confirm(`Delete “${skill.name}”? You can undo this for five seconds.`)) return
+    const index = skills.findIndex((item) => item.id === skill.id)
+    showUndoableDelete({
+      label: `Skill “${skill.name}”`,
+      remove: () => setSkills((current) => current.filter((item) => item.id !== skill.id)),
+      undo: () => setSkills((current) => {
+        if (current.some((item) => item.id === skill.id)) return current
+        const next = [...current]
+        next.splice(Math.min(index, next.length), 0, skill)
+        return next
+      }),
+      commit: async () => {
       const response = await fetch(`/api/skills/${encodeURIComponent(skill.id)}`, { method: 'DELETE', credentials: 'same-origin' })
       if (!response.ok) throw new Error('Skill could not be deleted.')
-      await refresh()
-      setFeedback('Skill deleted.')
-    } catch (error) {
-      setFeedback(error instanceof Error ? error.message : 'Skill could not be deleted.')
-    } finally {
-      setBusy(null)
-    }
+        router.refresh()
+      },
+    })
   }
 
   const move = async (index: number, direction: -1 | 1) => {

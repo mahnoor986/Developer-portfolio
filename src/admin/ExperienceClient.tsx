@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { showUndoableDelete } from './toasts'
 
 export type ExperienceCard = { id: string; period: string; title: string; organization: string; description: string; order: string }
 type Draft = Pick<ExperienceCard, 'period' | 'title' | 'organization' | 'description'>
@@ -60,17 +61,23 @@ export default function ExperienceClient({ initialEntries }: { initialEntries: E
     } finally { setBusy(null) }
   }
   const remove = async (entry: ExperienceCard) => {
-    if (!window.confirm(`Delete “${entry.title}”? This cannot be undone.`)) return
-    setBusy(entry.id)
-    setFeedback('')
-    try {
+    if (!window.confirm(`Delete “${entry.title}”? You can undo this for five seconds.`)) return
+    const index = entries.findIndex((item) => item.id === entry.id)
+    showUndoableDelete({
+      label: `Experience entry “${entry.title}”`,
+      remove: () => setEntries((current) => current.filter((item) => item.id !== entry.id)),
+      undo: () => setEntries((current) => {
+        if (current.some((item) => item.id === entry.id)) return current
+        const next = [...current]
+        next.splice(Math.min(index, next.length), 0, entry)
+        return next
+      }),
+      commit: async () => {
       const response = await fetch(`/api/experience/${encodeURIComponent(entry.id)}`, { method: 'DELETE', credentials: 'same-origin' })
       if (!response.ok) throw new Error('Experience entry could not be deleted.')
-      await refresh()
-      setFeedback('Experience entry deleted.')
-    } catch (error) {
-      setFeedback(error instanceof Error ? error.message : 'Experience entry could not be deleted.')
-    } finally { setBusy(null) }
+        router.refresh()
+      },
+    })
   }
   const move = async (index: number, direction: -1 | 1) => {
     const entry = entries[index]

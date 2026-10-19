@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useMemo, useState } from 'react'
+import { showUndoableDelete } from './toasts'
 
 export type ProjectCard = {
   id: string
@@ -113,19 +114,23 @@ export default function ProjectsClient({ initialProjects }: { initialProjects: P
   }
 
   const remove = async (project: ProjectCard) => {
-    if (!window.confirm(`Delete “${project.title}”? This cannot be undone.`)) return
-    setBusy(project.id)
-    setFeedback('')
-    try {
+    if (!window.confirm(`Delete “${project.title}”? You can undo this for five seconds.`)) return
+    const index = projects.findIndex((item) => item.id === project.id)
+    showUndoableDelete({
+      label: `Project “${project.title}”`,
+      remove: () => setProjects((current) => current.filter((item) => item.id !== project.id)),
+      undo: () => setProjects((current) => {
+        if (current.some((item) => item.id === project.id)) return current
+        const next = [...current]
+        next.splice(Math.min(index, next.length), 0, project)
+        return next
+      }),
+      commit: async () => {
       const response = await fetch(`/api/projects/${encodeURIComponent(project.id)}`, { method: 'DELETE', credentials: 'same-origin' })
       if (!response.ok) throw new Error('Project could not be deleted.')
-      await refresh()
-      setFeedback('Project deleted.')
-    } catch (error) {
-      setFeedback(error instanceof Error ? error.message : 'Project could not be deleted.')
-    } finally {
-      setBusy(null)
-    }
+        router.refresh()
+      },
+    })
   }
 
   return <main className="ms-projects">

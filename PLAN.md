@@ -106,7 +106,7 @@ at desktop and 390px wide, with real Payload data; keep access rules, hooks and 
 - [x] Media (grid, All/Images/PDFs filters, search, upload, delete blocked when in use)
 - [x] Email settings (email preview card that updates while typing, "Send me a test email")
 - [x] Users (rows with initials avatar, role chip, status chip)
-- [ ] Toasts (orchid pill, bottom centre, Undo for deletes where possible)
+- [x] Toasts (orchid pill, bottom centre, Undo for deletes where possible)
 
 **Done when:** the admin matches the portfolio's look.
 

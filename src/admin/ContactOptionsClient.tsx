@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { showUndoableDelete } from './toasts'
 
 export type ContactOptionCard = { id: string; label: string; visible: boolean; order: string }
 
@@ -65,17 +66,23 @@ export default function ContactOptionsClient({ initialOptions }: { initialOption
   }
 
   const remove = async (option: ContactOptionCard) => {
-    if (!window.confirm(`Delete “${option.label}”? This cannot be undone.`)) return
-    setBusy(option.id)
-    setFeedback('')
-    try {
+    if (!window.confirm(`Delete “${option.label}”? You can undo this for five seconds.`)) return
+    const index = options.findIndex((item) => item.id === option.id)
+    showUndoableDelete({
+      label: `Contact option “${option.label}”`,
+      remove: () => setOptions((current) => current.filter((item) => item.id !== option.id)),
+      undo: () => setOptions((current) => {
+        if (current.some((item) => item.id === option.id)) return current
+        const next = [...current]
+        next.splice(Math.min(index, next.length), 0, option)
+        return next
+      }),
+      commit: async () => {
       const response = await fetch(`/api/contact-options/${encodeURIComponent(option.id)}`, { method: 'DELETE', credentials: 'same-origin' })
       if (!response.ok) throw new Error('Contact option could not be deleted.')
-      await refresh()
-      setFeedback('Contact option deleted.')
-    } catch (error) {
-      setFeedback(error instanceof Error ? error.message : 'Contact option could not be deleted.')
-    } finally { setBusy(null) }
+        router.refresh()
+      },
+    })
   }
 
   const move = async (index: number, direction: -1 | 1) => {

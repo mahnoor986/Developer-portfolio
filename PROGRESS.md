@@ -14,6 +14,20 @@
 
 ## Log
 
+### 2026-10-19 — Phase 9 (16/16): Toasts — complete
+**Done**
+- Styled Payload toasts as responsive orchid-vibe pills at the existing bottom-center position.
+- Added five-second Undo to custom delete actions across the admin. The server delete is deferred during the undo window; the row returns immediately when Undo is clicked.
+
+**Verified**
+- Production browser checks confirmed the toast appearance and Undo behavior in violet, aqua and blush at 1440px and 390px; no horizontal overflow or page errors. Undo left the underlying record intact.
+- Final production build passed. Final lint passed with three existing unused-variable warnings in E2E specs.
+- A disposable account's delayed REST delete returned HTTP 403; the UI restored its row and displayed an error. Local API access checks allowed the same authenticated test account, so this REST authorization mismatch remains to investigate before relying on deletion commits. No project content was lost.
+- All disposable test accounts and temporary artifacts were removed. The pre-existing untracked `tmp-p9user.ts` was left untouched.
+
+**Next**
+- Phase 9 complete. Phase 10 was not started.
+
 ### 2026-10-19 — Phase 9 (15/16): Users — complete
 **Done**
 - Replaced the default user list with responsive rows showing initials, email, an Admin role chip and Active/Locked status chip, with native Edit and Add user links.

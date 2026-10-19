@@ -1,7 +1,9 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { showUndoableDelete } from './toasts'
 
 export type UserRow = {
   id: string
@@ -13,24 +15,27 @@ export type UserRow = {
 }
 
 export default function UsersClient({ initialUsers }: { initialUsers: UserRow[] }) {
+  const router = useRouter()
   const [users, setUsers] = useState(initialUsers)
-  const [busy, setBusy] = useState<string | null>(null)
-  const [feedback, setFeedback] = useState('')
 
   const remove = async (account: UserRow) => {
-    if (account.isYou || !window.confirm(`Remove ${account.email} from admin access?`)) return
-    setBusy(account.id)
-    setFeedback('')
-    try {
+    if (account.isYou || !window.confirm(`Remove ${account.email} from admin access? You can undo this for five seconds.`)) return
+    const index = users.findIndex((item) => item.id === account.id)
+    showUndoableDelete({
+      label: `User ${account.email}`,
+      remove: () => setUsers((current) => current.filter((item) => item.id !== account.id)),
+      undo: () => setUsers((current) => {
+        if (current.some((item) => item.id === account.id)) return current
+        const next = [...current]
+        next.splice(Math.min(index, next.length), 0, account)
+        return next
+      }),
+      commit: async () => {
       const response = await fetch(`/api/users/${encodeURIComponent(account.id)}`, { method: 'DELETE', credentials: 'same-origin' })
       if (!response.ok) throw new Error('This user could not be removed.')
-      setUsers((current) => current.filter((item) => item.id !== account.id))
-      setFeedback(`${account.email} was removed.`)
-    } catch (error) {
-      setFeedback(error instanceof Error ? error.message : 'This user could not be removed.')
-    } finally {
-      setBusy(null)
-    }
+        router.refresh()
+      },
+    })
   }
 
   return <section className="ms-users" aria-labelledby="ms-users-title">
@@ -39,7 +44,6 @@ export default function UsersClient({ initialUsers }: { initialUsers: UserRow[] 
       <Link className="ms-pill solid" href="/admin/collections/users/create">+ Add user</Link>
     </header>
     <p className="ms-users-note">Every account currently has admin access. Roles are not configured for this project.</p>
-    {feedback && <p className="ms-projects-feedback" role="status">{feedback}</p>}
     <div className="ms-users-list" aria-label="Admin users">
       {users.map((account) => <article className="ms-user-row" key={account.id}>
         <span className="ms-user-avatar" aria-hidden="true">{account.initials}</span>
@@ -48,7 +52,7 @@ export default function UsersClient({ initialUsers }: { initialUsers: UserRow[] 
         <span className={`ms-user-chip${account.status === 'Active' ? ' active' : ''}`}>{account.status}</span>
         <div className="ms-user-actions">
           <Link className="ms-pill" href={`/admin/collections/users/${encodeURIComponent(account.id)}`}>Edit</Link>
-          {account.isYou ? <span className="ms-user-you">You</span> : <button className="ms-pill danger" type="button" disabled={busy === account.id} onClick={() => void remove(account)}>{busy === account.id ? 'Removing…' : 'Remove'}</button>}
+          {account.isYou ? <span className="ms-user-you">You</span> : <button className="ms-pill danger" type="button" onClick={() => void remove(account)}>Remove</button>}
         </div>
       </article>)}
       {users.length === 0 && <p className="ms-projects-empty">No admin users yet.</p>}

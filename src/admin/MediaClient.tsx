@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useMemo, useRef, useState } from 'react'
+import { showUndoableDelete } from './toasts'
 
 export type MediaCard = {
   id: string
@@ -49,7 +50,6 @@ export default function MediaClient({ initialFiles }: { initialFiles: MediaCard[
   const [files, setFiles] = useState(initialFiles)
   const [filter, setFilter] = useState<Filter>('all')
   const [query, setQuery] = useState('')
-  const [busy, setBusy] = useState<string | null>(null)
   const [uploading, setUploading] = useState(false)
   const [feedback, setFeedback] = useState('')
 
@@ -97,20 +97,26 @@ export default function MediaClient({ initialFiles }: { initialFiles: MediaCard[
 
   const remove = async (file: MediaCard) => {
     if (file.inUseBy.length) return
-    if (!window.confirm(`Delete “${file.filename}”? This cannot be undone.`)) return
-    setBusy(file.id)
-    setFeedback('')
-    try {
+    if (!window.confirm(`Delete “${file.filename}”? You can undo this for five seconds.`)) return
+    const index = files.findIndex((item) => item.id === file.id)
+    showUndoableDelete({
+      label: `File “${file.filename}”`,
+      remove: () => setFiles((current) => current.filter((item) => item.id !== file.id)),
+      undo: () => setFiles((current) => {
+        if (current.some((item) => item.id === file.id)) return current
+        const next = [...current]
+        next.splice(Math.min(index, next.length), 0, file)
+        return next
+      }),
+      commit: async () => {
       const response = await fetch(`/api/media/${encodeURIComponent(file.id)}`, { method: 'DELETE', credentials: 'same-origin' })
       if (!response.ok) {
         const body = await response.json().catch(() => null) as { errors?: Array<{ message?: string }> } | null
         throw new Error(body?.errors?.[0]?.message ?? 'File could not be deleted.')
       }
-      await refresh()
-      setFeedback('File deleted.')
-    } catch (error) {
-      setFeedback(error instanceof Error ? error.message : 'File could not be deleted.')
-    } finally { setBusy(null) }
+        router.refresh()
+      },
+    })
   }
 
   return <section className="ms-media" aria-labelledby="ms-media-heading">
@@ -143,7 +149,7 @@ export default function MediaClient({ initialFiles }: { initialFiles: MediaCard[
         </div>
         <div className="ms-media-card-info">
           <div className="ms-media-copy"><strong title={file.filename}>{file.filename}</strong><span>{formatSize(file.filesize)}{file.width && file.height ? ` · ${file.width}×${file.height}` : ''} · {file.mimeType}</span></div>
-          {file.inUseBy.length ? <div className="ms-media-in-use" title={`Used by ${file.inUseBy.join(', ')}`}>In use · {file.inUseBy.join(', ')}</div> : <button className="ms-ib danger" type="button" aria-label={`Delete ${file.filename}`} disabled={busy === file.id || uploading} onClick={() => void remove(file)}>×</button>}
+          {file.inUseBy.length ? <div className="ms-media-in-use" title={`Used by ${file.inUseBy.join(', ')}`}>In use · {file.inUseBy.join(', ')}</div> : <button className="ms-ib danger" type="button" aria-label={`Delete ${file.filename}`} disabled={uploading} onClick={() => void remove(file)}>×</button>}
         </div>
       </article>)}
       {visible.length === 0 && <p className="ms-projects-empty">{files.length ? 'No files match.' : 'No files yet.'}</p>}

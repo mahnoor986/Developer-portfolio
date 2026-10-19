@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
+import { showUndoableDelete } from './toasts'
 
 export type ProcessStepCard = { id: string; title: string; description: string; tags: string[]; order: string }
 type Draft = { title: string; description: string; tags: string }
@@ -66,17 +67,23 @@ export default function ProcessStepsClient({ initialSteps }: { initialSteps: Pro
     } finally { setBusy(null) }
   }
   const remove = async (step: ProcessStepCard) => {
-    if (!window.confirm(`Delete “${step.title}”? This cannot be undone.`)) return
-    setBusy(step.id)
-    setFeedback('')
-    try {
+    if (!window.confirm(`Delete “${step.title}”? You can undo this for five seconds.`)) return
+    const index = steps.findIndex((item) => item.id === step.id)
+    showUndoableDelete({
+      label: `Process step “${step.title}”`,
+      remove: () => setSteps((current) => current.filter((item) => item.id !== step.id)),
+      undo: () => setSteps((current) => {
+        if (current.some((item) => item.id === step.id)) return current
+        const next = [...current]
+        next.splice(Math.min(index, next.length), 0, step)
+        return next
+      }),
+      commit: async () => {
       const response = await fetch(`/api/process-steps/${encodeURIComponent(step.id)}`, { method: 'DELETE', credentials: 'same-origin' })
       if (!response.ok) throw new Error('Process step could not be deleted.')
-      await refresh()
-      setFeedback('Process step deleted.')
-    } catch (error) {
-      setFeedback(error instanceof Error ? error.message : 'Process step could not be deleted.')
-    } finally { setBusy(null) }
+        router.refresh()
+      },
+    })
   }
   const move = async (index: number, direction: -1 | 1) => {
     const step = steps[index]
