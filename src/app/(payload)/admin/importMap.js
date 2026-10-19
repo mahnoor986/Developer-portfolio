@@ -30,6 +30,7 @@ import { UploadFeatureClient as UploadFeatureClient_e70f5e05f09f93e00b997edb1ef0
 import { HorizontalRuleFeatureClient as HorizontalRuleFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { InlineToolbarFeatureClient as InlineToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { default as default_38bb5f1004152ae2f908d4fe5d462ca1 } from '@/admin/Inbox'
+import { default as default_c01e77208d03fac60ff6fd6e292ca71d } from '@/admin/ContactOptions'
 import { ContactHeadingPreview as ContactHeadingPreview_3437ef25dee7441b5c2891dc0fee6e7d } from '@/admin/SiteSettingsDesign'
 import { CVState as CVState_3437ef25dee7441b5c2891dc0fee6e7d } from '@/admin/SiteSettingsDesign'
 import { SiteSettingsSaveState as SiteSettingsSaveState_3437ef25dee7441b5c2891dc0fee6e7d } from '@/admin/SiteSettingsDesign'
@@ -76,6 +77,7 @@ export const importMap = {
   "@payloadcms/richtext-lexical/client#HorizontalRuleFeatureClient": HorizontalRuleFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@payloadcms/richtext-lexical/client#InlineToolbarFeatureClient": InlineToolbarFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   "@/admin/Inbox#default": default_38bb5f1004152ae2f908d4fe5d462ca1,
+  "@/admin/ContactOptions#default": default_c01e77208d03fac60ff6fd6e292ca71d,
   "@/admin/SiteSettingsDesign#ContactHeadingPreview": ContactHeadingPreview_3437ef25dee7441b5c2891dc0fee6e7d,
   "@/admin/SiteSettingsDesign#CVState": CVState_3437ef25dee7441b5c2891dc0fee6e7d,
   "@/admin/SiteSettingsDesign#SiteSettingsSaveState": SiteSettingsSaveState_3437ef25dee7441b5c2891dc0fee6e7d,

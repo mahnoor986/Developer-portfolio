@@ -2013,6 +2013,73 @@ html {
   .ms-experience-copy p { margin: 0; color: var(--muted); font-size: 14.5px; overflow-wrap: anywhere; }
   .ms-experience-editor { display: flex; min-width: 0; flex: 1 1 auto; flex-direction: column; gap: 10px; }
   .ms-experience-editor-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+  .ms-options {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 28px clamp(18px, 3.4vw, 48px) 72px;
+  }
+  .ms-options-heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 14px;
+  }
+  .ms-options-heading > div { display: flex; flex-direction: column; gap: 5px; }
+  .ms-options-heading .ms-sub { font-size: 14px; }
+  .ms-options-preview { display: flex; flex-direction: column; gap: 12px; }
+  .ms-options-preview-pills { display: flex; flex-wrap: wrap; gap: 10px; }
+  .ms-option-preview-pill {
+    min-height: 42px;
+    display: inline-flex;
+    align-items: center;
+    padding: 0 17px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--void);
+    color: var(--ink);
+    font-size: 14px;
+  }
+  .ms-options-list { display: flex; flex-direction: column; gap: 10px; }
+  .ms-option-row {
+    display: flex;
+    min-width: 0;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    padding: 15px 16px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--night);
+  }
+  .ms-option-row.is-editing { border-color: var(--orchid); }
+  .ms-option-label { display: flex; min-width: 150px; flex: 1 1 auto; flex-wrap: wrap; align-items: center; gap: 10px; }
+  .ms-option-label strong { color: var(--ink); font-size: 15px; }
+  .ms-option-label > span { color: var(--muted); font-size: 13px; }
+  .ms-option-label > span.visible { color: #7ce0a8; }
+  .ms-option-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 7px; }
+  .ms-option-input { flex: 1 1 240px; }
+  .ms-toggle {
+    position: relative;
+    display: inline-flex;
+    width: 44px;
+    height: 26px;
+    flex: 0 0 auto;
+    align-items: center;
+    padding: 3px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--void);
+    cursor: pointer;
+    transition: background .2s, border-color .2s;
+  }
+  .ms-toggle > span { width: 18px; height: 18px; border-radius: 50%; background: var(--muted); transition: transform .2s, background .2s; }
+  .ms-toggle.is-on { border-color: var(--orchid); background: var(--orchid); }
+  .ms-toggle.is-on > span { transform: translateX(18px); background: var(--void); }
+  .ms-toggle:focus-visible { outline: 2px solid var(--orchid); outline-offset: 2px; }
+  .ms-toggle:disabled { opacity: .55; cursor: default; }
   .ms-visually-hidden {
     position: absolute;
     width: 1px;
@@ -2064,5 +2131,11 @@ html {
     .ms-experience-row > .ms-step-actions .ms-pill { flex: 1 1 auto; }
     .ms-experience-editor { flex-basis: 100%; }
     .ms-experience-editor-row { grid-template-columns: minmax(0, 1fr); }
+    .ms-options-heading > .ms-pill { width: 100%; }
+    .ms-option-row { align-items: flex-start; }
+    .ms-option-label { flex-basis: 100%; }
+    .ms-option-actions { width: 100%; justify-content: flex-start; }
+    .ms-option-actions .ms-pill { flex: 1 1 auto; }
+    .ms-option-row.is-editing .ms-option-input { flex-basis: 100%; }
   }
 }

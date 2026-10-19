@@ -29,7 +29,22 @@
   remain null.
 
 **Next**
-- Contact options (Phase 9 item 11/16).
+- Blog posts (Phase 9 item 12/16).
+
+### 2026-10-19 — Phase 9 (11/16): Contact options — complete
+**Done**
+- Added the public-form preview of visible contact choices and rows with visibility switches, inline rename, add,
+  delete confirmation and up/down ordering.
+
+**Verified**
+- Production build and lint passed; lint reports only the three existing unused-variable warnings in E2E specs.
+- Authenticated browser checks added, renamed, hid/shown, reordered/restored and deleted a temporary option.
+  The preview reflected visible state immediately; five original options remain.
+- Contact options checked in violet, aqua and blush at 1440px and 390px; no horizontal overflow.
+- No application exceptions. Browser sandbox blocked the existing Gravatar avatar requests.
+
+**Next**
+- Blog posts (Phase 9 item 12/16).
 
 ### 2026-10-19 — Phase 9 (10/16): Experience — complete
 **Done**

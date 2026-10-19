@@ -12,6 +12,11 @@ export const ContactOptions: CollectionConfig = {
     useAsTitle: 'label',
     defaultColumns: ['label', 'visible'],
     description: 'The "What do you need?" choices on the contact form. The first visible one is selected by default.',
+    components: {
+      views: {
+        list: { Component: '@/admin/ContactOptions' },
+      },
+    },
   },
   access: {
     read: visibleOrAuthenticated,
