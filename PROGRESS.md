@@ -29,7 +29,22 @@
   remain null.
 
 **Next**
-- Experience (Phase 9 item 10/16).
+- Contact options (Phase 9 item 11/16).
+
+### 2026-10-19 — Phase 9 (10/16): Experience — complete
+**Done**
+- Replaced the standard list with experience timeline rows showing period, role, organization and description.
+- Added inline editing, add, delete confirmation and up/down ordering controls.
+
+**Verified**
+- Production build and lint passed; lint reports only the three existing unused-variable warnings in E2E specs.
+- Authenticated browser checks added, edited, reordered/restored and deleted a temporary entry; the two original
+  entries remain.
+- Experience checked in violet, aqua and blush at 1440px and 390px; no horizontal overflow.
+- No application exceptions. Browser sandbox blocked the existing Gravatar avatar requests.
+
+**Next**
+- Contact options (Phase 9 item 11/16).
 
 ### 2026-10-19 — Phase 9 (9/16): Process steps — complete
 **Done**

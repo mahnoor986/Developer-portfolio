@@ -230,7 +230,7 @@ export interface ProcessStep {
   createdAt: string;
 }
 /**
- * The timeline in "My experience". Drag rows to change the order.
+ * The timeline in "My experience". Use the arrows in the list to change the order.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "experience".

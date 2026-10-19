@@ -1965,6 +1965,54 @@ html {
   }
   .ms-step-description-input { min-height: 110px; resize: vertical; }
   .ms-step-editor-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+  .ms-experience {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 28px clamp(18px, 3.4vw, 48px) 72px;
+  }
+  .ms-experience-heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 14px;
+  }
+  .ms-experience-heading > div { display: flex; flex-direction: column; gap: 5px; }
+  .ms-experience-heading .ms-sub { font-size: 14px; }
+  .ms-experience-list { display: flex; flex-direction: column; gap: 10px; }
+  .ms-experience-row {
+    display: flex;
+    min-width: 0;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 18px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--night);
+  }
+  .ms-experience-row.is-editing { border-color: var(--orchid); }
+  .ms-experience-copy {
+    display: flex;
+    min-width: 0;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .ms-experience-period { color: var(--orchid); }
+  .ms-experience-copy h2 {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--ms-syne);
+    font-size: 19px;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+  }
+  .ms-experience-copy strong { color: var(--ink); font-weight: 600; }
+  .ms-experience-copy p { margin: 0; color: var(--muted); font-size: 14.5px; overflow-wrap: anywhere; }
+  .ms-experience-editor { display: flex; min-width: 0; flex: 1 1 auto; flex-direction: column; gap: 10px; }
+  .ms-experience-editor-row { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
   .ms-visually-hidden {
     position: absolute;
     width: 1px;
@@ -2009,5 +2057,12 @@ html {
     .ms-step-actions { width: 100%; justify-content: flex-start; }
     .ms-step-actions .ms-pill { flex: 1 1 auto; }
     .ms-step-editor { flex-basis: calc(100% - 54px); }
+    .ms-experience-heading > .ms-pill { width: 100%; }
+    .ms-experience-row { flex-wrap: wrap; gap: 12px; padding: 14px; }
+    .ms-experience-copy { flex-basis: 100%; }
+    .ms-experience-row > .ms-step-actions { width: 100%; justify-content: flex-start; }
+    .ms-experience-row > .ms-step-actions .ms-pill { flex: 1 1 auto; }
+    .ms-experience-editor { flex-basis: 100%; }
+    .ms-experience-editor-row { grid-template-columns: minmax(0, 1fr); }
   }
 }

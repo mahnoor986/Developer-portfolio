@@ -11,7 +11,12 @@ export const Experience: CollectionConfig = {
     group: 'Content',
     useAsTitle: 'title',
     defaultColumns: ['title', 'organization', 'period'],
-    description: 'The timeline in "My experience". Drag rows to change the order.',
+    description: 'The timeline in "My experience". Use the arrows in the list to change the order.',
+    components: {
+      views: {
+        list: { Component: '@/admin/Experience' },
+      },
+    },
   },
   access: {
     read: anyone,
