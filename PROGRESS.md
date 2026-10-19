@@ -14,6 +14,30 @@
 
 ## Log
 
+### 2026-10-19 — Phase 9 follow-up: Users Undo delete REST 403 — root cause found, not a bug
+**Done**
+- Reproduced the reported 403 with a header matrix against a disposable logged-in session:
+  cookie alone → `user: null` → 403; cookie + `Origin: http://localhost:3000` → 200;
+  cookie + `Sec-Fetch-Site: same-origin` → 200; cookie + wrong Origin → 403 (correct CSRF);
+  `Authorization: JWT …` → 200; anonymous → 403.
+- Root cause: Payload 3.90's `extractJWT` discards the `payload-token` cookie unless the request
+  carries an allowlisted `Origin` (or acceptable `Sec-Fetch-Site`). Playwright's `page.request.*`
+  sends neither, so the earlier "reproduction" was a test-harness artifact — the app is not broken.
+- Proved the real browser flow end to end with a headless Chromium run at localhost:3000:
+  Remove → row hides → Undo restores the row, DB intact, no DELETE ever sent; Remove →
+  5s commit → DB row deleted, session kept.
+- Added `tests/e2e/users-undo-delete.e2e.spec.ts`: signed-in account has no Remove button;
+  Undo restores the row and the account survives the toast window; commit deletes the account.
+- Fixed the stale `span[title="Dashboard"]` assertion in `tests/helpers/login.ts` and
+  `tests/e2e/admin.e2e.spec.ts` (Payload nav markup changed; the span is now hidden). Both
+  suites were failing on it before this session.
+
+**Verified**
+- `npm run test:int` ✓ (5/5, 2 files) · `npm run test:e2e` ✓ (users-undo-delete 3/3, admin 3/3) ·
+  `npm run build` ✓ · `npm run lint` ✓ (0 errors; only pre-existing unused-var warnings in E2E specs).
+- Only real accounts remain in the database; all disposable users and temp scripts were removed.
+- The pre-existing untracked `tmp-p9user.ts` was left untouched.
+
 ### 2026-10-19 — Phase 9 (16/16): Toasts — complete
 **Done**
 - Styled Payload toasts as responsive orchid-vibe pills at the existing bottom-center position.
@@ -22,7 +46,7 @@
 **Verified**
 - Production browser checks confirmed the toast appearance and Undo behavior in violet, aqua and blush at 1440px and 390px; no horizontal overflow or page errors. Undo left the underlying record intact.
 - Final production build passed. Final lint passed with three existing unused-variable warnings in E2E specs.
-- A disposable account's delayed REST delete returned HTTP 403; the UI restored its row and displayed an error. Local API access checks allowed the same authenticated test account, so this REST authorization mismatch remains to investigate before relying on deletion commits. No project content was lost.
+- ~~A disposable account's delayed REST delete returned HTTP 403; the UI restored its row and displayed an error. Local API access checks allowed the same authenticated test account, so this REST authorization mismatch remains to investigate before relying on deletion commits.~~ Resolved 2026-10-19 in the follow-up entry above: the 403 was a Playwright `page.request` artifact (no Origin/Sec-Fetch-Site headers), not an app bug; real-browser deletes commit correctly.
 - All disposable test accounts and temporary artifacts were removed. The pre-existing untracked `tmp-p9user.ts` was left untouched.
 
 **Next**
