@@ -42,7 +42,10 @@ const toolkitCategory = (name: string, label: string, countWord: string): Field 
 export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
   label: 'Site settings',
-  admin: { group: 'Content' },
+  admin: {
+    group: 'Content',
+    components: { elements: { beforeDocumentControls: ['@/admin/SiteSettingsDesign#SiteSettingsSaveState'] } },
+  },
   access: {
     read: anyone,
     update: authenticated,
@@ -249,6 +252,7 @@ export const SiteSettings: GlobalConfig = {
               lead: 'Got an idea?\nLet\'s make it',
               accent: 'real.',
             }),
+            { name: 'contactHeadingPreview', type: 'ui', admin: { components: { Field: '@/admin/SiteSettingsDesign#ContactHeadingPreview' } } },
             textarea('contactSubtext', 'Subtext'),
             text('optionsLabel', 'Options label', 'What do you need?'),
             {
@@ -312,6 +316,7 @@ export const SiteSettings: GlobalConfig = {
         {
           label: 'CV',
           fields: [
+            { name: 'cvStatusPreview', type: 'ui', admin: { components: { Field: '@/admin/SiteSettingsDesign#CVState' } } },
             {
               name: 'cv',
               label: 'CV (PDF)',

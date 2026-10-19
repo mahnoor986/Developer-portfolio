@@ -14,6 +14,22 @@
 
 ## Log
 
+### 2026-10-19 — Phase 9 (6/16): Site settings — implementation
+**Done**
+- Added a save-state indicator beside Payload's document controls, reflecting form changes and background saves.
+- Added a live Contact heading preview and a CV status card backed by the existing PDF upload field. Saved CV metadata
+  is read from the global document; upload and removal remain handled by Payload's native relationship field.
+
+**Verified**
+- Contact heading preview, save state and empty CV state rendered in the authenticated admin. All three vibes were
+  checked at desktop width; the screen was checked at 390px with no horizontal overflow or page errors.
+- Production build and lint passed. Lint still reports the three existing test-file warnings.
+- A PDF is not present in the local project, so the uploaded-CV visual state has not yet been exercised. Keep this
+  checklist item open until that state is verified.
+
+**Next**
+- Verify the uploaded CV state before checking off Site settings or starting Projects.
+
 ### 2026-10-17 — Phase 9 (5/16): Inbox
 **Done**
 - Replaced the Messages list with a two-pane inbox. Added counts and filters for All/New/Read/Replied/Spam/Archived,
@@ -334,5 +350,5 @@
 - `npm run dev`: `/` 200, `/admin` 200 ("Dashboard - Payload"), Payload created its tables in Postgres.
 
 ## Next
-- Phase 9: admin design (meta + logo, vibe colours and fonts, dark default, dashboard welcome card, message badges, project thumbnails).
+- Phase 9: Projects.
 - When the Resend key arrives: send a real test message and confirm the alert (finishes Phase 5).
