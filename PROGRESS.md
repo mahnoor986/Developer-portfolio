@@ -29,7 +29,23 @@
   remain null.
 
 **Next**
-- Process steps (Phase 9 item 9/16).
+- Experience (Phase 9 item 10/16).
+
+### 2026-10-19 — Phase 9 (9/16): Process steps — complete
+**Done**
+- Replaced the standard list with ordered process rows, numbered cards, tag chips and inline editing for title,
+  description and tags.
+- Added create, delete confirmation and up/down order controls.
+
+**Verified**
+- Production build passed; lint passed with the three existing unused-variable warnings in E2E specs.
+- Authenticated browser checks added, edited, reordered/restored and deleted a temporary step; five original steps
+  remain.
+- Process steps checked in violet, aqua and blush at 1440px and 390px; no horizontal overflow.
+- No application exceptions. Browser sandbox blocked the existing Gravatar avatar requests.
+
+**Next**
+- Experience (Phase 9 item 10/16).
 
 ### 2026-10-19 — Phase 9 (8/16): Skills — complete
 **Done**

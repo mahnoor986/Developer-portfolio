@@ -99,7 +99,7 @@ at desktop and 390px wide, with real Payload data; keep access rules, hooks and 
 - [x] Site settings (pill tabs, save state text, Contact heading preview, CV empty/uploaded states)
 - [x] Projects (card list: thumbnail, status chip, ↑/↓ order, Publish/Unpublish, Edit, Delete, filters, search; edit view styled, Live Preview kept)
 - [x] Skills (inline edit, add, delete, ↑/↓, category filter, search)
-- [ ] Process steps (inline edit, add, delete, ↑/↓)
+- [x] Process steps (inline edit, add, delete, ↑/↓)
 - [ ] Experience (inline edit, add, delete, ↑/↓)
 - [ ] Contact options (inline rename, add, delete, ↑/↓, show/hide switch, "on your site" preview)
 - [ ] Blog posts (card list, filter pills, "No posts yet" empty state; Payload editor + Live Preview)

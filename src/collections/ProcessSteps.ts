@@ -12,6 +12,11 @@ export const ProcessSteps: CollectionConfig = {
     useAsTitle: 'title',
     defaultColumns: ['title', 'description'],
     description: 'The cards in "How I build". Numbers (01, Step 1 of 5) follow the order here.',
+    components: {
+      views: {
+        list: { Component: '@/admin/ProcessSteps' },
+      },
+    },
   },
   access: {
     read: anyone,
