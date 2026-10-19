@@ -30,6 +30,11 @@ export const Posts: CollectionConfig = {
     group: 'Blog',
     useAsTitle: 'title',
     defaultColumns: ['title', 'publishedAt', '_status'],
+    components: {
+      views: {
+        list: { Component: '@/admin/Posts' },
+      },
+    },
   },
   defaultSort: '-publishedAt',
   access: {

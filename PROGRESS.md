@@ -29,7 +29,23 @@
   remain null.
 
 **Next**
-- Blog posts (Phase 9 item 12/16).
+- Media (Phase 9 item 13/16).
+
+### 2026-10-19 — Phase 9 (12/16): Blog posts — complete
+**Done**
+- Replaced the standard list with post cards showing cover, excerpt, publication status and date.
+- Added All/Published/Drafts filters, Edit/Delete controls, and the “No posts yet” empty state with a first-post action.
+- Kept Payload's post editor and its existing Live Preview route/control.
+
+**Verified**
+- Production build and lint passed; lint reports only the three existing unused-variable warnings in E2E specs.
+- Authenticated browser checks verified the empty state, editor Live Preview, a temporary draft card, status filters,
+  and deletion back to the empty state. Temporary post and admin were deleted.
+- Blog posts checked in violet, aqua and blush at 1440px and 390px; no horizontal overflow.
+- No application exceptions.
+
+**Next**
+- Media (Phase 9 item 13/16).
 
 ### 2026-10-19 — Phase 9 (11/16): Contact options — complete
 **Done**

@@ -102,7 +102,7 @@ at desktop and 390px wide, with real Payload data; keep access rules, hooks and 
 - [x] Process steps (inline edit, add, delete, ↑/↓)
 - [x] Experience (inline edit, add, delete, ↑/↓)
 - [x] Contact options (inline rename, add, delete, ↑/↓, show/hide switch, "on your site" preview)
-- [ ] Blog posts (card list, filter pills, "No posts yet" empty state; Payload editor + Live Preview)
+- [x] Blog posts (card list, filter pills, "No posts yet" empty state; Payload editor + Live Preview)
 - [ ] Media (grid, All/Images/PDFs filters, search, upload, delete blocked when in use)
 - [ ] Email settings (email preview card that updates while typing, "Send me a test email")
 - [ ] Users (rows with initials avatar, role chip, status chip)

@@ -2080,6 +2080,69 @@ html {
   .ms-toggle.is-on > span { transform: translateX(18px); background: var(--void); }
   .ms-toggle:focus-visible { outline: 2px solid var(--orchid); outline-offset: 2px; }
   .ms-toggle:disabled { opacity: .55; cursor: default; }
+  .ms-posts {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 28px clamp(18px, 3.4vw, 48px) 72px;
+  }
+  .ms-posts-heading {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 14px;
+  }
+  .ms-posts-heading > div { display: flex; flex-direction: column; gap: 5px; }
+  .ms-posts-filters { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+  .ms-posts-list { display: flex; flex-direction: column; gap: 10px; }
+  .ms-post-row {
+    display: flex;
+    min-width: 0;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 16px;
+    padding: 14px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--night);
+  }
+  .ms-post-thumb {
+    display: grid;
+    width: 112px;
+    height: 70px;
+    flex: 0 0 auto;
+    place-items: center;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    background: var(--void);
+    color: var(--muted);
+    font: 600 10px/1 var(--ms-grotesk);
+    letter-spacing: .1em;
+  }
+  .ms-post-thumb > span:first-child { width: 100%; height: 100%; background-position: center; background-size: cover; }
+  .ms-post-copy { display: flex; min-width: 180px; flex: 1 1 260px; flex-direction: column; gap: 6px; }
+  .ms-post-copy h2 { margin: 0; color: var(--ink); font-family: var(--ms-syne); font-size: 19px; font-weight: 700; overflow-wrap: anywhere; }
+  .ms-post-copy p { margin: 0; color: var(--muted); font-size: 14px; overflow-wrap: anywhere; }
+  .ms-post-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; color: var(--muted); font-size: 12px; }
+  .ms-post-actions { display: flex; flex: 0 0 auto; flex-wrap: wrap; gap: 8px; }
+  .ms-posts-empty {
+    display: flex;
+    min-height: 300px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 30px;
+    border: 1px solid var(--line);
+    border-radius: 22px;
+    background: var(--night);
+    text-align: center;
+  }
+  .ms-posts-empty-icon { color: var(--orchid); font-size: 34px; line-height: 1; }
+  .ms-posts-empty h2 { margin: 0; color: var(--ink); font-family: var(--ms-syne); font-size: 21px; }
+  .ms-posts-empty p { max-width: 420px; margin: 0 0 6px; color: var(--muted); }
   .ms-visually-hidden {
     position: absolute;
     width: 1px;
@@ -2137,5 +2200,13 @@ html {
     .ms-option-actions { width: 100%; justify-content: flex-start; }
     .ms-option-actions .ms-pill { flex: 1 1 auto; }
     .ms-option-row.is-editing .ms-option-input { flex-basis: 100%; }
+    .ms-posts-heading > .ms-pill { width: 100%; }
+    .ms-posts-filters { width: 100%; }
+    .ms-posts-filters .ms-pill { flex: 1; padding: 0 10px; }
+    .ms-post-row { align-items: flex-start; }
+    .ms-post-thumb { width: 72px; height: 58px; }
+    .ms-post-copy { flex-basis: calc(100% - 90px); }
+    .ms-post-actions { width: 100%; }
+    .ms-post-actions .ms-pill { flex: 1; }
   }
 }
