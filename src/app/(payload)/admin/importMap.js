@@ -33,6 +33,7 @@ import { default as default_d556cfb81d52d4820bea2773dcfaf363 } from '@/admin/Pos
 import { default as default_061900becbdeb1ebaafda116beb8a4c1 } from '@/admin/Media'
 import { default as default_38bb5f1004152ae2f908d4fe5d462ca1 } from '@/admin/Inbox'
 import { default as default_c01e77208d03fac60ff6fd6e292ca71d } from '@/admin/ContactOptions'
+import { default as default_46c19ed332d07d38b0ba5d05d69c0fc7 } from '@/admin/Users'
 import { ContactHeadingPreview as ContactHeadingPreview_3437ef25dee7441b5c2891dc0fee6e7d } from '@/admin/SiteSettingsDesign'
 import { CVState as CVState_3437ef25dee7441b5c2891dc0fee6e7d } from '@/admin/SiteSettingsDesign'
 import { SiteSettingsSaveState as SiteSettingsSaveState_3437ef25dee7441b5c2891dc0fee6e7d } from '@/admin/SiteSettingsDesign'
@@ -83,6 +84,7 @@ export const importMap = {
   "@/admin/Media#default": default_061900becbdeb1ebaafda116beb8a4c1,
   "@/admin/Inbox#default": default_38bb5f1004152ae2f908d4fe5d462ca1,
   "@/admin/ContactOptions#default": default_c01e77208d03fac60ff6fd6e292ca71d,
+  "@/admin/Users#default": default_46c19ed332d07d38b0ba5d05d69c0fc7,
   "@/admin/SiteSettingsDesign#ContactHeadingPreview": ContactHeadingPreview_3437ef25dee7441b5c2891dc0fee6e7d,
   "@/admin/SiteSettingsDesign#CVState": CVState_3437ef25dee7441b5c2891dc0fee6e7d,
   "@/admin/SiteSettingsDesign#SiteSettingsSaveState": SiteSettingsSaveState_3437ef25dee7441b5c2891dc0fee6e7d,

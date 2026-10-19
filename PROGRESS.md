@@ -14,6 +14,19 @@
 
 ## Log
 
+### 2026-10-19 — Phase 9 (15/16): Users — complete
+**Done**
+- Replaced the default user list with responsive rows showing initials, email, an Admin role chip and Active/Locked status chip, with native Edit and Add user links.
+- Added a confirmation before removing another account and hid Remove for the signed-in account. The page states that this project currently grants admin access to every user because no role field or RBAC exists.
+
+**Verified**
+- Authenticated browser checks showed all three current accounts and confirmed Add/Edit navigation, signed-in user protection, and responsive layout in violet, aqua and blush at 1440px and 390px.
+- Production build and lint passed; lint reports only three existing unused-variable warnings in the E2E specs. No browser page errors.
+- The disposable test account and browser script were removed.
+
+**Next**
+- Toasts (Phase 9 item 16/16).
+
 ### 2026-10-19 — Phase 9 (14/16): Email settings — complete
 **Done**
 - Added a live automatic-reply preview that updates with the subject, body and alert address, plus clear messaging when auto-reply is disabled.

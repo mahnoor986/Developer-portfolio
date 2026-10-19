@@ -7,6 +7,11 @@ export const Users: CollectionConfig = {
   admin: {
     group: 'Admin',
     useAsTitle: 'email',
+    components: {
+      views: {
+        list: { Component: '@/admin/Users' },
+      },
+    },
   },
   access: {
     read: authenticated,

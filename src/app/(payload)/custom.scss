@@ -2216,6 +2216,22 @@ html {
   .ms-email-muted { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
   .ms-email-feedback { margin: 0; color: var(--ink); font-size: 13px; overflow-wrap: anywhere; }
   .ms-email-test-card .ms-pill { align-self: flex-start; }
+  .ms-users { display: flex; flex-direction: column; gap: 14px; padding: 28px clamp(18px, 3.4vw, 48px) 72px; }
+  .ms-users-heading { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 14px; }
+  .ms-users-heading > div { display: flex; flex-direction: column; gap: 5px; }
+  .ms-users-heading .ms-sub { font-size: 14px; }
+  .ms-users-note { margin: 0; color: var(--muted); font-size: 13px; line-height: 1.55; }
+  .ms-users-list { display: flex; flex-direction: column; overflow: hidden; border: 1px solid var(--line); border-radius: 18px; background: var(--night); }
+  .ms-user-row { display: flex; min-width: 0; align-items: center; gap: 14px; padding: 14px 16px; }
+  .ms-user-row + .ms-user-row { border-top: 1px solid var(--line); }
+  .ms-user-avatar { display: inline-flex; width: 42px; height: 42px; flex: 0 0 42px; align-items: center; justify-content: center; border-radius: 50%; background: var(--haze); color: var(--orchid); font: 700 14px/1 var(--ms-syne); }
+  .ms-user-copy { display: flex; min-width: 0; flex: 1 1 auto; flex-direction: column; gap: 3px; }
+  .ms-user-copy strong { color: var(--ink); font-size: 14px; }
+  .ms-user-copy > span { color: var(--muted); font-size: 13px; overflow-wrap: anywhere; }
+  .ms-user-chip { flex: 0 0 auto; padding: 5px 9px; border: 1px solid var(--line); border-radius: 999px; color: var(--ink); font-size: 11px; }
+  .ms-user-chip.active { border-color: color-mix(in srgb, var(--aqua) 35%, var(--line)); color: var(--aqua); }
+  .ms-user-actions { display: flex; flex: 0 0 auto; align-items: center; gap: 8px; }
+  .ms-user-you { color: var(--muted); font-size: 12px; }
   .ms-visually-hidden {
     position: absolute;
     width: 1px;
@@ -2295,5 +2311,12 @@ html {
     .ms-email-card { padding: 16px; }
     .ms-email-letter { padding: 18px; }
     .ms-email-test-card .ms-pill { width: 100%; }
+    .ms-users-heading > .ms-pill { width: 100%; }
+    .ms-user-row { flex-wrap: wrap; gap: 10px; padding: 13px; }
+    .ms-user-copy { flex-basis: calc(100% - 58px); }
+    .ms-user-chip { margin-left: 52px; }
+    .ms-user-chip + .ms-user-chip { margin-left: 0; }
+    .ms-user-actions { width: calc(100% - 52px); margin-left: 52px; }
+    .ms-user-actions .ms-pill { flex: 1 1 auto; }
   }
 }
