@@ -2143,6 +2143,66 @@ html {
   .ms-posts-empty-icon { color: var(--orchid); font-size: 34px; line-height: 1; }
   .ms-posts-empty h2 { margin: 0; color: var(--ink); font-family: var(--ms-syne); font-size: 21px; }
   .ms-posts-empty p { max-width: 420px; margin: 0 0 6px; color: var(--muted); }
+  .ms-media {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 28px clamp(18px, 3.4vw, 48px) 72px;
+  }
+  .ms-media-heading,
+  .ms-media-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 14px;
+  }
+  .ms-media-heading > div { display: flex; flex-direction: column; gap: 5px; }
+  .ms-media-heading .ms-sub { font-size: 14px; }
+  .ms-media-upload { position: relative; overflow: hidden; cursor: pointer; }
+  .ms-media-upload input {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    cursor: pointer;
+  }
+  .ms-media-upload.is-uploading { opacity: .7; cursor: progress; }
+  .ms-media-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 220px), 1fr));
+    align-items: start;
+    gap: 14px;
+  }
+  .ms-media-card {
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--night);
+  }
+  .ms-media-preview {
+    display: grid;
+    aspect-ratio: 16 / 10;
+    place-items: center;
+    overflow: hidden;
+    border-bottom: 1px solid var(--line);
+    background: var(--void);
+  }
+  .ms-media-image { width: 100%; height: 100%; background-position: center; background-size: cover; }
+  .ms-media-pdf { color: var(--orchid); font: 700 16px/1 var(--ms-grotesk); }
+  .ms-media-card-info {
+    display: flex;
+    min-width: 0;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 14px;
+  }
+  .ms-media-copy { display: flex; min-width: 0; flex: 1 1 auto; flex-direction: column; gap: 4px; }
+  .ms-media-copy strong { overflow: hidden; color: var(--ink); font-size: 14px; text-overflow: ellipsis; white-space: nowrap; }
+  .ms-media-copy > span { color: var(--muted); font-size: 11px; overflow-wrap: anywhere; }
+  .ms-media-in-use { flex: 0 0 auto; color: var(--muted); font-size: 11px; text-align: right; }
   .ms-visually-hidden {
     position: absolute;
     width: 1px;
@@ -2208,5 +2268,13 @@ html {
     .ms-post-copy { flex-basis: calc(100% - 90px); }
     .ms-post-actions { width: 100%; }
     .ms-post-actions .ms-pill { flex: 1; }
+    .ms-media-heading > .ms-pill { width: 100%; }
+    .ms-media-toolbar { align-items: stretch; }
+    .ms-media-toolbar .ms-projects-filters { width: 100%; }
+    .ms-media-toolbar .ms-projects-filters .ms-pill { flex: 1; padding: 0 10px; }
+    .ms-media-toolbar .ms-projects-search { max-width: none; flex-basis: 100%; }
+    .ms-media-grid { grid-template-columns: repeat(auto-fill, minmax(min(100%, 160px), 1fr)); gap: 10px; }
+    .ms-media-card-info { align-items: flex-start; padding: 10px; }
+    .ms-media-in-use { max-width: 74px; }
   }
 }

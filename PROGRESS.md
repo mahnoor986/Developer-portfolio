@@ -14,6 +14,20 @@
 
 ## Log
 
+### 2026-10-19 — Phase 9 (13/16): Media — complete
+**Done**
+- Added a media grid with All/Images/PDFs filters, search, multi-file image/PDF upload, file details and deletion controls.
+- Marked referenced files as in use and blocked deletion at the collection hook, covering project images, post covers, and draft/published Site settings photo and CV references.
+
+**Verified**
+- Authenticated browser checks covered upload, search, type filters, deletion of unused uploads, and the API rejection for an image still referenced by a project.
+- Media view checked in violet, aqua and blush at 1440px and 390px; no horizontal overflow or page errors.
+- Production build and lint passed; lint reports only the three existing unused-variable warnings in E2E specs.
+- Uploaded test media and the disposable test admin were deleted; no test uploads or accounts remain.
+
+**Next**
+- Email settings (Phase 9 item 14/16).
+
 ### 2026-10-19 — Phase 9 (6/16): Site settings — complete
 **Done**
 - Added a save-state indicator beside Payload's document controls, reflecting edits and background saves.
