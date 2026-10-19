@@ -16,7 +16,12 @@ export const Skills: CollectionConfig = {
     group: 'Content',
     useAsTitle: 'name',
     defaultColumns: ['name', 'category', 'blurb'],
-    description: 'Shown in "My toolkit" and on the skill sphere. Drag rows to change the order.',
+    description: 'Shown in "My toolkit" and on the skill sphere. Use the arrows in the skill list to change the order.',
+    components: {
+      views: {
+        list: { Component: '@/admin/Skills' },
+      },
+    },
   },
   access: {
     read: anyone,

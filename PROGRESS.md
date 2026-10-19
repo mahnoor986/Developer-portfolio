@@ -29,7 +29,22 @@
   remain null.
 
 **Next**
-- Skills (Phase 9 item 8/16).
+- Process steps (Phase 9 item 9/16).
+
+### 2026-10-19 — Phase 9 (8/16): Skills — complete
+**Done**
+- Replaced the standard Skills list with category cards and inline editing for name, short line and category.
+- Added category counts/filters, search, add, delete confirmation, and up/down ordering controls.
+
+**Verified**
+- Production build passed; lint passed with the three existing unused-variable warnings in E2E specs.
+- Authenticated browser checks added, edited, searched, filtered, reordered/restored and deleted a temporary skill.
+  The temporary admin was removed after verification.
+- Skills list checked in violet, aqua and blush at 1440px and 390px; no horizontal overflow.
+- No application exceptions. Browser sandbox blocked the existing Gravatar avatar requests.
+
+**Next**
+- Process steps (Phase 9 item 9/16).
 
 ### 2026-10-19 — Phase 9 (7/16): Projects — complete
 **Done**

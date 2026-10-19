@@ -1808,6 +1808,101 @@ html {
     color: var(--muted);
     text-align: center;
   }
+  .ms-skills {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    padding: 28px clamp(18px, 3.4vw, 48px) 72px;
+  }
+  .ms-skills-heading,
+  .ms-skills-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 14px;
+  }
+  .ms-skills-heading > div { display: flex; flex-direction: column; gap: 5px; }
+  .ms-skills-heading .ms-sub { font-size: 14px; }
+  .ms-skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 280px), 1fr));
+    align-items: stretch;
+    gap: 12px;
+  }
+  .ms-skill-card {
+    display: flex;
+    min-width: 0;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 16px;
+    border: 1px solid var(--line);
+    border-radius: 16px;
+    background: var(--night);
+  }
+  .ms-skill-card.is-editing { border-color: var(--orchid); }
+  .ms-skill-copy {
+    display: flex;
+    min-width: 0;
+    flex: 1 1 auto;
+    flex-direction: column;
+    gap: 5px;
+  }
+  .ms-skill-title {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+  }
+  .ms-skill-title h2 {
+    margin: 0;
+    color: var(--ink);
+    font-family: var(--ms-syne);
+    font-size: 17px;
+    font-weight: 700;
+    overflow-wrap: anywhere;
+  }
+  .ms-skill-category {
+    padding: 4px 9px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    background: var(--haze);
+    color: var(--muted);
+    font: 600 10px/1.2 var(--ms-grotesk);
+  }
+  .ms-skill-copy p { margin: 0; color: var(--muted); font-size: 14px; overflow-wrap: anywhere; }
+  .ms-skill-actions {
+    display: flex;
+    flex: 0 0 auto;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 6px;
+  }
+  .ms-ib.danger { border-color: var(--ms-danger-line); color: var(--ms-danger); }
+  .ms-ib.danger:hover { border-color: var(--ms-danger); background: var(--ms-danger-bg); }
+  .ms-skill-editor {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .ms-skill-input {
+    width: 100%;
+    min-width: 0;
+    min-height: 42px;
+    padding: 9px 12px;
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    outline: 0;
+    background: var(--void);
+    color: var(--ink);
+    font: 400 14px/1.4 var(--ms-body);
+  }
+  .ms-skill-input:focus { border-color: var(--orchid); box-shadow: 0 0 0 2px var(--orchid); }
+  .ms-skill-editor-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+  .ms-skills-toolbar { align-items: center; }
   .ms-visually-hidden {
     position: absolute;
     width: 1px;
@@ -1837,5 +1932,13 @@ html {
     .ms-project-thumb { width: 68px; height: 56px; }
     .ms-project-actions { width: 100%; justify-content: flex-start; }
     .ms-project-actions .ms-pill { flex: 1 1 auto; }
+    .ms-skills-toolbar { align-items: stretch; }
+    .ms-skills-heading > .ms-pill { width: 100%; }
+    .ms-skills-toolbar .ms-projects-filters { width: 100%; }
+    .ms-skills-toolbar .ms-projects-search { max-width: none; flex-basis: 100%; }
+    .ms-skill-card { flex-wrap: wrap; }
+    .ms-skill-copy { flex-basis: 100%; }
+    .ms-skill-actions { width: 100%; justify-content: flex-start; }
+    .ms-skill-actions .ms-pill { flex: 1 1 auto; }
   }
 }
