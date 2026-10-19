@@ -14,21 +14,22 @@
 
 ## Log
 
-### 2026-10-19 — Phase 9 (6/16): Site settings — implementation
+### 2026-10-19 — Phase 9 (6/16): Site settings — complete
 **Done**
-- Added a save-state indicator beside Payload's document controls, reflecting form changes and background saves.
-- Added a live Contact heading preview and a CV status card backed by the existing PDF upload field. Saved CV metadata
-  is read from the global document; upload and removal remain handled by Payload's native relationship field.
+- Added a save-state indicator beside Payload's document controls, reflecting edits and background saves.
+- Added a live Contact heading preview and an uploaded CV card backed by the media relationship, with Replace and
+  Remove actions. The empty state links users to Payload's native PDF upload field.
 
 **Verified**
-- Contact heading preview, save state and empty CV state rendered in the authenticated admin. All three vibes were
-  checked at desktop width; the screen was checked at 390px with no horizontal overflow or page errors.
-- Production build and lint passed. Lint still reports the three existing test-file warnings.
-- A PDF is not present in the local project, so the uploaded-CV visual state has not yet been exercised. Keep this
-  checklist item open until that state is verified.
+- Authenticated Site settings UI: uploaded and empty CV states rendered; Remove returned the card to the empty state.
+- Uploaded and empty CV states checked in violet, aqua and blush at 1440px and 390px; no horizontal overflow.
+- Development admin page loaded without page errors. Production build passed; lint passed with three existing
+  unused-variable warnings in the E2E specs.
+- Temporary PDF, test admin, and the two test-created draft versions were removed. Published and draft CV values
+  remain null.
 
 **Next**
-- Verify the uploaded CV state before checking off Site settings or starting Projects.
+- Projects (Phase 9 item 7/16).
 
 ### 2026-10-17 — Phase 9 (5/16): Inbox
 **Done**
