@@ -1,11 +1,9 @@
 # PROGRESS
 
 ## Waiting for Mahnoor
-- **Resend domain verification.** The test email arrived in the alert inbox's spam folder. Verify your own
-  domain with Resend and configure its DNS records (including SPF/DKIM) before enabling visitor auto-replies;
-  this also gives the sender a properly authenticated domain.
-- Still needed later (see PLAN.md "Waiting on Mahnoor"): Neon `DATABASE_URI`, a domain verified in Resend,
-  Vercel project + Blob token.
+- **EmailJS dashboard setup.** Create the service and both templates, set the environment variables listed in
+  `.env.example` locally and in Vercel, and configure origin restrictions before enabling visitor auto-replies.
+- Still needed later (see PLAN.md "Waiting on Mahnoor"): Neon `DATABASE_URI`, Vercel project + Blob token.
 - (Not blocking) Upload your CV PDF in Admin → Site settings → CV whenever you're ready.
 - (Not blocking) The contact form texts now use my defaults ("I usually reply within a day or two." /
   "Thanks! Your message is on its way. I'll get back to you soon."). Change them any time in
@@ -13,15 +11,24 @@
 
 ## Log
 
-### 2026-10-20 — Resend test send
+### 2026-10-20 — EmailJS migration
 **Done**
-- Confirmed `RESEND_API_KEY` is present in `.env` without displaying its value.
-- Sent the standard portfolio email test to the configured alert address; Resend accepted the message for
-  delivery.
-- Mahnoor confirmed the message arrived in the spam folder.
+- Replaced the prior email provider with server-side EmailJS REST sends from the existing contact Server Action.
+- The message is stored before delivery attempts; delivery failures now produce an explicit form error while
+  retaining the saved inbox record.
+- Preserved the admin email settings and authenticated test-send flow. Added setup instructions for both templates.
+- Configured Payload's generic email adapter to use the transactional template for auth emails such as password
+  resets, preserving the existing Users auth email path.
+- Removed the old adapter, hook, dependency, environment variables, and provider references from source and docs.
+- Preserved existing local `.env` values, removed only retired provider variables, and added blank EmailJS entries
+  without displaying any values.
 
-**Next**
-- Verify a domain with Resend and configure its DNS authentication records before enabling visitor auto-replies.
+**Pending**
+- EmailJS dashboard resources and templates still need confirmation. Five of six local EmailJS variables are
+  non-empty; `EMAILJS_PRIVATE_KEY` is blank. Values were not displayed or validated, and no live email was sent.
+- Focused validation and EmailJS tests pass (9/9); TypeScript passes; lint has zero errors and seven existing
+  warnings. A full build was not run because this task forbids starting the app or connecting to a database.
+- Configure the dashboard and perform a real test only after explicit approval.
 
 ### 2026-10-19 — Phase 9 follow-up: Users Undo delete REST 403 — root cause found, not a bug
 **Done**
@@ -77,13 +84,13 @@
 ### 2026-10-19 — Phase 9 (14/16): Email settings — complete
 **Done**
 - Added a live automatic-reply preview that updates with the subject, body and alert address, plus clear messaging when auto-reply is disabled.
-- Added an authenticated test-email action that sends to the saved alert address when Resend is configured and reports a clear setup message when the API key is missing.
+- Added an authenticated test-email action that sends to the saved alert address when email delivery is configured and reports setup failures.
 
 **Verified**
-- Authenticated browser checks confirmed the preview updates while typing and the test-email action returns the expected missing-Resend-key message.
+- Authenticated browser checks confirmed the preview updates while typing and the test-email action reports missing provider configuration.
 - Email settings checked in violet, aqua and blush at 1440px and 390px; no horizontal overflow or application page errors.
 - Production build passed and includes `/api/email-settings/test`; lint passed with only three existing unused-variable warnings in E2E specs.
-- Temporary admin account and browser scripts were removed. Sending a real email remains pending the Resend API key already listed under Waiting for Mahnoor.
+- Temporary admin account and browser scripts were removed. Provider setup and live delivery remain to be verified.
 
 **Next**
 - Users (Phase 9 item 15/16).
@@ -357,31 +364,10 @@
   document's Versions history (harmless).
 - build ✓, lint ✓, types ✓.
 
-### 2026-10-15 — Phase 5 (emails) ✅ code done · ⏳ final check needs RESEND_API_KEY
-**Done**
-- `@payloadcms/email-resend` 3.90.2 in `payload.config.ts`, only when `RESEND_API_KEY` is set. Without a key,
-  Payload prints emails to the server console instead (useful in dev).
-- `src/hooks/messageEmails.ts` (Messages `afterChange`, create only):
-  - alert to Email settings → "Send new-message alerts to": subject "New message from {name} ({type})",
-    reply-to = the visitor, text + HTML (escaped) with a link to the message in the admin;
-  - auto-reply to the visitor if enabled in Email settings, `{name}` replaced, reply-to = Mahnoor.
-  - Runs in Next's `after()` so the form answers first; outside Next (scripts) it runs in the background.
-    Each email is sent independently (`Promise.allSettled`); failures are logged, never thrown.
-- New optional env vars `EMAIL_FROM_ADDRESS` (default `onboarding@resend.dev`) and `EMAIL_FROM_NAME`
-  (default "Mahnoor Portfolio"), documented in `.env.example`.
-
-**Decisions**
-- Auto-reply stays **off** by default: with `onboarding@resend.dev` Resend can only email the account owner, so
-  replies to visitors would fail until a domain is verified.
-- `req.context.skipEmails` lets scripts create messages without sending email.
-- I did not edit `.env` (the permission check blocked it, which is right); the sender defaults live in code.
-
-**Verified** (production build, real form submit in headless Chromium, auto-reply switched on temporarily)
-- No key: form answered with success; server log shows both emails (alert to mahnoorrr41@gmail.com, auto-reply to
-  the visitor). Message saved.
-- Invalid key: Resend API answered `401 API key is invalid` for both emails; errors were logged, form still showed
-  success, message saved.
-- build ✓, lint ✓, types ✓. Auto-reply switched back off and test messages deleted.
+### 2026-10-15 — Previous email implementation (retired)
+The earlier implementation sent owner alerts and optional visitor replies from a Payload collection hook. It
+reported success before asynchronous delivery completed; the 2026-10-20 EmailJS migration replaces that behavior.
+Historic delivery checks in this section apply only to the retired implementation.
 
 ### 2026-10-15 — Phase 4 (contact form + inbox) ✅
 **Done**
@@ -534,5 +520,4 @@
 
 ## Next
 - Phase 9: Projects.
-- Resend key and test send are complete; verify a domain and configure DNS authentication before enabling
-  visitor auto-replies.
+- Configure EmailJS service and templates, then verify live delivery before enabling visitor auto-replies.

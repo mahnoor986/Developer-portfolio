@@ -5,16 +5,14 @@ Log details in `PROGRESS.md`. Branch: `payload-migration`.
 
 ## Waiting on Mahnoor (do NOT block on these: continue with other work)
 - [ ] Neon database created and `DATABASE_URI` added to `.env` (local Postgres works until then)
-- [x] Resend account + `RESEND_API_KEY` (configured; test send accepted on 2026-10-20)
-- [ ] Own domain bought and verified in Resend (needed only for the client auto-reply;
-      `onboarding@resend.dev` can email only her own Resend address)
+- [ ] EmailJS dashboard service, templates and environment variables configured
 - [ ] Vercel project + Vercel Blob token (Phase 10)
 
 ## Phase 0 — Project setup
 - [x] Create branch `payload-migration`
 - [x] Move the current static site into `legacy/` (index.html, css/, js/, assets/, vendor/)
 - [x] Scaffold Next.js + Payload 3.x with `create-payload-app` (blank template, PostgreSQL) in the repo root
-- [x] `.env.example` with `DATABASE_URI`, `PAYLOAD_SECRET`, `NEXT_PUBLIC_SERVER_URL`, `RESEND_API_KEY`, `BLOB_READ_WRITE_TOKEN`, `PREVIEW_SECRET`
+- [x] `.env.example` with database, Payload, EmailJS, Blob and preview variables
 - [x] Update `.gitignore` for Next.js (`.next/`, `node_modules/`, `.env`, but keep `.env.example`)
 
 **Done when:** `npm run dev` starts and `/admin` opens and connects to the database.
@@ -60,13 +58,14 @@ Log details in `PROGRESS.md`. Branch: `payload-migration`.
 
 **Done when:** a test message appears in the admin; invalid input and the honeypot are rejected.
 
-## Phase 5 — Emails (Resend)
-- [x] `resendAdapter` in `payload.config.ts` (skip gracefully if there's no API key in dev)
-- [x] `Messages` afterChange (create): alert to notify email (reply-to = client, link to the admin item) + auto-reply "Hi {name}, …" if enabled
-- [x] Send with Next `after()` so the form responds fast; log failures and don't throw
+## Phase 5 — Email delivery (EmailJS)
+- [x] Server-side EmailJS REST integration in the contact Server Action; save the message before email sends
+- [x] Owner notification and optional visitor auto-reply use server-controlled recipient/template values
+- [x] Report email delivery errors without deleting the saved message or showing a success state
+- [ ] Configure the real EmailJS service/templates and environment variables, then verify both email flows
 
-**Done when:** with a real key, the alert arrives (and the auto-reply too, once the domain is verified).
-_(Code done and tested without a key and with an invalid key. Final check waits for Mahnoor's `RESEND_API_KEY`.)_
+**Done when:** configured EmailJS accepts the owner notification and enabled visitor auto-reply, and failures are
+reported accurately. Dashboard setup and real sending are intentionally not performed by code.
 
 ## Phase 6 — Live Preview
 - [x] `admin.livePreview` for site-settings, projects and posts, with Mobile/Tablet/Desktop breakpoints
@@ -112,7 +111,7 @@ at desktop and 390px wide, with real Payload data; keep access rules, hooks and 
 
 ## Phase 10 — Deploy (ask Mahnoor before touching production)
 - [ ] Migrations created (`payload migrate:create`); build command runs `payload migrate && next build`
-- [ ] Deployment checklist written in `README.md` (env vars, Neon, Blob, Resend domain)
+- [ ] Deployment checklist written in `README.md` (env vars, Neon, Blob, EmailJS)
 - [ ] After approval: deploy, seed production, final checks (Lighthouse, mobile, form → emails, Live Preview, CV)
 
 **Done when:** the live site runs fully from Payload.

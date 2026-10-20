@@ -1,5 +1,4 @@
 import { postgresAdapter } from '@payloadcms/db-postgres'
-import { resendAdapter } from '@payloadcms/email-resend'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob'
 import path from 'path'
@@ -19,6 +18,7 @@ import { Users } from './collections/Users'
 import { EmailSettings } from './globals/EmailSettings'
 import { SiteSettings } from './globals/SiteSettings'
 import { livePreview } from './lib/preview'
+import { emailJsPayloadAdapter } from './lib/emailjsPayloadAdapter'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -62,20 +62,13 @@ export default buildConfig({
     Users,
   ],
   globals: [SiteSettings, EmailSettings],
+  email: emailJsPayloadAdapter,
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || '',
   serverURL: process.env.NEXT_PUBLIC_SERVER_URL || '',
   typescript: {
     outputFile: path.resolve(dirname, 'payload-types.ts'),
   },
-  // Without a key (local dev), Payload just prints emails to the server console instead of sending them.
-  email: process.env.RESEND_API_KEY
-    ? resendAdapter({
-        apiKey: process.env.RESEND_API_KEY,
-        defaultFromAddress: process.env.EMAIL_FROM_ADDRESS || 'onboarding@resend.dev',
-        defaultFromName: process.env.EMAIL_FROM_NAME || 'Mahnoor Portfolio',
-      })
-    : undefined,
   db: postgresAdapter({
     pool: {
       connectionString: process.env.DATABASE_URI || '',

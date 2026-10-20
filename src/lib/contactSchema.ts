@@ -23,4 +23,4 @@ export type ContactField = 'name' | 'email' | 'message'
 export type SendMessageResult =
   | { ok: true }
   | { ok: false; reason: 'invalid'; fields: ContactField[] }
-  | { ok: false; reason: 'rate-limited' | 'error' }
+  | { ok: false; reason: 'rate-limited' | 'error' | 'delivery-error' }

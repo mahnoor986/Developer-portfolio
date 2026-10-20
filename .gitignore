@@ -23,6 +23,12 @@ wp-content/uploads
 # JetBrains IDE
 .idea/
 
+# Editor temporary files
+*.swp
+*.swo
+*~
+*.tmp
+
 #--------------------------------------------------------
 # OS files
 #--------------------------------------------------------

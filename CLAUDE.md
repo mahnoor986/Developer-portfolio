@@ -43,7 +43,7 @@ Mahnoor is often away while you work. Work autonomously and keep going.
 - PostgreSQL on **Neon** (`@payloadcms/db-postgres`).
 - Hosting on **Vercel**. Uploads (images, CV PDF) go to **Vercel Blob**
   (`@payloadcms/storage-vercel-blob`). Never rely on the local filesystem in production.
-- Email through **Resend** (`@payloadcms/email-resend`).
+- Email through **EmailJS** using the server-side REST API; the private account key is never exposed to clients.
 - Features: content control, messages inbox, email alert + client auto-reply,
   Live Preview, custom admin design, CV download, blog.
 - **Not doing now:** testimonials, message analytics.
@@ -83,6 +83,8 @@ src/seed.ts                fills Payload with the current site content
   the contact form's Server Action (zod validation, honeypot, max 5 per IP per
   hour) with `overrideAccess: true`. Only logged-in admins can read them.
 - `EmailSettings`: admin-only.
+- EmailJS service/template IDs and its public account key may use `NEXT_PUBLIC_` variables; `EMAILJS_PRIVATE_KEY`
+  is server-only. Configure templates and origin restrictions manually in the EmailJS dashboard.
 - Public read access only for published content.
 - Never commit `.env`. Keep `.env.example` up to date with every variable.
 - Don't read or print `.env` values in logs or commits.

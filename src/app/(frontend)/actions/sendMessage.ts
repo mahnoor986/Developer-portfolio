@@ -4,6 +4,7 @@ import { createHash } from 'crypto'
 import { headers } from 'next/headers'
 
 import { getPayloadClient } from '@/lib/content'
+import { EmailJSRequestError, escapeEmailHtml, sendEmailJsTemplate, toEmailHtml } from '@/lib/emailjs'
 import {
   contactSchema,
   HONEYPOT_FIELD,
@@ -47,7 +48,6 @@ export async function sendMessage(formData: FormData): Promise<SendMessageResult
   try {
     const payload = await getPayloadClient()
     const ipHash = hashIp(await clientIp())
-
     const recent = await payload.count({
       collection: 'messages',
       overrideAccess: true,
@@ -69,16 +69,72 @@ export async function sendMessage(formData: FormData): Promise<SendMessageResult
       overrideAccess: true,
     })
     const { projectType, ...data } = parsed.data
-    const type = options.some((o) => o.label === projectType) ? projectType : ''
+    const normalizedProjectType = options.some((o) => o.label === projectType) ? projectType : ''
 
-    await payload.create({
+    const savedMessage = await payload.create({
       collection: 'messages',
       overrideAccess: true,
-      data: { ...data, projectType: type, ipHash, status: 'new' },
+      data: { ...data, projectType: normalizedProjectType, ipHash, status: 'new' },
     })
+
+    const settings = await payload.findGlobal({ slug: 'email-settings', depth: 0, overrideAccess: true }).catch(() => {
+      payload.logger.error({ messageId: savedMessage.id }, 'Email settings could not be read after saving a message')
+      return null
+    })
+    if (!settings) return { ok: false, reason: 'delivery-error' }
+
+    let deliveryFailed = false
+    const subjectName = savedMessage.name.replace(/[\r\n]+/g, ' ').replace(/[\u0000-\u001f\u007f]/g, '')
+    const projectTypeSuffix = savedMessage.projectType ? ` (${savedMessage.projectType.replace(/[\r\n]+/g, ' ')})` : ''
+    const adminUrl = `${process.env.NEXT_PUBLIC_SERVER_URL ?? ''}/admin/collections/messages/${savedMessage.id}`
+    try {
+      await sendEmailJsTemplate(process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID, {
+        to_email: settings.notifyEmail,
+        reply_to: savedMessage.email,
+        subject: `New message from ${subjectName}${projectTypeSuffix}`,
+        name: savedMessage.name,
+        name_html: escapeEmailHtml(savedMessage.name),
+        email: savedMessage.email,
+        email_html: escapeEmailHtml(savedMessage.email),
+        project_type: savedMessage.projectType || 'Not specified',
+        project_type_html: escapeEmailHtml(savedMessage.projectType || 'Not specified'),
+        message: savedMessage.message,
+        message_html: toEmailHtml(savedMessage.message),
+        page_url: savedMessage.pageUrl || '',
+        page_url_html: escapeEmailHtml(savedMessage.pageUrl || ''),
+        admin_url: adminUrl,
+        admin_url_html: escapeEmailHtml(adminUrl),
+      })
+    } catch (err) {
+      const status = err instanceof EmailJSRequestError ? err.status : undefined
+      payload.logger.error({ status }, `EmailJS notification failed for message ${savedMessage.id}`)
+      deliveryFailed = true
+    }
+
+    if (settings.autoReplyEnabled && settings.autoReplyBody) {
+      try {
+        await new Promise((resolve) => setTimeout(resolve, 1000))
+        const autoReply = settings.autoReplyBody.replaceAll('{name}', savedMessage.name)
+        await sendEmailJsTemplate(process.env.NEXT_PUBLIC_EMAILJS_AUTOREPLY_TEMPLATE_ID, {
+          to_email: savedMessage.email,
+          reply_to: settings.notifyEmail,
+          to_name: savedMessage.name,
+          to_name_html: escapeEmailHtml(savedMessage.name),
+          subject: settings.autoReplySubject || 'Thanks for your message',
+          message: autoReply,
+          message_html: toEmailHtml(autoReply),
+        })
+      } catch (err) {
+        const status = err instanceof EmailJSRequestError ? err.status : undefined
+        payload.logger.error({ status }, `EmailJS auto-reply failed for message ${savedMessage.id}`)
+        deliveryFailed = true
+      }
+    }
+
+    if (deliveryFailed) return { ok: false, reason: 'delivery-error' }
     return { ok: true }
   } catch (err) {
-    console.error('[sendMessage] failed to save message', err)
+    console.error('[sendMessage] failed to save contact message', err instanceof Error ? err.name : 'Unknown error')
     return { ok: false, reason: 'error' }
   }
 }

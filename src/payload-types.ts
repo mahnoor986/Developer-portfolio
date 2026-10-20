@@ -875,12 +875,12 @@ export interface EmailSetting {
   id: number;
   notifyEmail: string;
   /**
-   * Needs a domain verified in Resend. Until then, leave this off.
+   * Requires the EmailJS auto-reply template and server environment variables to be configured.
    */
   autoReplyEnabled?: boolean | null;
   autoReplySubject?: string | null;
   /**
-   * {name} is replaced by the sender's name.
+   * {name} is replaced by the sender's name; the EmailJS template uses this text as its message.
    */
   autoReplyBody?: string | null;
   updatedAt?: string | null;

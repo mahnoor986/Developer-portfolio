@@ -26,6 +26,7 @@ const fieldIds: Record<ContactField, string> = { name: 'fName', email: 'fEmail',
 /** Same markup and classes as the legacy form; sends through the `sendMessage` Server Action. */
 export function ContactForm({ options, labels }: Props) {
   const formRef = useRef<HTMLFormElement>(null)
+  const submitting = useRef(false)
   const [bad, setBad] = useState<ContactField[]>([])
   const [note, setNote] = useState<{ cls: '' | 'good' | 'bad'; text: string }>({ cls: '', text: labels.note ?? '' })
   const [pending, startTransition] = useTransition()
@@ -38,7 +39,7 @@ export function ContactForm({ options, labels }: Props) {
 
   function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
-    if (pending) return
+    if (pending || submitting.current) return
     const form = e.currentTarget
     const data = new FormData(form)
     data.set('pageUrl', window.location.href)
@@ -58,15 +59,26 @@ export function ContactForm({ options, labels }: Props) {
     }
     setBad([])
 
+    submitting.current = true
     startTransition(async () => {
-      const res = await sendMessage(data).catch(() => ({ ok: false as const, reason: 'error' as const }))
-      if (res.ok) {
-        formRef.current?.reset()
-        setNote({ cls: 'good', text: labels.success ?? '' })
-      } else if (res.reason === 'invalid') {
-        showInvalid(res.fields)
-      } else {
-        setNote({ cls: 'bad', text: (res.reason === 'rate-limited' ? labels.rateLimit : labels.sendError) ?? '' })
+      try {
+        const res = await sendMessage(data).catch(() => ({ ok: false as const, reason: 'error' as const }))
+        if (res.ok) {
+          formRef.current?.reset()
+          setNote({ cls: 'good', text: labels.success ?? '' })
+        } else if (res.reason === 'invalid') {
+          showInvalid(res.fields)
+        } else if (res.reason === 'delivery-error') {
+          formRef.current?.reset()
+          setNote({
+            cls: 'bad',
+            text: 'Your message was saved, but email delivery could not be confirmed. Please email me directly if you need a quick response.',
+          })
+        } else {
+          setNote({ cls: 'bad', text: (res.reason === 'rate-limited' ? labels.rateLimit : labels.sendError) ?? '' })
+        }
+      } finally {
+        submitting.current = false
       }
     })
   }

@@ -33,7 +33,7 @@ export const EmailSettings: GlobalConfig = {
       type: 'checkbox',
       defaultValue: false,
       admin: {
-        description: 'Needs a domain verified in Resend. Until then, leave this off.',
+        description: 'Requires the EmailJS auto-reply template and server environment variables to be configured.',
       },
     },
     {
@@ -52,7 +52,7 @@ export const EmailSettings: GlobalConfig = {
       admin: {
         rows: 8,
         condition: (data) => Boolean(data?.autoReplyEnabled),
-        description: '{name} is replaced by the sender\'s name.',
+        description: '{name} is replaced by the sender\'s name; the EmailJS template uses this text as its message.',
       },
     },
   ],
