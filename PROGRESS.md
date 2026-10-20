@@ -1,9 +1,9 @@
 # PROGRESS
 
 ## Waiting for Mahnoor
-- **Resend test receipt (Phase 5).** The API key is configured locally. A standard test message was sent to the
-  configured alert address, and Resend accepted it for delivery on 2026-10-20. Check your inbox/spam folder to
-  confirm receipt. Visitor auto-replies still need your own verified domain; leave them off until then.
+- **Resend domain verification.** The test email arrived in the alert inbox's spam folder. Verify your own
+  domain with Resend and configure its DNS records (including SPF/DKIM) before enabling visitor auto-replies;
+  this also gives the sender a properly authenticated domain.
 - Still needed later (see PLAN.md "Waiting on Mahnoor"): Neon `DATABASE_URI`, a domain verified in Resend,
   Vercel project + Blob token.
 - (Not blocking) Upload your CV PDF in Admin → Site settings → CV whenever you're ready.
@@ -17,10 +17,11 @@
 **Done**
 - Confirmed `RESEND_API_KEY` is present in `.env` without displaying its value.
 - Sent the standard portfolio email test to the configured alert address; Resend accepted the message for
-  delivery. Inbox receipt cannot be independently verified from this environment.
+  delivery.
+- Mahnoor confirmed the message arrived in the spam folder.
 
 **Next**
-- Confirm receipt in the alert inbox. A verified domain is still needed before enabling visitor auto-replies.
+- Verify a domain with Resend and configure its DNS authentication records before enabling visitor auto-replies.
 
 ### 2026-10-19 — Phase 9 follow-up: Users Undo delete REST 403 — root cause found, not a bug
 **Done**
@@ -533,4 +534,5 @@
 
 ## Next
 - Phase 9: Projects.
-- When the Resend key arrives: send a real test message and confirm the alert (finishes Phase 5).
+- Resend key and test send are complete; verify a domain and configure DNS authentication before enabling
+  visitor auto-replies.
