@@ -5,7 +5,7 @@ Log details in `PROGRESS.md`. Branch: `payload-migration`.
 
 ## Waiting on Mahnoor (do NOT block on these: continue with other work)
 - [ ] Neon database created and `DATABASE_URI` added to `.env` (local Postgres works until then)
-- [ ] Resend account + `RESEND_API_KEY`
+- [x] Resend account + `RESEND_API_KEY` (configured; test send accepted on 2026-10-20)
 - [ ] Own domain bought and verified in Resend (needed only for the client auto-reply;
       `onboarding@resend.dev` can email only her own Resend address)
 - [ ] Vercel project + Vercel Blob token (Phase 10)

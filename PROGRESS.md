@@ -1,10 +1,9 @@
 # PROGRESS
 
 ## Waiting for Mahnoor
-- **Resend API key (finishes Phase 5).** Sign up at resend.com with **mahnoorrr41@gmail.com** (with the shared
-  `onboarding@resend.dev` sender, Resend only delivers to the address the account was created with), create an
-  API key, and add `RESEND_API_KEY=re_...` to `.env`. Then tell me and I'll send a test message and confirm the
-  alert arrives. The auto-reply to visitors needs your own verified domain; leave it off until then.
+- **Resend test receipt (Phase 5).** The API key is configured locally. A standard test message was sent to the
+  configured alert address, and Resend accepted it for delivery on 2026-10-20. Check your inbox/spam folder to
+  confirm receipt. Visitor auto-replies still need your own verified domain; leave them off until then.
 - Still needed later (see PLAN.md "Waiting on Mahnoor"): Neon `DATABASE_URI`, a domain verified in Resend,
   Vercel project + Blob token.
 - (Not blocking) Upload your CV PDF in Admin → Site settings → CV whenever you're ready.
@@ -13,6 +12,15 @@
   Admin → Site settings → Contact.
 
 ## Log
+
+### 2026-10-20 — Resend test send
+**Done**
+- Confirmed `RESEND_API_KEY` is present in `.env` without displaying its value.
+- Sent the standard portfolio email test to the configured alert address; Resend accepted the message for
+  delivery. Inbox receipt cannot be independently verified from this environment.
+
+**Next**
+- Confirm receipt in the alert inbox. A verified domain is still needed before enabling visitor auto-replies.
 
 ### 2026-10-19 — Phase 9 follow-up: Users Undo delete REST 403 — root cause found, not a bug
 **Done**
