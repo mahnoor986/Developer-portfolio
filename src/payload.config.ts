@@ -71,7 +71,8 @@ export default buildConfig({
   },
   db: postgresAdapter({
     pool: {
-      connectionString: process.env.DATABASE_URI || '',
+      // DATABASE_URI is the app's own name; DATABASE_URL is what the Vercel Neon integration creates.
+      connectionString: process.env.DATABASE_URI || process.env.DATABASE_URL || '',
     },
   }),
   sharp,
