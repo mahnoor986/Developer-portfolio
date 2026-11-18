@@ -40,7 +40,7 @@ Mahnoor is often away while you work. Work autonomously and keep going.
 
 ## Stack and decisions (already agreed, don't change without asking)
 - Next.js App Router + **Payload 3.x** (latest stable; do NOT use the v4 beta). TypeScript.
-- PostgreSQL on **Neon** (`@payloadcms/db-postgres`).
+- PostgreSQL in local **Docker** (`@payloadcms/db-postgres`). No Neon (owner decision).
 - Hosting on **Vercel**. Uploads (images, CV PDF) go to **Vercel Blob**
   (`@payloadcms/storage-vercel-blob`). Never rely on the local filesystem in production.
 - Email through **EmailJS** using the server-side REST API; the private account key is never exposed to clients.

@@ -4,7 +4,6 @@ Work top to bottom. Tick `[x]` only when the step's **Done when** is true.
 Log details in `PROGRESS.md`. Branch: `payload-migration`.
 
 ## Waiting on Mahnoor (do NOT block on these: continue with other work)
-- [ ] Neon database created and `DATABASE_URI` added to `.env` (local Postgres works until then)
 - [ ] EmailJS dashboard service, templates and environment variables configured
 - [ ] Vercel project + Vercel Blob token (Phase 10)
 
@@ -110,8 +109,8 @@ at desktop and 390px wide, with real Payload data; keep access rules, hooks and 
 **Done when:** the admin matches the portfolio's look.
 
 ## Phase 10 — Deploy (ask Mahnoor before touching production)
-- [ ] Migrations created (`payload migrate:create`); build command runs `payload migrate && next build`
-- [ ] Deployment checklist written in `README.md` (env vars, Neon, Blob, EmailJS)
+- [x] Migrations created (`payload migrate:create`); build command runs `payload migrate && next build` (`vercel.json` → `npm run ci`)
+- [x] Deployment checklist written in `README.md` (env vars, Blob, EmailJS)
 - [ ] After approval: deploy, seed production, final checks (Lighthouse, mobile, form → emails, Live Preview, CV)
 
 **Done when:** the live site runs fully from Payload.

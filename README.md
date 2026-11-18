@@ -13,7 +13,7 @@ the site never needs a code change.
 |---|---|
 | Frontend | Next.js (App Router), TypeScript |
 | CMS / backend | Payload 3 (admin panel at `/admin`) |
-| Database | PostgreSQL on Neon |
+| Database | PostgreSQL (local Docker) |
 | File storage | Vercel Blob (images, CV) |
 | Email | EmailJS (server-side REST API) |
 | Animations | GSAP + ScrollTrigger, Three.js, Matter.js, Lenis |
@@ -30,7 +30,7 @@ the site never needs a code change.
 - **Live Preview:** see changes on the site while editing
 
 ## Run it locally
-Requirements: Node.js 20+, and a PostgreSQL database (Neon, or local Postgres in Docker).
+Requirements: Node.js 20+, and a PostgreSQL database (local Postgres in Docker).
 
 ```bash
 npm install
@@ -50,7 +50,7 @@ See `.env.example` for the full list:
 
 | Variable | What it is |
 |---|---|
-| `DATABASE_URI` | Postgres connection string (Neon) |
+| `DATABASE_URI` | Postgres connection string (local Docker) |
 | `PAYLOAD_SECRET` | Long random string (`openssl rand -base64 32`) |
 | `NEXT_PUBLIC_SERVER_URL` | Site URL, e.g. `http://localhost:3000` |
 | `NEXT_PUBLIC_EMAILJS_SERVICE_ID` | EmailJS service ID |
@@ -108,12 +108,26 @@ legacy/                the original static site (reference only)
 ```
 
 ## Deploying (Vercel)
-1. Import the repo in Vercel.
-2. Add Neon (Vercel integration) and create a Blob store.
-3. Add the environment variables above.
-4. Build command: `payload migrate && next build`.
-5. Configure the EmailJS service, templates, origin restrictions, and environment variables above before enabling
-   visitor auto-replies.
+
+`vercel.json` sets the build command to `npm run ci`, which runs `npm run payload migrate && npm run build`. Locally,
+`npm run build` still builds without touching the database.
+
+**Checklist**
+- [ ] **Database:** the Docker Postgres is local-only. A Vercel deployment needs a database it can reach; decide this before deploying.
+- [ ] **Blob:** Vercel → Storage → create a Blob store; connect it to the project so `BLOB_READ_WRITE_TOKEN` is set.
+- [ ] **Import the repo** in Vercel (branch `master` once `payload-migration` is merged).
+- [ ] **Environment variables** (Production, and Preview if wanted): `DATABASE_URI`, `PAYLOAD_SECRET`,
+      `NEXT_PUBLIC_SERVER_URL` (the real domain, no trailing slash), `PREVIEW_SECRET`, `BLOB_READ_WRITE_TOKEN`,
+      and the six EmailJS variables from the table above (`EMAILJS_PRIVATE_KEY` is server-side only).
+- [ ] **EmailJS:** service + both templates created, private-key authorization on, allowed origins restricted to
+      `http://localhost:3000` and the production domain (see "EmailJS setup").
+- [ ] **First deploy:** the build applies migrations in `src/migrations/`. After schema changes, run
+      `npm run payload migrate:create` locally and commit the new migration.
+- [ ] **Seed production once:** `npx payload run src/seed.ts` with `DATABASE_URI` pointing at the target database (safe to re-run).
+- [ ] **Create the admin user** at `/admin`, then upload the CV in Site settings → CV.
+- [ ] **Final checks:** Lighthouse, mobile layout, contact form → owner alert (and auto-reply once enabled),
+      Live Preview, CV download.
+- [ ] Only then enable visitor auto-replies in Admin → Email settings.
 
 ## Working with Claude Code
 `CLAUDE.md` holds the project rules for Claude Code, and `.claude/settings.json`

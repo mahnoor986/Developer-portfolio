@@ -3,7 +3,7 @@
 ## Waiting for Mahnoor
 - **EmailJS dashboard setup.** Create the service and both templates, set the environment variables listed in
   `.env.example` locally and in Vercel, and configure origin restrictions before enabling visitor auto-replies.
-- Still needed later (see PLAN.md "Waiting on Mahnoor"): Neon `DATABASE_URI`, Vercel project + Blob token.
+- Still needed later (see PLAN.md "Waiting on Mahnoor"): Vercel project + Blob token.
 - (Not blocking) Upload your CV PDF in Admin → Site settings → CV whenever you're ready.
 - (Not blocking) The contact form texts now use my defaults ("I usually reply within a day or two." /
   "Thanks! Your message is on its way. I'll get back to you soon."). Change them any time in
