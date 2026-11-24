@@ -7,12 +7,26 @@
 - (Not blocking) Upload your CV PDF in Admin → Site settings → CV whenever you're ready.
 - (Not blocking) Contact form texts are now the client-facing ones ("I reply within 24 hours." etc.).
   Change them any time in Admin → Site settings → Contact.
-- (Not blocking) AIT project screenshot: upload it in Admin → Projects → AIT (the site blocks automated
-  browsers, so it couldn't be captured). The card shows an empty image area until then.
 - (Not blocking) Rado Builders "View live" link: add it in Admin → Projects → Rado Builders once the client agrees.
 - **Merge `client-facing` into `payload-migration`?** Branch is ready (build, lint, browser checks pass).
 
 ## Log
+
+### 2026-11-24 — AIT screenshot + spacing above About
+**Done**
+- AIT screenshot (from Mahnoor) in `seed-assets/ait.webp`, uploaded and attached to the AIT project,
+  image position "left center" so the "Build Skills" heading isn't cropped. Seed uses it too; the seed
+  title is now "AIT" (Mahnoor renamed it in the admin).
+- `src/scripts/attachProjectImage.ts`: attaches a seed image (and optional position) to one project
+  without touching anything else.
+- Spacing: Services → About gap halved (`.services + #about{padding-top:0}`), and the 64–110px margin meant
+  for the manifesto is gone when the manifesto is empty. Desktop gap 360px → 180px; label → content 110px → 28px.
+
+**Verified**
+- In the browser at 1440×900: AIT card shows the screenshot with the heading visible; About spacing as above.
+- `tsc --noEmit` clean, lint 0 errors (11 warnings: the old 7 plus the same unused-args pattern in the
+  generated client-facing migration). Production build not re-run (dev server in use); CSS/seed-only changes.
+- Note: the AIT title in the DB has a trailing space ("AIT "); harmless, can be trimmed in the admin.
 
 ### 2026-11-24 — Admin: Back button
 **Done**

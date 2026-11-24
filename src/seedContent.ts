@@ -16,6 +16,10 @@ export const images = {
     file: 'seed-assets/khairflow.png',
     alt: 'Screenshot of the KhairFlow website hero: the KhairFlow logo over flowing light lines',
   },
+  ait: {
+    file: 'seed-assets/ait.webp',
+    alt: 'Screenshot of the AIT website hero: "Build Skills. Build Your Future." with photos of students in class',
+  },
   voltra: { file: 'legacy/assets/images/projects/voltra.png', alt: 'Screenshot of the VOLTRA Showreel website' },
   rado: { file: 'legacy/assets/images/projects/rado-builders.png', alt: 'Screenshot of the Rado Builders website' },
 } as const
@@ -58,13 +62,14 @@ export const projects: ProjectSeed[] = [
     imagePosition: 'center',
   },
   {
-    title: 'AIT — Al-Khair Institute of Technology',
+    title: 'AIT',
     category: 'Education website',
     year: '2026',
     description:
       'The website for Al-Khair Institute of Technology, a Karachi tech institute that has trained 5,000+ students, built to turn visitors into applicants. Working in a small team, I moved the site to Next.js and built the course catalogue cards, the animated impact counters, and the "Explore our courses" and "How to register" pages that guide students from browsing to applying.',
     tags: ['Next.js', 'TypeScript', 'Tailwind CSS', 'GSAP'],
-    imagePosition: 'center',
+    image: 'ait',
+    imagePosition: 'left center',
     primaryLink: { label: 'View live', url: 'https://ait.iak.ngo/' },
   },
   {

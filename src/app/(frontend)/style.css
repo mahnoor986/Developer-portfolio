@@ -725,3 +725,6 @@ html.lenis,html.lenis body{height:auto}
 .why-list li{flex:1 1 240px;background:var(--void);padding:26px;display:flex;flex-direction:column;gap:8px}
 .why-list b{font-family:var(--display);font-size:clamp(20px,1.8vw,24px);line-height:1.15;color:var(--ink)}
 .why-list span{color:var(--muted);line-height:1.55}
+/* Services sits right above About: one section gap instead of two, and no manifesto spacing when it's empty. */
+.services + #about{padding-top:0}
+#about > .kicker + .about-grid{margin-top:0}
