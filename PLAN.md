@@ -4,7 +4,7 @@ Work top to bottom. Tick `[x]` only when the step's **Done when** is true.
 Log details in `PROGRESS.md`. Branch: `payload-migration`.
 
 ## Waiting on Mahnoor (do NOT block on these: continue with other work)
-- [ ] EmailJS dashboard service, templates and environment variables configured
+- [x] EmailJS dashboard service, templates and environment variables configured (Mahnoor, 2026-11-24)
 - [ ] Vercel project + Vercel Blob token (Phase 10)
 
 ## Phase 0 — Project setup

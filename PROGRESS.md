@@ -1,18 +1,24 @@
 # PROGRESS
 
 ## Waiting for Mahnoor
-- **EmailJS dashboard setup.** Create the service and both templates, set the environment variables listed in
-  `.env.example` locally and in Vercel, and configure origin restrictions before enabling visitor auto-replies.
+- **Test the contact form once** (sends a real email): confirm you get the alert and the visitor gets the
+  auto-reply. Then the last Phase 5 box can be ticked.
 - Still needed later (see PLAN.md "Waiting on Mahnoor"): Vercel project + Blob token.
 - (Not blocking) Upload your CV PDF in Admin → Site settings → CV whenever you're ready.
 - (Not blocking) Contact form texts are now the client-facing ones ("I reply within 24 hours." etc.).
   Change them any time in Admin → Site settings → Contact.
 - (Not blocking) Rado Builders "View live" link: add it in Admin → Projects → Rado Builders once the client agrees.
-- **Merge `client-facing` into `payload-migration`?** Branch is ready (build, lint, browser checks pass).
 - (Not blocking) Fill in project case studies in Admin → Projects → (project) → Case study, starting with
   Rado Builders. Only use results you can back up.
 
 ## Log
+
+### 2026-11-24 — Merged `client-facing` into `payload-migration`
+- Fast-forward (no new commits on `payload-migration` since `a2edf63`), so no conflicts. Done with
+  `git fetch . client-facing:payload-migration` so the working tree never showed the older schema to a
+  running dev server (push mode could otherwise drop the new Services/case-study tables).
+- On `payload-migration`: `tsc` clean, lint 0 errors (15 warnings), `npm run build` passes.
+- EmailJS: Mahnoor configured the dashboard and env vars; a real send test is still to do.
 
 ### 2026-11-24 — Faster loader, project case studies, phone check
 **Loader** (owner asked to shorten it; the look is unchanged)
