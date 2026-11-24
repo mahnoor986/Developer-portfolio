@@ -162,6 +162,21 @@ export interface Project {
    */
   imagePosition?: ('center' | 'center top' | 'center bottom' | 'left center' | 'right center') | null;
   /**
+   * Tells the story clients care about: their problem → what you built → the result. Shown under the description when the project is opened. Leave empty to hide.
+   */
+  caseStudy?: {
+    client?: string | null;
+    problem?: string | null;
+    /**
+     * One point per item. Press Enter after each.
+     */
+    built?: string[] | null;
+    /**
+     * Only results you can back up.
+     */
+    result?: string | null;
+  };
+  /**
    * Leave both empty to hide this button.
    */
   primaryLink?: {
@@ -491,6 +506,14 @@ export interface ProjectsSelect<T extends boolean = true> {
   tags?: T;
   image?: T;
   imagePosition?: T;
+  caseStudy?:
+    | T
+    | {
+        client?: T;
+        problem?: T;
+        built?: T;
+        result?: T;
+      };
   primaryLink?:
     | T
     | {
@@ -788,6 +811,10 @@ export interface SiteSetting {
     accent?: string | null;
   };
   workIntro?: string | null;
+  caseClientLabel?: string | null;
+  caseProblemLabel?: string | null;
+  caseBuiltLabel?: string | null;
+  caseResultLabel?: string | null;
   /**
    * The accent part is shown in the vibe colour. If the text is a single line, the accent starts on a new line; otherwise line breaks in the text are kept and the accent follows the last line.
    */
@@ -1029,6 +1056,10 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         accent?: T;
       };
   workIntro?: T;
+  caseClientLabel?: T;
+  caseProblemLabel?: T;
+  caseBuiltLabel?: T;
+  caseResultLabel?: T;
   toolkitHeading?:
     | T
     | {

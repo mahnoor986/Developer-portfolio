@@ -219,6 +219,15 @@ export const SiteSettings: GlobalConfig = {
               fields: [
                 headingField({ name: 'workHeading', label: 'Heading', lead: 'Selected', accent: 'work' }),
                 textarea('workIntro', 'Intro'),
+                {
+                  type: 'row',
+                  fields: [
+                    text('caseClientLabel', 'Case study: client label', 'Client'),
+                    text('caseProblemLabel', 'Problem label', 'The problem'),
+                    text('caseBuiltLabel', '"What I built" label', 'What I built'),
+                    text('caseResultLabel', 'Result label', 'Result'),
+                  ],
+                },
               ],
             },
             {

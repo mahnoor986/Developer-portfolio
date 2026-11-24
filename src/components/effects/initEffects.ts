@@ -30,6 +30,9 @@ export type EffectsConfig = {
 
 /** The loader + hero entrance play once per page load, not again when effects re-run. */
 let introPlayed = false
+/** Matches the CSS safety net on #loader (style.css): this long after it appeared, the loader is gone. */
+const LOADER_MAX_WAIT = 2000
+type LoaderWindow = Window & { __ldSkip?: boolean; __ldShownAt?: number }
 
 const $ = <T extends Element = HTMLElement>(sel: string) => document.querySelector(sel) as T
 const $$ = <T extends Element = HTMLElement>(sel: string) => Array.from(document.querySelectorAll(sel)) as T[]
@@ -193,15 +196,21 @@ export function initEffects(cfg: EffectsConfig): () => void {
         .to(intro, { pop: 1, duration: 1.6, ease: 'elastic.out(1, 0.5)' }, 0.55)
     })
   }
+  // The loader plays once per tab visit (the inline script in Loader.tsx decides), and never when the
+  // JavaScript started late: by then the CSS safety net (#loader animation) has already hidden it.
+  const w = window as LoaderWindow
+  const seen = w.__ldSkip === true
+  const slowStart = performance.now() - (w.__ldShownAt ?? 0) > LOADER_MAX_WAIT
   if (!loader || !num) { intro.pop = 1 } // pages without the loader (blog): no intro
-  else if (RM || introPlayed) { loader.style.display = 'none'; intro.pop = 1; introPlayed = true }
+  else if (RM || introPlayed || seen || slowStart) { loader.style.display = 'none'; intro.pop = 1; introPlayed = true }
   else {
-    const t0 = performance.now(), dur = 1700
+    loader.style.animation = 'none' // JS is running: it takes over from the CSS safety net
+    const t0 = performance.now(), dur = 800
     ;(function tick(now: number) {
       const p = Math.min(1, (now - t0) / dur), e = 1 - Math.pow(1 - p, 3)
       num.textContent = String(Math.round(e * 100)); loader.style.setProperty('--lp', (e * 100).toFixed(1) + '%'); loader.style.setProperty('--lpn', e.toFixed(3))
       if (p < 1) S.raf(tick)
-      else S.timeout(() => { loader.classList.add('done'); S.timeout(entrance, 250); S.timeout(() => { loader.style.display = 'none' }, 1100) }, 250)
+      else S.timeout(() => { loader.classList.add('done'); S.timeout(entrance, 150); S.timeout(() => { loader.style.display = 'none' }, 750) }, 100)
     })(t0)
   }
 

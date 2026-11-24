@@ -728,3 +728,24 @@ html.lenis,html.lenis body{height:auto}
 /* Services sits right above About: one section gap instead of two, and no manifesto spacing when it's empty. */
 .services + #about{padding-top:0}
 #about > .kicker + .about-grid{margin-top:0}
+/* Loader: a quicker exit, and a safety net that hides it 2s after it appears if the JavaScript is slow
+   to start (initEffects turns the animation off as soon as it takes over). Keep in sync with LOADER_MAX_WAIT. */
+#loader.done{transition:clip-path .7s cubic-bezier(.76,0,.24,1)}
+#loader{animation:ldAutoHide .4s ease 2s forwards}
+@keyframes ldAutoHide{to{opacity:0;visibility:hidden}}
+/* Project case study (optional): client → problem → what I built → result */
+.case{margin:0;display:grid;gap:14px;max-width:52ch;padding:18px 0;border-block:1px solid var(--line)}
+.case div{display:grid;gap:4px}
+.case dt{font-family:var(--grotesk);font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted)}
+.case dd{margin:0;color:rgba(var(--ink-rgb),.88);line-height:1.55}
+.case ul{margin:0;padding-left:1.1em;display:grid;gap:4px}
+.case li::marker{color:var(--orchid)}
+.case-result dd{color:var(--orchid);font-weight:600}
+/* Phone fixes (client-facing pass) */
+.svc-ask{display:inline-flex;align-items:center;min-height:44px;padding:0}
+@media (max-width:420px){
+  .h2{font-size:clamp(34px,10.2vw,44px)}
+  .tk-tabs{gap:2px}
+  .tk-tab{padding:0 10px;font-size:14px}
+  .tk-tab small{display:none}
+}

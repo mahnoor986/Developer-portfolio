@@ -9,8 +9,32 @@
   Change them any time in Admin → Site settings → Contact.
 - (Not blocking) Rado Builders "View live" link: add it in Admin → Projects → Rado Builders once the client agrees.
 - **Merge `client-facing` into `payload-migration`?** Branch is ready (build, lint, browser checks pass).
+- (Not blocking) Fill in project case studies in Admin → Projects → (project) → Case study, starting with
+  Rado Builders. Only use results you can back up.
 
 ## Log
+
+### 2026-11-24 — Faster loader, project case studies, phone check
+**Loader** (owner asked to shorten it; the look is unchanged)
+- Count 1.7s → 0.8s, shorter exit (0.7s). Plays once per tab: an inline script in `Loader.tsx` hides it at
+  once on repeat visits and records the first visit before the JS loads. CSS safety net hides it 2s after it
+  appears if the JS hasn't started (`ldAutoHide`, kept in sync with `LOADER_MAX_WAIT` in initEffects).
+- Measured on the production build (Playwright, localhost): desktop first visit 1.5s of loader after first
+  paint; slow phone (4× CPU, slow 4G) at most ~2.8s, where before it lasted until the JS started (9s+ in the
+  same test); repeat visits 0s. The page's JavaScript (~409 KB) is the slow part on phones.
+**Case studies**
+- `Projects.caseStudy` group (client, problem, built[] bullets, result), all optional; shown under the
+  description in the opened project; hidden when empty. Labels in Site settings → Sections → Selected work.
+  Migration `20261124_080702_project_case_study` (adds columns only). No case study content seeded:
+  Mahnoor fills them in (rendering checked with temporary test text, then cleared).
+**Phone check** (iPhone 13 size, 390px, every section + menu)
+- No horizontal scroll, no tiny text, no console/network errors.
+- Fixed: "My experience" heading was 2px too wide (big headings scale down ≤420px); toolkit tabs cut off
+  "Tools" (tighter tabs, counts hidden ≤420px); "Ask about this" tap height 38 → 44px.
+- Expected/left: decorative layers behind the About photo extend past the edge (clipped, no scroll);
+  honeypot field is off-screen on purpose; the email address link is 30px tall (copy button next to it).
+**Verified**: `tsc` clean, lint 0 errors (15 warnings: unused args in the 3 generated migrations + old test
+files), `npm run build` passes.
 
 ### 2026-11-24 — AIT screenshot + spacing above About
 **Done**

@@ -85,6 +85,32 @@ export const Projects: CollectionConfig = {
         },
       ],
     },
+    {
+      name: 'caseStudy',
+      label: 'Case study (optional)',
+      type: 'group',
+      admin: {
+        description:
+          'Tells the story clients care about: their problem → what you built → the result. Shown under the description when the project is opened. Leave empty to hide.',
+      },
+      fields: [
+        { name: 'client', label: 'Client / industry', type: 'text', admin: { placeholder: 'e.g. Real estate' } },
+        { name: 'problem', label: 'The problem', type: 'textarea', admin: { rows: 2 } },
+        {
+          name: 'built',
+          label: 'What I built',
+          type: 'text',
+          hasMany: true,
+          admin: { description: 'One point per item. Press Enter after each.' },
+        },
+        {
+          name: 'result',
+          label: 'Result',
+          type: 'text',
+          admin: { placeholder: 'e.g. Launched in 3 weeks', description: 'Only results you can back up.' },
+        },
+      ],
+    },
     linkGroup('primaryLink', 'Main button'),
     linkGroup('secondaryLink', 'Second button'),
   ],

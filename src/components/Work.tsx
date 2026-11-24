@@ -6,6 +6,49 @@ import { SplitHeading } from './SplitHeading'
 export const artBackground = (url: string | undefined, position: string | null | undefined) =>
   url ? `url("${url}") ${position || 'center'}/cover, var(--night)` : 'var(--night)'
 
+type Project = HomeContent['projects'][number]
+
+/** Optional case study under a project's description; each part hides when empty. */
+function CaseStudy({ s, cs }: { s: Settings; cs: Project['caseStudy'] }) {
+  const built = (cs?.built ?? []).filter(Boolean)
+  if (!cs || !(cs.client || cs.problem || built.length || cs.result)) return null
+
+  return (
+    <dl className="case">
+      {cs.client && (
+        <div>
+          <dt>{s.caseClientLabel}</dt>
+          <dd>{cs.client}</dd>
+        </div>
+      )}
+      {cs.problem && (
+        <div>
+          <dt>{s.caseProblemLabel}</dt>
+          <dd>{cs.problem}</dd>
+        </div>
+      )}
+      {built.length > 0 && (
+        <div>
+          <dt>{s.caseBuiltLabel}</dt>
+          <dd>
+            <ul>
+              {built.map((b, i) => (
+                <li key={i}>{b}</li>
+              ))}
+            </ul>
+          </dd>
+        </div>
+      )}
+      {cs.result && (
+        <div className="case-result">
+          <dt>{s.caseResultLabel}</dt>
+          <dd>{cs.result}</dd>
+        </div>
+      )}
+    </dl>
+  )
+}
+
 export function Work({ s, projects }: { s: Settings; projects: HomeContent['projects'] }) {
   if (!projects.length) return null
 
@@ -45,6 +88,7 @@ export function Work({ s, projects }: { s: Settings; projects: HomeContent['proj
                     <div className="panel-art" style={{ background: bg }} />
                     <div className="panel-text">
                       <p>{p.description}</p>
+                      <CaseStudy s={s} cs={p.caseStudy} />
                       {p.tags && p.tags.length > 0 && (
                         <div className="tags">
                           {p.tags.map((t) => (
