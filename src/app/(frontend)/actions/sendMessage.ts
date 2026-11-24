@@ -4,7 +4,7 @@ import { createHash } from 'crypto'
 import { headers } from 'next/headers'
 
 import { getPayloadClient } from '@/lib/content'
-import { EmailJSRequestError, escapeEmailHtml, sendEmailJsTemplate, toEmailHtml } from '@/lib/emailjs'
+import { describeEmailError, escapeEmailHtml, sendEmailJsTemplate, toEmailHtml } from '@/lib/emailjs'
 import {
   contactSchema,
   HONEYPOT_FIELD,
@@ -106,8 +106,7 @@ export async function sendMessage(formData: FormData): Promise<SendMessageResult
         admin_url_html: escapeEmailHtml(adminUrl),
       })
     } catch (err) {
-      const status = err instanceof EmailJSRequestError ? err.status : undefined
-      payload.logger.error({ status }, `EmailJS notification failed for message ${savedMessage.id}`)
+      payload.logger.error(`EmailJS notification failed for message ${savedMessage.id}: ${describeEmailError(err)}`)
       deliveryFailed = true
     }
 
@@ -123,10 +122,9 @@ export async function sendMessage(formData: FormData): Promise<SendMessageResult
           subject: settings.autoReplySubject || 'Thanks for your message',
           message: autoReply,
           message_html: toEmailHtml(autoReply),
-        })
+        }, 'NEXT_PUBLIC_EMAILJS_AUTOREPLY_TEMPLATE_ID')
       } catch (err) {
-        const status = err instanceof EmailJSRequestError ? err.status : undefined
-        payload.logger.error({ status }, `EmailJS auto-reply failed for message ${savedMessage.id}`)
+        payload.logger.error(`EmailJS auto-reply failed for message ${savedMessage.id}: ${describeEmailError(err)}`)
         deliveryFailed = true
       }
     }

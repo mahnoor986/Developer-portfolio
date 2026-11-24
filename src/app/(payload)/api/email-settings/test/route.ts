@@ -1,5 +1,5 @@
 import { getPayloadClient } from '@/lib/content'
-import { sendEmailJsTemplate } from '@/lib/emailjs'
+import { describeEmailError, sendEmailJsTemplate } from '@/lib/emailjs'
 
 export async function POST(request: Request) {
   const payload = await getPayloadClient()
@@ -24,7 +24,9 @@ export async function POST(request: Request) {
     })
     return Response.json({ message: `Test email sent to ${settings.notifyEmail}.` })
   } catch (error) {
-    payload.logger.error({ err: error }, 'EmailJS configuration test failed')
-    return Response.json({ message: 'The test email could not be sent. Check the EmailJS service, template, and server environment configuration.' }, { status: 502 })
+    // Admin-only route: show the reason (variable names or EmailJS's reply, never key values).
+    const reason = describeEmailError(error)
+    payload.logger.error(`EmailJS configuration test failed: ${reason}`)
+    return Response.json({ message: `The test email could not be sent. ${reason}` }, { status: 502 })
   }
 }

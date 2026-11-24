@@ -3,6 +3,7 @@ import { afterEach, describe, expect, it, vi } from 'vitest'
 import {
   EmailJSConfigurationError,
   EmailJSRequestError,
+  describeEmailError,
   escapeEmailHtml,
   sendEmailJsTemplate,
   toEmailHtml,
@@ -52,19 +53,30 @@ describe('EmailJS server delivery', () => {
     })
   })
 
-  it('does not make a request when server configuration is incomplete', async () => {
+  it('does not make a request when server configuration is incomplete, and names what is missing', async () => {
+    // Independent of the local .env: one required variable is explicitly empty.
+    configureEmailJS()
+    vi.stubEnv('EMAILJS_PRIVATE_KEY', '')
     const fetchMock = vi.fn<typeof fetch>()
     vi.stubGlobal('fetch', fetchMock)
 
-    await expect(sendEmailJsTemplate('template-placeholder', {})).rejects.toBeInstanceOf(EmailJSConfigurationError)
+    const error = await sendEmailJsTemplate('template-placeholder', {}).catch((e: unknown) => e)
+    expect(error).toBeInstanceOf(EmailJSConfigurationError)
+    expect((error as EmailJSConfigurationError).missing).toEqual(['EMAILJS_PRIVATE_KEY'])
+    expect(describeEmailError(error)).not.toContain('private-key-placeholder')
     expect(fetchMock).not.toHaveBeenCalled()
   })
 
-  it('surfaces provider rejection without returning success', async () => {
+  it('surfaces provider rejection with the EmailJS reply, without returning success', async () => {
     configureEmailJS()
-    vi.stubGlobal('fetch', vi.fn<typeof fetch>().mockResolvedValue(new Response('', { status: 429 })))
+    vi.stubGlobal(
+      'fetch',
+      vi.fn<typeof fetch>().mockResolvedValue(new Response('API calls are disabled for non-browser applications', { status: 403 })),
+    )
 
-    await expect(sendEmailJsTemplate('template-placeholder', {})).rejects.toEqual(new EmailJSRequestError(429))
+    const error = await sendEmailJsTemplate('template-placeholder', {}).catch((e: unknown) => e)
+    expect(error).toEqual(new EmailJSRequestError(403, 'API calls are disabled for non-browser applications'))
+    expect(describeEmailError(error)).toContain('status 403: API calls are disabled')
   })
 
   it('routes Payload authentication emails through the configured transaction template', async () => {
