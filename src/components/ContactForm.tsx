@@ -1,6 +1,6 @@
 'use client'
 
-import { useRef, useState, useTransition } from 'react'
+import { useEffect, useRef, useState, useTransition } from 'react'
 
 import { sendMessage } from '@/app/(frontend)/actions/sendMessage'
 import { contactSchema, HONEYPOT_FIELD, type ContactField } from '@/lib/contactSchema'
@@ -30,6 +30,21 @@ export function ContactForm({ options, labels }: Props) {
   const [bad, setBad] = useState<ContactField[]>([])
   const [note, setNote] = useState<{ cls: '' | 'good' | 'bad'; text: string }>({ cls: '', text: labels.note ?? '' })
   const [pending, startTransition] = useTransition()
+
+  // "Ask about this" links in Services (`data-ask="<option label>"`) preselect that option.
+  useEffect(() => {
+    const onClick = (e: MouseEvent) => {
+      const link = (e.target as Element | null)?.closest<HTMLElement>('[data-ask]')
+      const ask = link?.dataset.ask
+      if (!ask || !formRef.current) return
+      const radio = Array.from(formRef.current.querySelectorAll<HTMLInputElement>('input[name="type"]')).find(
+        (r) => r.value === ask,
+      )
+      if (radio) radio.checked = true
+    }
+    document.addEventListener('click', onClick)
+    return () => document.removeEventListener('click', onClick)
+  }, [])
 
   function showInvalid(fields: ContactField[]) {
     setBad(fields)

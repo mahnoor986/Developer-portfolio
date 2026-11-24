@@ -69,6 +69,7 @@ export interface Config {
   collections: {
     projects: Project;
     skills: Skill;
+    services: Service;
     'process-steps': ProcessStep;
     experience: Experience;
     posts: Post;
@@ -85,6 +86,7 @@ export interface Config {
   collectionsSelect: {
     projects: ProjectsSelect<false> | ProjectsSelect<true>;
     skills: SkillsSelect<false> | SkillsSelect<true>;
+    services: ServicesSelect<false> | ServicesSelect<true>;
     'process-steps': ProcessStepsSelect<false> | ProcessStepsSelect<true>;
     experience: ExperienceSelect<false> | ExperienceSelect<true>;
     posts: PostsSelect<false> | PostsSelect<true>;
@@ -215,6 +217,42 @@ export interface Skill {
   createdAt: string;
 }
 /**
+ * The cards in "Services", right after the hero. Drag the rows to change the order.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services".
+ */
+export interface Service {
+  id: number;
+  _order?: string | null;
+  title: string;
+  /**
+   * The client's situation, in their words.
+   */
+  problem: string;
+  outcome: string;
+  /**
+   * The "Ask about this" link scrolls to the contact form and selects this option. Leave empty to hide the link.
+   */
+  askOption?: (number | null) | ContactOption;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * The "What do you need?" choices on the contact form. The first visible one is selected by default.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "contact-options".
+ */
+export interface ContactOption {
+  id: number;
+  _order?: string | null;
+  label: string;
+  visible?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * The cards in "How I build". Numbers (01, Step 1 of 5) follow the order here.
  *
  * This interface was referenced by `Config`'s JSON-Schema
@@ -308,20 +346,6 @@ export interface Message {
   createdAt: string;
 }
 /**
- * The "What do you need?" choices on the contact form. The first visible one is selected by default.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "contact-options".
- */
-export interface ContactOption {
-  id: number;
-  _order?: string | null;
-  label: string;
-  visible?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
-}
-/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
@@ -379,6 +403,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'skills';
         value: number | Skill;
+      } | null)
+    | ({
+        relationTo: 'services';
+        value: number | Service;
       } | null)
     | ({
         relationTo: 'process-steps';
@@ -488,6 +516,19 @@ export interface SkillsSelect<T extends boolean = true> {
   name?: T;
   category?: T;
   blurb?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "services_select".
+ */
+export interface ServicesSelect<T extends boolean = true> {
+  _order?: T;
+  title?: T;
+  problem?: T;
+  outcome?: T;
+  askOption?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -708,6 +749,37 @@ export interface SiteSetting {
         id?: string | null;
       }[]
     | null;
+  servicesKicker?: string | null;
+  /**
+   * The accent part is shown in the vibe colour. If the text is a single line, the accent starts on a new line; otherwise line breaks in the text are kept and the accent follows the last line.
+   */
+  servicesHeading?: {
+    lead?: string | null;
+    accent?: string | null;
+  };
+  servicesIntro?: string | null;
+  servicesProblemLabel?: string | null;
+  servicesOutcomeLabel?: string | null;
+  servicesAskLabel?: string | null;
+  /**
+   * A short line under the cards, e.g. how long a project usually takes.
+   */
+  servicesNote?: string | null;
+  whyKicker?: string | null;
+  /**
+   * The accent part is shown in the vibe colour. If the text is a single line, the accent starts on a new line; otherwise line breaks in the text are kept and the accent follows the last line.
+   */
+  whyHeading?: {
+    lead?: string | null;
+    accent?: string | null;
+  };
+  whyItems?:
+    | {
+        title: string;
+        text: string;
+        id?: string | null;
+      }[]
+    | null;
   /**
    * The accent part is shown in the vibe colour. If the text is a single line, the accent starts on a new line; otherwise line breaks in the text are kept and the accent follows the last line.
    */
@@ -835,6 +907,7 @@ export interface SiteSetting {
   cvLabel?: string | null;
   cvTitle?: string | null;
   menuAbout?: string | null;
+  menuServices?: string | null;
   menuWork?: string | null;
   menuToolkit?: string | null;
   menuProcess?: string | null;
@@ -921,6 +994,32 @@ export interface SiteSettingsSelect<T extends boolean = true> {
     | {
         value?: T;
         label?: T;
+        id?: T;
+      };
+  servicesKicker?: T;
+  servicesHeading?:
+    | T
+    | {
+        lead?: T;
+        accent?: T;
+      };
+  servicesIntro?: T;
+  servicesProblemLabel?: T;
+  servicesOutcomeLabel?: T;
+  servicesAskLabel?: T;
+  servicesNote?: T;
+  whyKicker?: T;
+  whyHeading?:
+    | T
+    | {
+        lead?: T;
+        accent?: T;
+      };
+  whyItems?:
+    | T
+    | {
+        title?: T;
+        text?: T;
         id?: T;
       };
   workHeading?:
@@ -1032,6 +1131,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   cvLabel?: T;
   cvTitle?: T;
   menuAbout?: T;
+  menuServices?: T;
   menuWork?: T;
   menuToolkit?: T;
   menuProcess?: T;

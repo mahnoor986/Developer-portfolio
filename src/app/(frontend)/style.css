@@ -708,3 +708,20 @@ html.lenis,html.lenis body{height:auto}
 .post-code-head{font-family:var(--grotesk);font-size:13px;color:var(--muted);padding:10px 16px;border-bottom:1px solid var(--line)}
 .post-code pre{margin:0;padding:18px 16px;overflow-x:auto;font-size:14.5px;line-height:1.65;color:var(--soft)}
 .post-code pre code{background:none;padding:0;font-size:inherit}
+
+/* ---------- additions: Services + Why work with me (client-facing) ---------- */
+.svc-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr));gap:18px}
+.svc-card{position:relative;display:flex;flex-direction:column;gap:14px;padding:28px;border-radius:22px;border:1px solid var(--line);background:rgba(var(--night-rgb),.6);transition:border-color .3s}
+.svc-card:hover{border-color:rgba(var(--orchid-rgb),.55)}
+.svc-num{font-family:var(--grotesk);font-size:14px;font-weight:600;color:var(--orchid)}
+.svc-card h3{margin:0;font-family:var(--display);font-size:clamp(24px,2.2vw,32px);line-height:1.1;letter-spacing:-.02em;color:var(--ink)}
+.svc-card dl{margin:0;display:grid;gap:6px}
+.svc-card dt{font-family:var(--grotesk);font-size:13px;font-weight:600;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-top:8px}
+.svc-card dd{margin:0;color:rgba(var(--ink-rgb),.88);line-height:1.55}
+.svc-ask{margin-top:auto;padding-top:10px;align-self:flex-start;color:var(--orchid);font-weight:600;text-decoration:none;border-bottom:1.5px solid transparent;transition:border-color .2s}
+.svc-ask:hover,.svc-ask:focus-visible{border-color:var(--orchid)}
+.svc-note{margin:32px 0 0;max-width:60ch;color:var(--muted);font-size:18px}
+.why-list{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:22px;overflow:hidden}
+.why-list li{flex:1 1 240px;background:var(--void);padding:26px;display:flex;flex-direction:column;gap:8px}
+.why-list b{font-family:var(--display);font-size:clamp(20px,1.8vw,24px);line-height:1.15;color:var(--ink)}
+.why-list span{color:var(--muted);line-height:1.55}

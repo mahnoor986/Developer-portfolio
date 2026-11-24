@@ -40,6 +40,7 @@ export default async function Nav({ payload, user }: ServerProps) {
       label: 'Website',
       items: [
         { href: `${A}/globals/site-settings`, label: 'Site settings' },
+        { href: `${A}/collections/services`, label: 'Services' },
         { href: `${A}/collections/projects`, label: 'Projects', count: projects },
         { href: `${A}/collections/skills`, label: 'Skills', count: skills },
         { href: `${A}/collections/process-steps`, label: 'Process steps' },

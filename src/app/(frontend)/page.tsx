@@ -5,6 +5,7 @@ import { LatestPosts } from '@/components/blog/LatestPosts'
 import { Contact } from '@/components/Contact'
 import { Hero, Marquee } from '@/components/Hero'
 import { Experience, Process } from '@/components/Process'
+import { Services, WhyMe } from '@/components/Services'
 import { SiteShell } from '@/components/SiteShell'
 import { Toolkit } from '@/components/Toolkit'
 import { Work } from '@/components/Work'
@@ -21,17 +22,20 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function HomePage() {
-  const { settings: s, projects, skills, steps, experience, contactOptions, latestPosts } = await getHomeContent()
+  const { settings: s, services, projects, skills, steps, experience, contactOptions, latestPosts } =
+    await getHomeContent()
 
   return (
-    <SiteShell s={s} onHome hasPosts={latestPosts.length > 0}>
+    <SiteShell s={s} onHome hasPosts={latestPosts.length > 0} hasServices={services.length > 0}>
       <Hero s={s} />
       <Marquee s={s} />
+      <Services s={s} services={services} />
       <About s={s} />
       <Work s={s} projects={projects} />
       <LatestPosts s={s} posts={latestPosts} />
       <Toolkit s={s} skills={skills} />
       <Process s={s} steps={steps} />
+      <WhyMe s={s} />
       <Experience s={s} jobs={experience} />
       <Contact s={s} options={contactOptions} />
     </SiteShell>

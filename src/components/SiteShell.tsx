@@ -12,6 +12,8 @@ type Props = {
   /** Home page: in-page links (#about). Other pages: links back to the home page (/#about). */
   onHome: boolean
   hasPosts: boolean
+  /** Shows the Services menu link (home page only, when services exist). */
+  hasServices?: boolean
   children: React.ReactNode
 }
 
@@ -31,7 +33,7 @@ const effectsConfig = (s: Settings): EffectsConfig => ({
 })
 
 /** Background layers, header, menu, footer and animations shared by every public page. */
-export function SiteShell({ s, onHome, hasPosts, children }: Props) {
+export function SiteShell({ s, onHome, hasPosts, hasServices = false, children }: Props) {
   return (
     <>
       <Backdrop />
@@ -39,7 +41,7 @@ export function SiteShell({ s, onHome, hasPosts, children }: Props) {
       <Pointer />
 
       <Header s={s} onHome={onHome} />
-      <MobileMenu s={s} onHome={onHome} hasPosts={hasPosts} />
+      <MobileMenu s={s} onHome={onHome} hasPosts={hasPosts} hasServices={hasServices} />
 
       <main id="home">{children}</main>
 

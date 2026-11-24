@@ -77,8 +77,9 @@ export const getHomeContent = cache(async () => {
   const draft = await isDraftMode()
   const list = { depth: 1, pagination: false, ...accessFor(draft) } as const
 
-  const [settings, projects, skills, steps, experience, contactOptions, latestPosts] = await Promise.all([
+  const [settings, services, projects, skills, steps, experience, contactOptions, latestPosts] = await Promise.all([
     getSiteSettings(),
+    payload.find({ collection: 'services', sort: '_order', ...list }),
     payload.find({ collection: 'projects', sort: '_order', ...list }),
     payload.find({ collection: 'skills', sort: '_order', ...list }),
     payload.find({ collection: 'process-steps', sort: '_order', ...list }),
@@ -90,6 +91,7 @@ export const getHomeContent = cache(async () => {
   return {
     draft,
     settings,
+    services: services.docs,
     projects: projects.docs,
     skills: skills.docs,
     steps: steps.docs,

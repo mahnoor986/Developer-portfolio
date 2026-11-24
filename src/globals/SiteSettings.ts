@@ -173,6 +173,48 @@ export const SiteSettings: GlobalConfig = {
           fields: [
             {
               type: 'collapsible',
+              label: 'Services',
+              admin: {
+                description: 'The service cards themselves are edited in Content → Services. The section hides when there are none.',
+              },
+              fields: [
+                text('servicesKicker', 'Kicker', 'What I do'),
+                headingField({ name: 'servicesHeading', label: 'Heading', lead: 'Services', accent: 'that grow your business' }),
+                textarea('servicesIntro', 'Intro'),
+                {
+                  type: 'row',
+                  fields: [
+                    text('servicesProblemLabel', 'Problem label', 'The problem'),
+                    text('servicesOutcomeLabel', 'Outcome label', 'What you get'),
+                    text('servicesAskLabel', '"Ask about this" link', 'Ask about this'),
+                  ],
+                },
+                textarea('servicesNote', 'Timeline note', {
+                  admin: { rows: 2, description: 'A short line under the cards, e.g. how long a project usually takes.' },
+                }),
+              ],
+            },
+            {
+              type: 'collapsible',
+              label: 'Why work with me',
+              admin: { description: 'The section hides when the list is empty.' },
+              fields: [
+                text('whyKicker', 'Kicker', 'Why work with me'),
+                headingField({ name: 'whyHeading', label: 'Heading', lead: 'Why', accent: 'clients pick me' }),
+                {
+                  name: 'whyItems',
+                  label: 'Reasons',
+                  type: 'array',
+                  maxRows: 8,
+                  fields: [
+                    { name: 'title', type: 'text', required: true },
+                    { name: 'text', type: 'textarea', required: true, admin: { rows: 2 } },
+                  ],
+                },
+              ],
+            },
+            {
+              type: 'collapsible',
               label: 'Selected work',
               fields: [
                 headingField({ name: 'workHeading', label: 'Heading', lead: 'Selected', accent: 'work' }),
@@ -347,6 +389,7 @@ export const SiteSettings: GlobalConfig = {
                   type: 'row',
                   fields: [
                     text('menuAbout', 'About', 'About'),
+                    text('menuServices', 'Services', 'Services'),
                     text('menuWork', 'Work', 'Work'),
                     text('menuToolkit', 'Toolkit', 'Toolkit'),
                   ],

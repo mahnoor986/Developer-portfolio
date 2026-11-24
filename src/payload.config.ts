@@ -12,6 +12,7 @@ import { Media } from './collections/Media'
 import { Messages } from './collections/Messages'
 import { Posts } from './collections/Posts'
 import { ProcessSteps } from './collections/ProcessSteps'
+import { Services } from './collections/Services'
 import { Projects } from './collections/Projects'
 import { Skills } from './collections/Skills'
 import { Users } from './collections/Users'
@@ -53,6 +54,7 @@ export default buildConfig({
   collections: [
     Projects,
     Skills,
+    Services,
     ProcessSteps,
     Experience,
     Posts,

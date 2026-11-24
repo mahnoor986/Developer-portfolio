@@ -69,13 +69,24 @@ const MenuLink = ({ href, label, className }: { href: string; label?: string | n
     </a>
   ) : null
 
-export function MobileMenu({ s, onHome, hasPosts }: { s: Settings; onHome: boolean; hasPosts: boolean }) {
+export function MobileMenu({
+  s,
+  onHome,
+  hasPosts,
+  hasServices = false,
+}: {
+  s: Settings
+  onHome: boolean
+  hasPosts: boolean
+  hasServices?: boolean
+}) {
   const cv = getCv(s)
   const href = (hash: string) => sectionHref(onHome, hash)
   return (
     <div className="mmenu" id="mmenu" aria-hidden="true">
       <div className="mm-inner wrap">
         <nav className="mm-links" aria-label="Menu">
+          {hasServices && <MenuLink href={href('#services')} label={s.menuServices} />}
           <MenuLink href={href('#about')} label={s.menuAbout} />
           <MenuLink href={href('#work')} label={s.menuWork} />
           <MenuLink href={href('#skills')} label={s.menuToolkit} />

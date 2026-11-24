@@ -5,11 +5,53 @@
   `.env.example` locally and in Vercel, and configure origin restrictions before enabling visitor auto-replies.
 - Still needed later (see PLAN.md "Waiting on Mahnoor"): Vercel project + Blob token.
 - (Not blocking) Upload your CV PDF in Admin → Site settings → CV whenever you're ready.
-- (Not blocking) The contact form texts now use my defaults ("I usually reply within a day or two." /
-  "Thanks! Your message is on its way. I'll get back to you soon."). Change them any time in
-  Admin → Site settings → Contact.
+- (Not blocking) Contact form texts are now the client-facing ones ("I reply within 24 hours." etc.).
+  Change them any time in Admin → Site settings → Contact.
+- (Not blocking) AIT project screenshot: upload it in Admin → Projects → AIT (the site blocks automated
+  browsers, so it couldn't be captured). The card shows an empty image area until then.
+- (Not blocking) Rado Builders "View live" link: add it in Admin → Projects → Rado Builders once the client agrees.
+- **Merge `client-facing` into `payload-migration`?** Branch is ready (build, lint, browser checks pass).
 
 ## Log
+
+### 2026-11-24 — Client-facing portfolio (branch `client-facing`, from `payload-migration`)
+**Why:** a client hunter will share the portfolio with potential clients, so it now sells services
+(websites, redesigns, web apps with admin dashboards, care & updates) instead of reading like a job
+application. Owner decision: content no longer has to match `legacy/index.html`.
+Draft and decisions: `docs/client-copy.md` (local only; `docs/` is gitignored).
+
+**Done**
+- New `Services` collection (title, problem, outcome, contact option), orderable, public read, admin-only
+  write, revalidates `/`. Linked in the admin sidebar.
+- New Site settings fields (Sections tab): Services kicker/heading/intro/labels/timeline note, and
+  "Why work with me" kicker/heading/reasons. Menu label `menuServices`.
+- `Services` section right after the marquee, `WhyMe` section after "How I build". Both hide when empty.
+  Styles appended to `style.css` ("additions" block), using the vibe tokens, so all three vibes work.
+- "Ask about this" links (`data-ask`) scroll to the form and select the matching contact option.
+- Services link in the menu (home page only, when services exist).
+- Migration `20261124_071057_client_facing_sections` (only adds tables/columns).
+- Content moved to `src/seedContent.ts` (shared), helpers in `src/seedLib.ts`. `seed.ts` now seeds the
+  client-facing content, services and order keys. KhairFlow screenshot in `seed-assets/` (tracked).
+- `src/scripts/applyClientFacing.ts`: one-time update of an existing DB, safe to re-run. Ran it on the local DB:
+  - Projects: KhairFlow (new), Rado Builders, AIT (new), VOLTRA, in that order. Source-code links removed.
+    The two games are drafts now (hidden, not deleted).
+  - Contact options renamed (Website → New website, Web app → Website redesign, Mobile app → Web app /
+    dashboard, Full-time role → Care & updates), plus Something else. Messages store the label text, so
+    old messages are unaffected.
+  - 4 services, 5 reasons, new hero/about/facts/contact texts, manifesto emptied (hidden).
+  - Experience left as Mahnoor set it (Junior Developer + Intern Developer at KhairFlow); seed mirrors it.
+- Local DB backup before the update: `docs/db-backup-before-client-facing.sql` (gitignored).
+
+**Verified**
+- `tsc --noEmit` clean; `npm run lint` 0 errors (same 7 old warnings); `npm run build` passes.
+- Dev server, desktop 1440×900 and mobile 375×812: 4 service cards, 5 reasons in one row, no manifesto,
+  4 projects with no source links, 5 contact options, no horizontal scroll, no console errors.
+  "Ask about this" → scrolls to the form and selects the option. Public API lists only the 4 published projects.
+- Note: one build failed with a Turbopack `next/font/google queries have exactly one entry` error; the same
+  code built fine on the next two runs (with and without these changes). Looks flaky; rebuild if it shows up.
+
+**Next**
+- Mahnoor: AIT screenshot, Rado link, review the texts in the admin, decide on merging into `payload-migration`.
 
 ### 2026-10-20 — EmailJS migration
 **Done**
