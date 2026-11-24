@@ -1252,6 +1252,16 @@ html {
     font: 15px/1.55 var(--ms-body);
     color: var(--ink);
   }
+  .ms-topbar__left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1 1 280px;
+    min-width: 0;
+  }
+  .ms-back {
+    flex: none;
+  }
   .ms-topbar__right {
     display: flex;
     flex-wrap: wrap;

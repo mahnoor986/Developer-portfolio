@@ -4,6 +4,7 @@ import { useConfig } from '@payloadcms/ui'
 import Link from 'next/link'
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
 
+import { BackButton } from './BackButton'
 import { ADMIN_VIBE_KEY, isVibe, VIBES, type Vibe } from './vibe'
 
 type Result = { kind: string; label: string; sub: string; href: string }
@@ -195,7 +196,7 @@ function VibeSwitcher() {
   )
 }
 
-/** admin.components.actions: the top bar (search on the left; vibe and View site on the right). */
+/** admin.components.actions: the top bar (Back and search on the left; vibe and View site on the right). */
 export default function TopBar() {
   const {
     config: { serverURL },
@@ -203,7 +204,10 @@ export default function TopBar() {
 
   return (
     <div className="ms-topbar">
-      <Search />
+      <div className="ms-topbar__left">
+        <BackButton />
+        <Search />
+      </div>
       <div className="ms-topbar__right">
         <VibeSwitcher />
         <a className="ms-pill" href={serverURL || '/'} target="_blank" rel="noopener">

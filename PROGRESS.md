@@ -14,6 +14,18 @@
 
 ## Log
 
+### 2026-11-24 — Admin: Back button
+**Done**
+- `src/admin/BackButton.tsx`, shown at the left of the admin top bar (before search) on every page
+  except the dashboard. Returns to the previously opened admin page in this tab (history kept in
+  sessionStorage); with no history it goes one level up (document → list → dashboard).
+  Login/logout pages are not recorded.
+- Styles: `.ms-topbar__left`, `.ms-back` in `src/app/(payload)/custom.scss`.
+
+**Verified**
+- `tsc --noEmit` clean, eslint clean on the new files. Tested by Mahnoor in her own browser: works.
+- Not covered: no "unsaved changes" prompt when leaving with Back (Projects and Site settings autosave drafts).
+
 ### 2026-11-24 — Client-facing portfolio (branch `client-facing`, from `payload-migration`)
 **Why:** a client hunter will share the portfolio with potential clients, so it now sells services
 (websites, redesigns, web apps with admin dashboards, care & updates) instead of reading like a job
