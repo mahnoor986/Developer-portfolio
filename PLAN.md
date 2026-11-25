@@ -61,7 +61,7 @@ Log details in `PROGRESS.md`. Branch: `payload-migration`.
 - [x] Server-side EmailJS REST integration in the contact Server Action; save the message before email sends
 - [x] Owner notification and optional visitor auto-reply use server-controlled recipient/template values
 - [x] Report email delivery errors without deleting the saved message or showing a success state
-- [ ] Configure the real EmailJS service/templates and environment variables, then verify both email flows
+- [x] Configure the real EmailJS service/templates and environment variables, then verify both email flows
 
 **Done when:** configured EmailJS accepts the owner notification and enabled visitor auto-reply, and failures are
 reported accurately. Dashboard setup and real sending are intentionally not performed by code.

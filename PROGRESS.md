@@ -1,8 +1,6 @@
 # PROGRESS
 
 ## Waiting for Mahnoor
-- **Test the contact form once** (sends a real email): confirm you get the alert and the visitor gets the
-  auto-reply. Then the last Phase 5 box can be ticked.
 - Still needed later (see PLAN.md "Waiting on Mahnoor"): Vercel project + Blob token.
 - (Not blocking) Upload your CV PDF in Admin → Site settings → CV whenever you're ready.
 - (Not blocking) Contact form texts are now the client-facing ones ("I reply within 24 hours." etc.).
@@ -12,6 +10,17 @@
   Rado Builders. Only use results you can back up.
 
 ## Log
+
+### 2026-11-25 — Email delivery verified (Phase 5 done)
+- First real test failed: EmailJS replied 400 "The template ID not found". The old code hid that reason, so
+  errors now include EmailJS's reply or the names (never values) of empty variables, in the server log and
+  in the admin "Send me a test email" result (`describeEmailError` in `src/lib/emailjs.ts`).
+- Mahnoor corrected the template IDs in `.env`; dev server restarted.
+- Verified by Mahnoor: admin test email arrives; contact form → alert arrives with name, email, project
+  type and message; visitor auto-reply arrives (it landed in Gmail's spam folder).
+- Tests: `emailjs.int.spec.ts` no longer depends on the local `.env` (5/5 pass).
+- Deliverability note: mail sent through a personal Gmail via EmailJS can land in spam; a sender on her own
+  domain (with SPF/DKIM) would help once the site has a domain.
 
 ### 2026-11-24 — Merged `client-facing` into `payload-migration`
 - Fast-forward (no new commits on `payload-migration` since `a2edf63`), so no conflicts. Done with
